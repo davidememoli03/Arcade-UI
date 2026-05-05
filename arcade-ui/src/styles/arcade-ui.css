@@ -6,13 +6,13 @@
 :root {
     --arcade-bg:        #0a0010;
     --arcade-surface:   #110020;
-    --arcade-border:    #00ffff;
-    --arcade-text:      #00ffff;
-    --arcade-text-dim:  #007777;
-    --arcade-disabled:  #334455;
-    --arcade-font:      'Courier New', Courier, monospace;
+    --arcade-border:    #0ff;
+    --arcade-text:      #0ff;
+    --arcade-text-dim:  #077;
+    --arcade-disabled:  #345;
+    --arcade-font:      'Courier New', courier, monospace;
     --arcade-radius:    4px;
-    --arcade-glow:      0 0 8px #00ffff, 0 0 16px #00ffff44;
+    --arcade-glow:      0 0 8px #0ff, 0 0 16px #0ff4;
 }
 
 /* ───────────────────────────────────────────
@@ -33,20 +33,20 @@
     transition:       box-shadow 0.15s ease, background 0.15s ease;
 }
 
+.arcade-btn:disabled {
+    color:        var(--arcade-disabled);
+    border-color: var(--arcade-disabled);
+    cursor:       not-allowed;
+    box-shadow:   none;
+}
+
 .arcade-btn:hover:not(:disabled) {
     background:   #001a1a;
     box-shadow:   var(--arcade-glow);
 }
 
 .arcade-btn:active:not(:disabled) {
-    background:   #003333;
-}
-
-.arcade-btn:disabled {
-    color:        var(--arcade-disabled);
-    border-color: var(--arcade-disabled);
-    cursor:       not-allowed;
-    box-shadow:   none;
+    background:   #033;
 }
 
 /* ───────────────────────────────────────────
@@ -65,7 +65,7 @@
     max-width:      480px;
 }
 
-.arcade-panel__title {
+.arcade-panel-title {
     margin:         0;
     font-size:      1.4rem;
     letter-spacing: 0.18em;
@@ -73,10 +73,10 @@
     color:          var(--arcade-text);
 }
 
-.arcade-panel__body {
-    margin:     0;
-    font-size:  0.95rem;
-    color:      var(--arcade-text-dim);
+.arcade-panel-body {
+    margin:      0;
+    font-size:   0.95rem;
+    color:       var(--arcade-text-dim);
     line-height: 1.5;
 }
 
@@ -104,14 +104,14 @@
     opacity: 1;
 }
 
-.arcade-input:focus {
-    box-shadow: var(--arcade-glow);
-}
-
 .arcade-input:disabled {
     color:        var(--arcade-disabled);
     border-color: var(--arcade-disabled);
     cursor:       not-allowed;
+}
+
+.arcade-input:focus {
+    box-shadow: var(--arcade-glow);
 }
 
 .arcade-label {
