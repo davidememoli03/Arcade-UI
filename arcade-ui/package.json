@@ -23,7 +23,7 @@
   "types": "dist/arcade-ui.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run minify:css",
+    "build": "vite build && npm run minify:css && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts",
     "build:watch": "vite build --watch",
     "preview": "vite preview",
     "minify:css": "postcss dist/arcade-ui.css --use cssnano -o dist/arcade-ui.min.css",
