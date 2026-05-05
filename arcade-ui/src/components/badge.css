@@ -1,0 +1,110 @@
+/* src/components/badge.css
+   Componente arc-badge: etichette, livelli e status.
+   Font Press Start 2P, nessun border-radius, grid 8px.
+   ─────────────────────────────────────────────────── */
+
+/* ── Base ────────────────────────────────────────────────────────────
+   display: inline-flex per allineare icone e testo.
+   padding usa la grid 8px: 4px verticale, 8px orizzontale.
+──────────────────────────────────────────────────────────────────── */
+.arc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-family: var(--arc-font-pixel);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 0;
+    border: var(--arc-border-sm) solid transparent;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* ── Varianti colore ─────────────────────────────────────────────────
+   Ogni variante imposta sfondo semitrasparente e bordo/testo
+   con il colore neon corrispondente.
+   --badge-color: variabile locale usata anche da --pulse e --outline.
+──────────────────────────────────────────────────────────────────── */
+.arc-badge-cyan {
+    --badge-color: var(--arc-color-cyan);
+    --badge-glow:  var(--arc-color-cyan-glow);
+
+    background: rgb(0 245 255 / 12%);
+    color: var(--arc-color-cyan);
+    border-color: var(--arc-color-cyan);
+}
+
+.arc-badge-red {
+    --badge-color: var(--arc-color-red);
+    --badge-glow:  var(--arc-color-red-glow);
+
+    background: rgb(255 45 85 / 12%);
+    color: var(--arc-color-red);
+    border-color: var(--arc-color-red);
+}
+
+.arc-badge-yellow {
+    --badge-color: var(--arc-color-yellow);
+    --badge-glow:  var(--arc-color-yellow-glow);
+
+    background: rgb(255 215 0 / 12%);
+    color: var(--arc-color-yellow);
+    border-color: var(--arc-color-yellow);
+}
+
+.arc-badge-green {
+    --badge-color: var(--arc-color-green);
+    --badge-glow:  var(--arc-color-green-glow);
+
+    background: rgb(57 255 20 / 12%);
+    color: var(--arc-color-green);
+    border-color: var(--arc-color-green);
+}
+
+.arc-badge-purple {
+    --badge-color: var(--arc-color-purple);
+    --badge-glow:  var(--arc-color-purple-glow);
+
+    background: rgb(191 0 255 / 12%);
+    color: var(--arc-color-purple);
+    border-color: var(--arc-color-purple);
+}
+
+/* ── Variante outline ────────────────────────────────────────────────
+   Sfondo trasparente, solo bordo colorato.
+   Si aggiunge a una variante colore: arc-badge-cyan arc-badge-outline
+──────────────────────────────────────────────────────────────────── */
+.arc-badge-outline {
+    background: transparent;
+}
+
+/* ── Keyframe pulse specifico per il badge ───────────────────────────
+   Usa currentColor invece di var(): currentColor risolve al valore
+   calcolato della proprietà color dell'elemento ed è interpolabile.
+   Ogni variante imposta color al proprio neon, quindi il glow
+   segue automaticamente il colore corretto.
+──────────────────────────────────────────────────────────────────── */
+@keyframes badge-pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 4px currentcolor, 0 0 8px currentcolor;
+    }
+
+    50% {
+        box-shadow: 0 0 14px currentcolor, 0 0 28px currentcolor, 0 0 48px currentcolor;
+    }
+}
+
+/* ── Variante pulse ──────────────────────────────────────────────────
+   Si aggiunge a una variante colore: arc-badge-red arc-badge-pulse.
+   Valori concreti: le CSS custom property nella shorthand animation
+   non sono supportate affidabilmente in tutti i browser.
+──────────────────────────────────────────────────────────────────── */
+.arc-badge-pulse {
+    animation-name: badge-pulse;
+    animation-duration: 1200ms;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
