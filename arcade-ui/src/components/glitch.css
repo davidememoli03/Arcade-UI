@@ -1,0 +1,242 @@
+/* src/components/glitch.css
+   Effetto glitch CRT: interferenze cromatiche su testo e immagini.
+   ─────────────────────────────────────────────────────────────── */
+
+/* ── Token glitch ────────────────────────────────────────────────────────── */
+
+:root {
+    --arc-glitch-offset: 5px;
+    --arc-glitch-freq:   4s;
+}
+
+/* ── Intensità ───────────────────────────────────────────────────────────── */
+
+[data-arc-glitch-intensity="low"] {
+    --arc-glitch-offset: 3px;
+    --arc-glitch-freq:   8s;
+}
+
+[data-arc-glitch-intensity="medium"] {
+    --arc-glitch-offset: 5px;
+    --arc-glitch-freq:   4s;
+}
+
+[data-arc-glitch-intensity="high"] {
+    --arc-glitch-offset: 10px;
+    --arc-glitch-freq:   1.5s;
+}
+
+/* ── Keyframes ───────────────────────────────────────────────────────────── */
+
+/* Layer ::before — canale rosso, scatta prima */
+@keyframes arc-glitch-before {
+    0%,
+    82%,
+    100% {
+        clip-path: inset(0 0 100% 0);
+        transform: translateX(0);
+    }
+
+    83% {
+        clip-path: inset(15% 0 55% 0);
+        transform: translateX(calc(-1 * var(--arc-glitch-offset)));
+    }
+
+    85% {
+        clip-path: inset(65% 0 10% 0);
+        transform: translateX(var(--arc-glitch-offset));
+    }
+
+    87% {
+        clip-path: inset(35% 0 45% 0);
+        transform: translateX(calc(-1 * var(--arc-glitch-offset)));
+    }
+
+    89% {
+        clip-path: inset(0 0 100% 0);
+        transform: translateX(0);
+    }
+
+    91% {
+        clip-path: inset(80% 0 8% 0);
+        transform: translateX(var(--arc-glitch-offset));
+    }
+
+    93% {
+        clip-path: inset(0 0 100% 0);
+        transform: translateX(0);
+    }
+}
+
+/* Layer ::after — canale cyan, leggermente sfasato */
+@keyframes arc-glitch-after {
+    0%,
+    86%,
+    100% {
+        clip-path: inset(0 0 100% 0);
+        transform: translateX(0);
+    }
+
+    87% {
+        clip-path: inset(40% 0 30% 0);
+        transform: translateX(var(--arc-glitch-offset));
+    }
+
+    89% {
+        clip-path: inset(10% 0 75% 0);
+        transform: translateX(calc(-1 * var(--arc-glitch-offset)));
+    }
+
+    91% {
+        clip-path: inset(60% 0 25% 0);
+        transform: translateX(var(--arc-glitch-offset));
+    }
+
+    93% {
+        clip-path: inset(0 0 100% 0);
+        transform: translateX(0);
+    }
+
+    95% {
+        clip-path: inset(25% 0 60% 0);
+        transform: translateX(calc(-1 * var(--arc-glitch-offset)));
+    }
+
+    97% {
+        clip-path: inset(0 0 100% 0);
+        transform: translateX(0);
+    }
+}
+
+/* Jitter leggero sull'elemento principale */
+@keyframes arc-glitch-main {
+    0%,
+    84%,
+    100% {
+        transform: translateX(0) skewX(0deg);
+    }
+
+    85% {
+        transform: translateX(1px) skewX(-0.5deg);
+    }
+
+    87% {
+        transform: translateX(-1px) skewX(0.5deg);
+    }
+
+    89% {
+        transform: translateX(0) skewX(0deg);
+    }
+
+    92% {
+        transform: translateX(1px) skewX(0deg);
+    }
+
+    94% {
+        transform: translateX(0) skewX(0deg);
+    }
+}
+
+/* ── Base: stacking context e pseudo-elementi ────────────────────────────── */
+
+.arc-glitch,
+.arc-glitch-hover,
+[data-arc-glitch] {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.arc-glitch::before,
+.arc-glitch::after,
+.arc-glitch-hover::before,
+.arc-glitch-hover::after,
+[data-arc-glitch]::before,
+[data-arc-glitch]::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: inherit;
+    background-size: inherit;
+    background-position: inherit;
+}
+
+.arc-glitch::before,
+.arc-glitch-hover::before,
+[data-arc-glitch]::before {
+    color: var(--arc-color-red);
+    mix-blend-mode: screen;
+    clip-path: inset(0 0 100% 0);
+    z-index: 1;
+}
+
+.arc-glitch::after,
+.arc-glitch-hover::after,
+[data-arc-glitch]::after {
+    color: var(--arc-color-cyan);
+    mix-blend-mode: screen;
+    clip-path: inset(0 0 100% 0);
+    z-index: 2;
+}
+
+/* ── .arc-glitch — sempre attivo ─────────────────────────────────────────── */
+
+.arc-glitch {
+    animation: arc-glitch-main var(--arc-glitch-freq) steps(1) infinite;
+}
+
+.arc-glitch::before {
+    animation: arc-glitch-before var(--arc-glitch-freq) steps(1) infinite;
+}
+
+.arc-glitch::after {
+    animation: arc-glitch-after var(--arc-glitch-freq) steps(1) infinite;
+}
+
+/* ── .arc-glitch-hover — solo su :hover ─────────────────────────────────── */
+
+.arc-glitch-hover:hover {
+    animation: arc-glitch-main var(--arc-glitch-freq) steps(1) infinite;
+}
+
+.arc-glitch-hover:hover::before {
+    animation: arc-glitch-before var(--arc-glitch-freq) steps(1) infinite;
+}
+
+.arc-glitch-hover:hover::after {
+    animation: arc-glitch-after var(--arc-glitch-freq) steps(1) infinite;
+}
+
+/* ── .arc-glitch-active — trigger JS ────────────────────────────────────── */
+
+.arc-glitch-active {
+    animation: arc-glitch-main var(--arc-anim-normal) steps(1) 1 forwards;
+}
+
+.arc-glitch-active::before {
+    animation: arc-glitch-before var(--arc-anim-normal) steps(1) 1 forwards;
+}
+
+.arc-glitch-active::after {
+    animation: arc-glitch-after var(--arc-anim-normal) steps(1) 1 forwards;
+}
+
+/* ── prefers-reduced-motion ─────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    .arc-glitch,
+    .arc-glitch-hover:hover,
+    .arc-glitch-active {
+        animation: none;
+    }
+
+    .arc-glitch::before,
+    .arc-glitch::after,
+    .arc-glitch-hover:hover::before,
+    .arc-glitch-hover:hover::after,
+    .arc-glitch-active::before,
+    .arc-glitch-active::after {
+        display: none;
+    }
+}
