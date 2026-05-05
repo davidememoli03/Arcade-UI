@@ -1,0 +1,142 @@
+/* src/components/panel.css
+   Componente arc-panel: contenitore primario interfaccia arcade.
+   Angoli decorativi a L generati via ::before e ::after CSS puro.
+   ─────────────────────────────────────────────────────────────── */
+
+/* ── Base ────────────────────────────────────────────────────────────
+   position: relative è necessario per posizionare
+   gli angoli decorativi con position: absolute.
+──────────────────────────────────────────────────────────────────── */
+.arc-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--arc-color-bg-panel);
+    border: var(--arc-border-md) solid transparent;
+    padding: var(--arc-space-4);
+    max-width: 640px;
+    width: 100%;
+}
+
+/* ── Angoli decorativi a L (top-left e top-right) ───────────────────
+   Posizionati DENTRO il panel per evitare clipping da overflow.
+   ::before → angolo in alto a sinistra
+   ::after  → angolo in alto a destra
+──────────────────────────────────────────────────────────────────── */
+.arc-panel::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 18px;
+    height: 18px;
+    border-top: 3px solid var(--panel-accent, var(--arc-color-cyan));
+    border-left: 3px solid var(--panel-accent, var(--arc-color-cyan));
+    z-index: 1;
+}
+
+.arc-panel::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 18px;
+    height: 18px;
+    border-top: 3px solid var(--panel-accent, var(--arc-color-cyan));
+    border-right: 3px solid var(--panel-accent, var(--arc-color-cyan));
+    z-index: 1;
+}
+
+/* ── Sezioni interne ─────────────────────────────────────────────────
+   header: titolo del pannello (font pixel, uppercase)
+   body:   contenuto principale
+   footer: area azioni (bottoni)
+──────────────────────────────────────────────────────────────────── */
+.arc-panel-header {
+    font-family: var(--arc-font-pixel);
+    font-size: var(--arc-text-h2-size);
+    line-height: var(--arc-text-h2-lh);
+    color: var(--panel-accent, var(--arc-color-cyan));
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-bottom: var(--arc-space-2);
+    border-bottom: var(--arc-border-sm) solid var(--panel-accent, var(--arc-color-cyan));
+    margin-bottom: var(--arc-space-3);
+}
+
+.arc-panel-body {
+    font-family: var(--arc-font-terminal);
+    font-size: var(--arc-text-body-size);
+    line-height: var(--arc-text-body-lh);
+    color: var(--arc-color-text-muted);
+    flex: 1;
+}
+
+.arc-panel-footer {
+    display: flex;
+    gap: var(--arc-space-2);
+    align-items: center;
+    margin-top: var(--arc-space-3);
+    padding-top: var(--arc-space-2);
+    border-top: var(--arc-border-sm) solid var(--panel-accent, var(--arc-color-cyan));
+}
+
+/* ── Varianti colore ─────────────────────────────────────────────────
+   Ogni variante sovrascrive --panel-accent e il border del pannello.
+   border-color e box-shadow seguono il colore della variante.
+──────────────────────────────────────────────────────────────────── */
+.arc-panel-cyan {
+    --panel-accent: var(--arc-color-cyan);
+
+    border-color: var(--arc-color-cyan);
+    box-shadow:
+        inset 0 0 12px rgb(0 245 255 / 8%),
+        0 0 16px var(--arc-color-cyan-glow);
+}
+
+.arc-panel-red {
+    --panel-accent: var(--arc-color-red);
+
+    border-color: var(--arc-color-red);
+    box-shadow:
+        inset 0 0 12px rgb(255 45 85 / 8%),
+        0 0 16px var(--arc-color-red-glow);
+}
+
+.arc-panel-yellow {
+    --panel-accent: var(--arc-color-yellow);
+
+    border-color: var(--arc-color-yellow);
+    box-shadow:
+        inset 0 0 12px rgb(255 215 0 / 8%),
+        0 0 16px var(--arc-color-yellow-glow);
+}
+
+.arc-panel-green {
+    --panel-accent: var(--arc-color-green);
+
+    border-color: var(--arc-color-green);
+    box-shadow:
+        inset 0 0 12px rgb(57 255 20 / 8%),
+        0 0 16px var(--arc-color-green-glow);
+}
+
+/* ── Variante glass ──────────────────────────────────────────────────
+   backdrop-filter blur: effetto vetro smerigliato.
+   Richiede un elemento dietro al panel con contenuto visibile.
+──────────────────────────────────────────────────────────────────── */
+.arc-panel-glass {
+    background: rgb(17 0 32 / 60%);
+    backdrop-filter: blur(12px);
+}
+
+/* ── Responsive: padding ridotto su mobile ────────────────────────── */
+@media (width <= 480px) {
+    .arc-panel {
+        padding: var(--arc-space-3);
+    }
+
+    .arc-panel-header {
+        font-size: var(--arc-text-h3-size);
+    }
+}
