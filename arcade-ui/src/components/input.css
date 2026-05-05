@@ -1,0 +1,206 @@
+/* src/components/input.css
+   Componente arc-input: campo testuale stile terminale arcade.
+   Tipi: arc-input (text), arc-textarea (multiline), arc-select (dropdown).
+   ─────────────────────────────────────────────────────────────────────── */
+
+/* ── Wrapper ──────────────────────────────────────────────────────────
+   Contenitore flex che impila label + controllo + hint.
+──────────────────────────────────────────────────────────────────── */
+.arc-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arc-space-1);
+    width: 100%;
+}
+
+/* ── Label ────────────────────────────────────────────────────────────
+   Font mono pixel, uppercase, colore muted.
+──────────────────────────────────────────────────────────────────── */
+.arc-label {
+    font-family: var(--arc-font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--arc-color-text-muted);
+}
+
+/* ── Input base ───────────────────────────────────────────────────────
+   Sfondo trasparente, bordo verde neon (stile terminale attivo).
+   caret-color verde: il cursore testo diventa neon.
+──────────────────────────────────────────────────────────────────── */
+.arc-input {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    color: var(--arc-color-green);
+    border: var(--arc-border-sm) solid var(--arc-color-green);
+    border-radius: 0;
+    font-family: var(--arc-font-terminal);
+    font-size: var(--arc-text-body-size);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    caret-color: var(--arc-color-green);
+    transition:
+        border-color var(--arc-anim-fast) var(--arc-ease-pixel),
+        box-shadow var(--arc-anim-fast) var(--arc-ease-pixel);
+    box-sizing: border-box;
+}
+
+/* ── Placeholder stile terminale ──────────────────────────────────────
+   Colore muted, stessa famiglia font del campo.
+   L'underscore finale va aggiunto via attributo placeholder in HTML:
+   placeholder="ENTER NAME_"
+──────────────────────────────────────────────────────────────────── */
+.arc-input::placeholder {
+    color: var(--arc-color-text-muted);
+    opacity: 1;
+}
+
+/* ── Stato :disabled ─────────────────────────────────────────────────
+   Dichiarato prima di :focus e :invalid per no-descending-specificity.
+──────────────────────────────────────────────────────────────────── */
+.arc-input:disabled {
+    color: var(--arc-color-disabled);
+    border-color: var(--arc-color-disabled);
+    caret-color: var(--arc-color-disabled);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ── Stato :focus — bordo ciano + glow ───────────────────────────────
+   Il campo attivo diventa ciano per distinguersi dagli altri verdi.
+──────────────────────────────────────────────────────────────────── */
+.arc-input:focus {
+    outline: none;
+    border-color: var(--arc-color-cyan);
+    color: var(--arc-color-cyan);
+    caret-color: var(--arc-color-cyan);
+    box-shadow:
+        0 0 8px var(--arc-color-cyan),
+        0 0 16px var(--arc-color-cyan-glow);
+}
+
+/* ── Stato :invalid — bordo rosso ────────────────────────────────────
+   Attivato dal browser quando il valore non rispetta pattern/required.
+   Combina :not(:placeholder-shown) per non mostrarlo sul campo vuoto.
+──────────────────────────────────────────────────────────────────── */
+.arc-input:invalid:not(:placeholder-shown) {
+    border-color: var(--arc-color-red);
+    color: var(--arc-color-red);
+    caret-color: var(--arc-color-red);
+    box-shadow:
+        0 0 8px var(--arc-color-red),
+        0 0 16px var(--arc-color-red-glow);
+}
+
+/* ── Hint ─────────────────────────────────────────────────────────────
+   Testo di supporto sotto il campo (es. "MAX 10 CHARACTERS").
+   Usare aria-describedby sull'input per accessibilità.
+──────────────────────────────────────────────────────────────────── */
+.arc-input-hint {
+    font-family: var(--arc-font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--arc-color-text-muted);
+}
+
+/* ── Hint di errore ───────────────────────────────────────────────────
+   Aggiungere arc-input-hint-error per mostrare messaggio rosso.
+──────────────────────────────────────────────────────────────────── */
+.arc-input-hint-error {
+    font-family: var(--arc-font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--arc-color-red);
+}
+
+/* ── Textarea ─────────────────────────────────────────────────────────
+   Stessa base di arc-input, aggiunge resize verticale e min-height.
+──────────────────────────────────────────────────────────────────── */
+.arc-textarea {
+    display: block;
+    width: 100%;
+    min-height: 120px;
+    padding: 10px 14px;
+    background: transparent;
+    color: var(--arc-color-green);
+    border: var(--arc-border-sm) solid var(--arc-color-green);
+    border-radius: 0;
+    font-family: var(--arc-font-terminal);
+    font-size: var(--arc-text-body-size);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    caret-color: var(--arc-color-green);
+    resize: vertical;
+    transition:
+        border-color var(--arc-anim-fast) var(--arc-ease-pixel),
+        box-shadow var(--arc-anim-fast) var(--arc-ease-pixel);
+    box-sizing: border-box;
+}
+
+.arc-textarea::placeholder {
+    color: var(--arc-color-text-muted);
+    opacity: 1;
+}
+
+.arc-textarea:disabled {
+    color: var(--arc-color-disabled);
+    border-color: var(--arc-color-disabled);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.arc-textarea:focus {
+    outline: none;
+    border-color: var(--arc-color-cyan);
+    color: var(--arc-color-cyan);
+    caret-color: var(--arc-color-cyan);
+    box-shadow:
+        0 0 8px var(--arc-color-cyan),
+        0 0 16px var(--arc-color-cyan-glow);
+}
+
+/* ── Select ───────────────────────────────────────────────────────────
+   Dropdown stilizzato: appearance none (dal reset) +
+   chevron SVG inline come background-image.
+──────────────────────────────────────────────────────────────────── */
+.arc-select {
+    display: block;
+    width: 100%;
+    padding: 10px 40px 10px 14px;
+    background: var(--arc-color-bg-panel);
+    color: var(--arc-color-green);
+    border: var(--arc-border-sm) solid var(--arc-color-green);
+    border-radius: 0;
+    font-family: var(--arc-font-terminal);
+    font-size: var(--arc-text-body-size);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2339ff14' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    transition:
+        border-color var(--arc-anim-fast) var(--arc-ease-pixel),
+        box-shadow var(--arc-anim-fast) var(--arc-ease-pixel);
+    box-sizing: border-box;
+}
+
+.arc-select:disabled {
+    color: var(--arc-color-disabled);
+    border-color: var(--arc-color-disabled);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.arc-select:focus {
+    outline: none;
+    border-color: var(--arc-color-cyan);
+    color: var(--arc-color-cyan);
+    box-shadow:
+        0 0 8px var(--arc-color-cyan),
+        0 0 16px var(--arc-color-cyan-glow);
+}
