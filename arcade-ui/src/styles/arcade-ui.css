@@ -1,6 +1,126 @@
 /* src/styles/arcade-ui.css */
+
+/* ───────────────────────────────────────────
+   Tokens
+─────────────────────────────────────────── */
+:root {
+    --arcade-bg:        #0a0010;
+    --arcade-surface:   #110020;
+    --arcade-border:    #00ffff;
+    --arcade-text:      #00ffff;
+    --arcade-text-dim:  #007777;
+    --arcade-disabled:  #334455;
+    --arcade-font:      'Courier New', Courier, monospace;
+    --arcade-radius:    4px;
+    --arcade-glow:      0 0 8px #00ffff, 0 0 16px #00ffff44;
+}
+
+/* ───────────────────────────────────────────
+   Button  (.arcade-btn)
+─────────────────────────────────────────── */
 .arcade-btn {
-    background: #000;
-    color: #0ff;
-    border: 2px solid #0ff;
+    display:          inline-block;
+    padding:          0.5em 1.4em;
+    background:       #000;
+    color:            var(--arcade-text);
+    border:           2px solid var(--arcade-border);
+    border-radius:    var(--arcade-radius);
+    font-family:      var(--arcade-font);
+    font-size:        0.9rem;
+    letter-spacing:   0.12em;
+    text-transform:   uppercase;
+    cursor:           pointer;
+    transition:       box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.arcade-btn:hover:not(:disabled) {
+    background:   #001a1a;
+    box-shadow:   var(--arcade-glow);
+}
+
+.arcade-btn:active:not(:disabled) {
+    background:   #003333;
+}
+
+.arcade-btn:disabled {
+    color:        var(--arcade-disabled);
+    border-color: var(--arcade-disabled);
+    cursor:       not-allowed;
+    box-shadow:   none;
+}
+
+/* ───────────────────────────────────────────
+   Panel  (.arcade-panel)
+─────────────────────────────────────────── */
+.arcade-panel {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.75em;
+    padding:        1.5em 2em;
+    background:     var(--arcade-surface);
+    border:         2px solid var(--arcade-border);
+    border-radius:  var(--arcade-radius);
+    box-shadow:     var(--arcade-glow);
+    font-family:    var(--arcade-font);
+    max-width:      480px;
+}
+
+.arcade-panel__title {
+    margin:         0;
+    font-size:      1.4rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color:          var(--arcade-text);
+}
+
+.arcade-panel__body {
+    margin:     0;
+    font-size:  0.95rem;
+    color:      var(--arcade-text-dim);
+    line-height: 1.5;
+}
+
+/* ───────────────────────────────────────────
+   Input  (.arcade-input, .arcade-label)
+─────────────────────────────────────────── */
+.arcade-input {
+    display:        block;
+    width:          100%;
+    padding:        0.45em 0.8em;
+    background:     #000;
+    color:          var(--arcade-text);
+    border:         2px solid var(--arcade-border);
+    border-radius:  var(--arcade-radius);
+    font-family:    var(--arcade-font);
+    font-size:      1rem;
+    letter-spacing: 0.1em;
+    outline:        none;
+    transition:     box-shadow 0.15s ease;
+    box-sizing:     border-box;
+}
+
+.arcade-input::placeholder {
+    color:   var(--arcade-text-dim);
+    opacity: 1;
+}
+
+.arcade-input:focus {
+    box-shadow: var(--arcade-glow);
+}
+
+.arcade-input:disabled {
+    color:        var(--arcade-disabled);
+    border-color: var(--arcade-disabled);
+    cursor:       not-allowed;
+}
+
+.arcade-label {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.4em;
+    font-family:    var(--arcade-font);
+    font-size:      0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color:          var(--arcade-text);
 }
