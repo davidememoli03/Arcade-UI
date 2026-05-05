@@ -7,18 +7,31 @@
     ".": {
       "import": "./dist/arcade-ui.es.js",
       "require": "./dist/arcade-ui.cjs.js"
-    }
+    },
+    "./dist/arcade-ui.css": "./dist/arcade-ui.css"
   },
-  "files": ["dist", "src"],
-  "sideEffects": false,
-  "private": true,
+  "files": [
+    "dist",
+    "src"
+  ],
+  "sideEffects": ["*.css"],
+  "private": false,
   "type": "module",
+  "types": "dist/arcade-ui.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:watch": "vite build --watch",
     "preview": "vite preview"
   },
+  "peerDependencies": {
+    "howler": "^2.0.0"
+  },
   "devDependencies": {
-    "vite": "^8.0.10"
+    "autoprefixer": "^10.5.0",
+    "howler": "^2.2.4",
+    "postcss": "^8.5.14",
+    "vite": "^8.0.10",
+    "vite-plugin-dts": "^4.5.4"
   }
 }
