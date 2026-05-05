@@ -1,0 +1,155 @@
+/* src/components/crt.css
+   Effetto CRT (Cathode Ray Tube): scanlines, vignetta e animazione accensione.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Token CRT ──────────────────────────────────────────────────────────── */
+
+:root {
+    --arc-crt-line-size:        4px;
+    --arc-crt-scanline-opacity: 0.12;
+    --arc-crt-vignette-start:   62%;
+    --arc-crt-vignette-opacity: 0.75;
+    --arc-crt-flicker-speed:    8s;
+    --arc-crt-boot-duration:    var(--arc-anim-slow);
+}
+
+/* ── Keyframes ────────────────────────────────────────────────────────────── */
+
+/* Instabilità fosforica: variazioni di opacità sparse e rare */
+@keyframes scanline-flicker {
+    0%,
+    100% { opacity: 1; }
+
+    5%   { opacity: 0.97; }
+
+    10%  { opacity: 1; }
+
+    80%  { opacity: 1; }
+
+    85%  { opacity: 0.98; }
+
+    90%  { opacity: 1; }
+}
+
+/* Accensione CRT: scaleY da quasi-zero a 1 con flash di luminosità */
+@keyframes crt-power-on {
+    0%   { transform: scaleY(0.004); filter: brightness(4); }
+    25%  { transform: scaleY(0.04);  filter: brightness(3); }
+    50%  { transform: scaleY(0.2);   filter: brightness(2); }
+    75%  { transform: scaleY(1.02);  filter: brightness(1.2); }
+    100% { transform: scaleY(1);     filter: brightness(1); }
+}
+
+/* ── Shared: contenuto dei pseudo-elementi ──────────────────────────────── */
+
+.arc-crt-global::before,
+.arc-crt-global::after,
+.arc-crt-screen::before,
+.arc-crt-screen::after {
+    content: '';
+    inset: 0;
+    pointer-events: none;
+}
+
+/* ── .arc-crt-global — intera pagina (applicato a body) ────────────────── */
+
+.arc-crt-global {
+    position: relative;
+}
+
+/* Vignetta ai bordi */
+.arc-crt-global::before {
+    position: fixed;
+    background: radial-gradient(
+        ellipse at center,
+        transparent var(--arc-crt-vignette-start),
+        rgba(0, 0, 0, var(--arc-crt-vignette-opacity)) 100%
+    );
+    z-index: 9997;
+}
+
+/* Scanlines */
+.arc-crt-global::after {
+    position: fixed;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent                                              0px,
+        transparent                                              calc(var(--arc-crt-line-size) - 1px),
+        rgba(0, 0, 0, var(--arc-crt-scanline-opacity))          calc(var(--arc-crt-line-size) - 1px),
+        rgba(0, 0, 0, var(--arc-crt-scanline-opacity))          var(--arc-crt-line-size)
+    );
+    background-size: 100% var(--arc-crt-line-size);
+    will-change: opacity;
+    animation: scanline-flicker var(--arc-crt-flicker-speed) steps(1) infinite;
+    z-index: 9998;
+}
+
+/* ── .arc-crt-screen — singolo elemento ─────────────────────────────────── */
+
+.arc-crt-screen {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Vignetta ai bordi */
+.arc-crt-screen::before {
+    position: absolute;
+    background: radial-gradient(
+        ellipse at center,
+        transparent var(--arc-crt-vignette-start),
+        rgba(0, 0, 0, var(--arc-crt-vignette-opacity)) 100%
+    );
+    z-index: 1;
+}
+
+/* Scanlines */
+.arc-crt-screen::after {
+    position: absolute;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent                                              0px,
+        transparent                                              calc(var(--arc-crt-line-size) - 1px),
+        rgba(0, 0, 0, var(--arc-crt-scanline-opacity))          calc(var(--arc-crt-line-size) - 1px),
+        rgba(0, 0, 0, var(--arc-crt-scanline-opacity))          var(--arc-crt-line-size)
+    );
+    background-size: 100% var(--arc-crt-line-size);
+    will-change: opacity;
+    animation: scanline-flicker var(--arc-crt-flicker-speed) steps(1) infinite;
+    z-index: 2;
+}
+
+/* ── .arc-crt-boot — animazione accensione CRT ───────────────────────────── */
+
+.arc-crt-boot {
+    animation: crt-power-on var(--arc-crt-boot-duration) var(--arc-ease-arcade) both;
+    transform-origin: center center;
+}
+
+/* ── Riduzione movimento ─────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    .arc-crt-global::after,
+    .arc-crt-screen::after {
+        animation: none;
+    }
+
+    .arc-crt-boot {
+        animation: none;
+    }
+}
+
+/* ── Mobile: disabilitato sotto 480px ───────────────────────────────────── */
+
+@media (max-width: 479px) {
+    .arc-crt-global::before,
+    .arc-crt-global::after,
+    .arc-crt-screen::before,
+    .arc-crt-screen::after {
+        display: none;
+    }
+
+    .arc-crt-boot {
+        animation: none;
+    }
+}
