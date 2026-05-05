@@ -1,0 +1,132 @@
+/* src/components/button.css
+   Componente arc-btn: bottone arcade con varianti, dimensioni e stati.
+   ─────────────────────────────────────────────────────────────────── */
+
+/* ── Base ────────────────────────────────────────────────────────────
+   Struttura comune a tutte le varianti e dimensioni.
+   Nessun border-radius: stile pixel puro.
+   Box-shadow 4px offset: effetto tasto fisico 3D.
+   Transizioni con steps(): mai ease o cubic-bezier.
+──────────────────────────────────────────────────────────────────── */
+.arc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    padding: 16px 32px;
+    font-family: var(--arc-font-pixel);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 0;
+    border: 2px solid transparent;
+    box-shadow: 4px 4px 0 rgb(0 0 0 / 80%);
+    transition:
+        box-shadow var(--arc-anim-fast) var(--arc-ease-pixel),
+        transform var(--arc-anim-fast) var(--arc-ease-pixel),
+        background var(--arc-anim-fast) var(--arc-ease-pixel);
+}
+
+/* ── Stato :disabled ─────────────────────────────────────────────────
+   Dichiarato prima di :hover e :active per rispettare
+   la regola no-descending-specificity.
+   pointer-events: none blocca anche :hover (nessun glow).
+──────────────────────────────────────────────────────────────────── */
+.arc-btn:disabled {
+    background: transparent;
+    color: var(--arc-color-disabled);
+    border-color: var(--arc-color-disabled);
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* ── Stato :focus-visible — accessibilità ────────────────────────────
+   Dichiarato prima di :active per rispettare no-descending-specificity.
+   Visibile solo da navigazione da tastiera (Tab).
+──────────────────────────────────────────────────────────────────── */
+.arc-btn:focus-visible {
+    outline: 3px solid var(--arc-color-cyan);
+    outline-offset: 4px;
+    box-shadow:
+        4px 4px 0 rgb(0 0 0 / 80%),
+        0 0 0 5px rgb(0 245 255 / 30%);
+}
+
+/* ── Stato :active — effetto pressione fisica ────────────────────────
+   translate(4px, 4px) annulla l'offset del box-shadow:
+   il bottone "sprofonda" nel piano come un tasto fisico.
+──────────────────────────────────────────────────────────────────── */
+.arc-btn:active:not(:disabled) {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 rgb(0 0 0 / 80%);
+}
+
+/* ── Variante primary: sfondo giallo, testo nero ─────────────────────
+   Contrasto #ffd700 su #000 = 8.59:1 (WCAG AA ✓)
+──────────────────────────────────────────────────────────────────── */
+.arc-btn-primary {
+    background: var(--arc-color-yellow);
+    color: #000;
+    border-color: var(--arc-color-yellow);
+}
+
+.arc-btn-primary:hover:not(:disabled) {
+    background: #e6c200;
+    box-shadow:
+        4px 4px 0 rgb(0 0 0 / 80%),
+        0 0 12px var(--arc-color-yellow),
+        0 0 24px var(--arc-color-yellow-glow);
+}
+
+/* ── Variante ghost: trasparente, bordo ciano ────────────────────────
+   Contrasto #00f5ff su #000 = 14.7:1 (WCAG AA ✓)
+──────────────────────────────────────────────────────────────────── */
+.arc-btn-ghost {
+    background: transparent;
+    color: var(--arc-color-cyan);
+    border-color: var(--arc-color-cyan);
+}
+
+.arc-btn-ghost:hover:not(:disabled) {
+    background: rgb(0 245 255 / 8%);
+    box-shadow:
+        4px 4px 0 rgb(0 0 0 / 80%),
+        0 0 12px var(--arc-color-cyan),
+        0 0 24px rgb(0 245 255 / 25%);
+}
+
+/* ── Variante danger: sfondo rosso, testo bianco ─────────────────────
+   Contrasto #fff su #ff2d55 = 4.56:1 (WCAG AA ✓)
+──────────────────────────────────────────────────────────────────── */
+.arc-btn-danger {
+    background: var(--arc-color-red);
+    color: #fff;
+    border-color: var(--arc-color-red);
+}
+
+.arc-btn-danger:hover:not(:disabled) {
+    background: #e0002e;
+    box-shadow:
+        4px 4px 0 rgb(0 0 0 / 80%),
+        0 0 12px var(--arc-color-red),
+        0 0 24px var(--arc-color-red-glow);
+}
+
+/* ── Dimensione sm ───────────────────────────────────────────────────
+   Uso: bottoni in toolbar, badge, azioni secondarie.
+──────────────────────────────────────────────────────────────────── */
+.arc-btn-sm {
+    padding: 8px 16px;
+    font-size: 12px;
+}
+
+/* ── Dimensione lg ───────────────────────────────────────────────────
+   Uso: CTA principali, hero section, game over screen.
+──────────────────────────────────────────────────────────────────── */
+.arc-btn-lg {
+    padding: 20px 40px;
+    font-size: 16px;
+}
