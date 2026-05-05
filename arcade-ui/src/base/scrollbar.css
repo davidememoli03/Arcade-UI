@@ -1,0 +1,43 @@
+/* src/base/scrollbar.css
+   Scrollbar stilizzata con tema neon arcade.
+   ─ Webkit (Chrome, Safari, Edge): pseudo-elementi
+   ─ Firefox: scrollbar-color / scrollbar-width
+   ─────────────────────────────────────────────────── */
+
+/* ── Firefox ─────────────────────────────────────────
+   scrollbar-color: <thumb> <track>
+   scrollbar-width: thin | auto | none
+──────────────────────────────────────────────────── */
+* {
+    scrollbar-color: var(--arc-color-cyan) var(--arc-color-bg-panel);
+    scrollbar-width: thin;
+}
+
+/* ── Webkit (Chrome, Safari, Edge) ──────────────────
+   ::-webkit-scrollbar        → dimensione della barra
+   ::-webkit-scrollbar-track  → binario (sfondo)
+   ::-webkit-scrollbar-thumb  → cursore trascinabile
+──────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--arc-color-bg-panel);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--arc-color-cyan);
+    border-radius: var(--arc-radius-pixel);
+    box-shadow: 0 0 6px var(--arc-color-cyan-glow);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--arc-color-text-accent);
+    box-shadow: 0 0 10px var(--arc-color-yellow-glow);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--arc-color-bg);
+}

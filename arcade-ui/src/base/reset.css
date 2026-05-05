@@ -1,0 +1,110 @@
+/* src/base/reset.css
+   Normalizzazione cross-browser ispirata a modern-normalize.
+   Obiettivo: azzerare i default del browser e imporre
+   il look pixelato arcade senza interferenze.
+   ─────────────────────────────────────────────────── */
+
+/* ── Box model universale ────────────────────────────
+   Tutti gli elementi usano border-box: padding e border
+   sono inclusi nelle dimensioni dichiarate.
+──────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* ── Reset margin / padding ──────────────────────────
+   I browser aggiungono margini di default su heading,
+   paragrafi, liste, ecc. Li azzeriamo tutti.
+──────────────────────────────────────────────────── */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* ── Documento root ──────────────────────────────────
+   text-size-adjust: 100% previene il resize automatico
+   del testo su iOS quando si ruota lo schermo.
+   scroll-behavior: smooth per anchor link (#id).
+──────────────────────────────────────────────────── */
+html {
+    line-height: 1;
+    text-size-adjust: 100%;
+    tab-size: 4;
+    scroll-behavior: smooth;
+}
+
+/* ── Font rendering ──────────────────────────────────
+   -webkit-font-smoothing: none mantiene l'aspetto
+   pixelato puro su macOS/iOS (Chrome, Safari).
+   -moz-osx-font-smoothing: unset idem su Firefox macOS.
+──────────────────────────────────────────────────── */
+body {
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+    text-rendering: optimizespeed;
+}
+
+/* ── Liste ───────────────────────────────────────────
+   Rimuove bullet e numerazione di default.
+──────────────────────────────────────────────────── */
+ul,
+ol {
+    list-style: none;
+}
+
+/* ── Link ────────────────────────────────────────────
+   Rimuove underline e colore del browser; il colore
+   viene applicato tramite i token --arc-color-*.
+──────────────────────────────────────────────────── */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ── Media ───────────────────────────────────────────
+   img, video, canvas non escono dal loro contenitore.
+──────────────────────────────────────────────────── */
+img,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* ── Elementi form ───────────────────────────────────
+   Ereditano font dal parent (il browser usa il suo
+   system font di default per input/button).
+──────────────────────────────────────────────────── */
+button,
+input,
+select,
+textarea {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    outline: none;
+    appearance: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* ── Tabelle ─────────────────────────────────────────
+   Collapse dei bordi: evita doppioni tra celle adiacenti.
+──────────────────────────────────────────────────── */
+table {
+    border-collapse: collapse;
+}
+
+/* ── Selezione del testo ─────────────────────────────
+   Sfondo giallo neon + testo scuro per look arcade.
+──────────────────────────────────────────────────── */
+::selection {
+    background-color: var(--arc-color-yellow);
+    color: var(--arc-color-bg);
+}

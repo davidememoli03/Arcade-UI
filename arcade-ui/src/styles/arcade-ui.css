@@ -1,8 +1,5 @@
 /* src/styles/arcade-ui.css */
-@import url('../tokens/colors.css');
-@import url('../tokens/typography.css');
-@import url('../tokens/spacing.css');
-@import url('../tokens/animation.css');
+@import url('../base/index.css');
 
 /* ───────────────────────────────────────────
    Token non-colore (effetti, interazione)

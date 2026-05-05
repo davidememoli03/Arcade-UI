@@ -1,0 +1,29 @@
+/* src/base/index.css
+   Barrel: importa reset e scrollbar in ordine corretto.
+   Usare questo file come unico punto di ingresso del base layer.
+   ─────────────────────────────────────────────────── */
+
+/* 1. Prima i token (necessari per le var() nel reset/scrollbar) */
+@import url('../tokens/colors.css');
+@import url('../tokens/typography.css');
+@import url('../tokens/spacing.css');
+@import url('../tokens/animation.css');
+
+/* 2. Reset cross-browser */
+@import url('./reset.css');
+
+/* 3. Scrollbar stilizzata */
+@import url('./scrollbar.css');
+
+/* ── Body defaults ────────────────────────────────────
+   Sfondo e font di default applicati una sola volta qui,
+   così i componenti non devono ripeterli.
+──────────────────────────────────────────────────── */
+body {
+    background-color: var(--arc-color-bg);
+    color: var(--arc-color-text);
+    font-family: var(--arc-font-terminal);
+    font-size: var(--arc-text-body-size);
+    line-height: var(--arc-text-body-lh);
+    min-height: 100dvh;
+}
