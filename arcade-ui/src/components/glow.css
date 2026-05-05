@@ -1,0 +1,203 @@
+/* src/components/glow.css
+   Utility neon glow: text-shadow, box-shadow e animazioni arcade.
+   ─────────────────────────────────────────────────────────────── */
+
+/* ── Keyframes ──────────────────────────────────────────────────────────── */
+
+/* Pulsazione glow: brightness alternato in loop */
+@keyframes arc-pulse {
+    from {
+        filter: brightness(0.75);
+    }
+
+    to {
+        filter: brightness(1.4);
+    }
+}
+
+/* Glitch: layer ::before (canale rosso) */
+@keyframes arc-glitch-red {
+    0%,
+    100% {
+        clip-path: inset(50% 0 30% 0);
+        transform: translateX(-3px);
+    }
+
+    20% {
+        clip-path: inset(10% 0 70% 0);
+        transform: translateX(3px);
+    }
+
+    40% {
+        clip-path: inset(80% 0 5% 0);
+        transform: translateX(-2px);
+    }
+
+    60% {
+        clip-path: inset(30% 0 50% 0);
+        transform: translateX(2px);
+    }
+
+    80% {
+        clip-path: inset(60% 0 20% 0);
+        transform: translateX(-3px);
+    }
+}
+
+/* Glitch: layer ::after (canale cyan) */
+@keyframes arc-glitch-cyan {
+    0%,
+    100% {
+        clip-path: inset(20% 0 60% 0);
+        transform: translateX(3px);
+    }
+
+    20% {
+        clip-path: inset(70% 0 15% 0);
+        transform: translateX(-3px);
+    }
+
+    40% {
+        clip-path: inset(5% 0 80% 0);
+        transform: translateX(2px);
+    }
+
+    60% {
+        clip-path: inset(55% 0 25% 0);
+        transform: translateX(-2px);
+    }
+
+    80% {
+        clip-path: inset(15% 0 65% 0);
+        transform: translateX(3px);
+    }
+}
+
+/* ── Text glow ──────────────────────────────────────────────────────────── */
+
+.arc-glow-cyan {
+    color: var(--arc-color-cyan);
+    text-shadow:
+        0 0 4px var(--arc-color-cyan),
+        0 0 12px var(--arc-color-cyan),
+        0 0 28px var(--arc-color-cyan-glow);
+}
+
+.arc-glow-red {
+    color: var(--arc-color-red);
+    text-shadow:
+        0 0 4px var(--arc-color-red),
+        0 0 12px var(--arc-color-red),
+        0 0 28px var(--arc-color-red-glow);
+}
+
+.arc-glow-yellow {
+    color: var(--arc-color-yellow);
+    text-shadow:
+        0 0 4px var(--arc-color-yellow),
+        0 0 12px var(--arc-color-yellow),
+        0 0 28px var(--arc-color-yellow-glow);
+}
+
+.arc-glow-green {
+    color: var(--arc-color-green);
+    text-shadow:
+        0 0 4px var(--arc-color-green),
+        0 0 12px var(--arc-color-green),
+        0 0 28px var(--arc-color-green-glow);
+}
+
+.arc-glow-purple {
+    color: var(--arc-color-purple);
+    text-shadow:
+        0 0 4px var(--arc-color-purple),
+        0 0 12px var(--arc-color-purple),
+        0 0 28px var(--arc-color-purple-glow);
+}
+
+/* ── Box glow ───────────────────────────────────────────────────────────── */
+
+.arc-box-glow-cyan {
+    box-shadow:
+        0 0 6px var(--arc-color-cyan),
+        0 0 18px var(--arc-color-cyan),
+        0 0 40px var(--arc-color-cyan-glow);
+}
+
+.arc-box-glow-red {
+    box-shadow:
+        0 0 6px var(--arc-color-red),
+        0 0 18px var(--arc-color-red),
+        0 0 40px var(--arc-color-red-glow);
+}
+
+.arc-box-glow-yellow {
+    box-shadow:
+        0 0 6px var(--arc-color-yellow),
+        0 0 18px var(--arc-color-yellow),
+        0 0 40px var(--arc-color-yellow-glow);
+}
+
+.arc-box-glow-green {
+    box-shadow:
+        0 0 6px var(--arc-color-green),
+        0 0 18px var(--arc-color-green),
+        0 0 40px var(--arc-color-green-glow);
+}
+
+.arc-box-glow-purple {
+    box-shadow:
+        0 0 6px var(--arc-color-purple),
+        0 0 18px var(--arc-color-purple),
+        0 0 40px var(--arc-color-purple-glow);
+}
+
+/* ── Animation utilities ────────────────────────────────────────────────── */
+
+/* Lampeggio step-function — es. "INSERT COIN" */
+.arc-u-blink {
+    animation: blink var(--arc-anim-slow) var(--arc-ease-step) infinite;
+}
+
+/* Pulsazione glow continua — si combina con .arc-glow-* */
+.arc-u-pulse {
+    animation: arc-pulse var(--arc-anim-slow) var(--arc-ease-pixel) infinite alternate;
+}
+
+/* Glitch cromatico — richiede data-text="<stesso testo>" sull'elemento */
+.arc-u-glitch {
+    position: relative;
+    display: inline-block;
+}
+
+.arc-u-glitch::before,
+.arc-u-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.arc-u-glitch::before {
+    color: var(--arc-color-red);
+    animation: arc-glitch-red var(--arc-anim-normal) var(--arc-ease-pixel) infinite;
+}
+
+.arc-u-glitch::after {
+    color: var(--arc-color-cyan);
+    animation: arc-glitch-cyan var(--arc-anim-normal) var(--arc-ease-pixel) infinite;
+}
+
+/* ── prefers-reduced-motion ─────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    .arc-u-blink,
+    .arc-u-pulse {
+        animation: none;
+    }
+
+    .arc-u-glitch::before,
+    .arc-u-glitch::after {
+        display: none;
+    }
+}
