@@ -1,8 +1,45 @@
 # Arcade-UI
 
-Libreria di componenti UI ispirata ai videogiochi arcade, pubblicata su npm come `@davide03memoli/arcade-ui`.
+Libreria di componenti UI ispirata ai videogiochi arcade anni '80.  
+Stile retrò, palette neon, animazioni pixelart — pubblicata su npm come `@davide03memoli/arcade-ui`.
 
 [![CI](https://github.com/davidememoli03/Arcade-UI/actions/workflows/ci.yml/badge.svg)](https://github.com/davidememoli03/Arcade-UI/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@davide03memoli/arcade-ui)](https://www.npmjs.com/package/@davide03memoli/arcade-ui)
+[![Storybook](https://img.shields.io/badge/storybook-live-ff4785)](https://davidememoli03.github.io/Arcade-UI/)
+
+---
+
+## Usare la libreria
+
+```bash
+npm install @davide03memoli/arcade-ui
+```
+
+```js
+// Importa il CSS nell'entry point della tua app
+import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
+```
+
+```html
+<!-- Bottone -->
+<button class="arcade-btn">INSERT COIN</button>
+
+<!-- Panel -->
+<div class="arcade-panel">
+  <h2 class="arcade-panel-title">GAME OVER</h2>
+  <p class="arcade-panel-body">You scored 42,000 points.</p>
+  <button class="arcade-btn">PLAY AGAIN</button>
+</div>
+
+<!-- Input -->
+<label class="arcade-label">
+  PLAYER NAME
+  <input class="arcade-input" placeholder="AAA" maxlength="3" />
+</label>
+```
+
+Per la documentazione completa (componenti, token CSS, esempi): **[arcade-ui/README.md](./arcade-ui/README.md)**  
+Per i componenti interattivi: **[Storybook live](https://davidememoli03.github.io/Arcade-UI/)**
 
 ---
 
@@ -10,11 +47,14 @@ Libreria di componenti UI ispirata ai videogiochi arcade, pubblicata su npm come
 
 ```
 Arcade-UI/
-├── arcade-ui/          # Codice sorgente e configurazione del pacchetto npm
-│   ├── src/            # Sorgenti della libreria
-│   ├── dist/           # Output del build (generato, non committato)
+├── arcade-ui/          # Codice sorgente e pacchetto npm
+│   ├── src/
+│   │   ├── tokens/     # CSS custom properties (colori, typo, spacing, animation)
+│   │   ├── styles/     # Componenti CSS (btn, panel, input)
+│   │   └── stories/    # Storybook stories
+│   ├── .storybook/     # Configurazione Storybook
 │   └── package.json
-├── scripts/            # Script di automazione del workflow Git
+├── scripts/            # Script automazione workflow Git
 └── .github/workflows/  # Pipeline CI/CD
 ```
 
@@ -27,29 +67,28 @@ cd arcade-ui
 npm install
 ```
 
-| Comando              | Descrizione                          |
-|----------------------|--------------------------------------|
-| `npm run dev`        | Avvia il server di sviluppo          |
-| `npm run build`      | Compila la libreria in `dist/`       |
-| `npm test`           | Esegue i test con Vitest             |
-| `npm run lint`       | Lint JS (ESLint) e CSS (Stylelint)   |
+| Comando | Descrizione |
+|---|---|
+| `npm run dev` | Server di sviluppo Vite |
+| `npm run build` | Compila la libreria in `dist/` |
+| `npm test` | Esegue i test con Vitest |
+| `npm run lint` | Lint JS (ESLint) + CSS (Stylelint) |
+| `npm run storybook` | Storybook su `localhost:6006` |
+| `npm run build-storybook` | Build statica di Storybook |
 
 ---
 
 ## Workflow con Pull Request
 
 Tutto il lavoro passa per PR — non si committa mai direttamente su `main`.
-Usa gli script nella cartella `scripts/` per automatizzare il processo.
 
-### 1. Inizio lavoro — crea un branch
+### 1. Crea un branch
 
 ```bash
 ./scripts/new-branch.sh feat/nome-feature
 ```
 
-Crea un branch aggiornato da `main` e si posiziona su di esso.
-
-### 2. Lavori, fai commit normalmente
+### 2. Lavora e committa
 
 ```bash
 git add .
@@ -62,32 +101,27 @@ git commit -m "feat: descrizione della modifica"
 ./scripts/open-pr.sh "feat: titolo della PR"
 ```
 
-Pusha il branch e apre la PR su GitHub. La CI parte automaticamente.
-
 ### 4. Merge e pulizia
-
-Dopo che la CI è verde e hai fatto il merge su GitHub:
 
 ```bash
 ./scripts/cleanup.sh
 ```
 
-Elimina i branch locali e remoti già mergati in `main`.
-
-> Puoi usare `./scripts/cleanup.sh --dry-run` per vedere cosa verrebbe eliminato senza farlo davvero.
+> `./scripts/cleanup.sh --dry-run` per vedere cosa verrebbe eliminato senza farlo.
 
 ---
 
 ## Pipeline CI/CD
 
-La pipeline (`.github/workflows/ci.yml`) si attiva su ogni push e PR verso `main`.
+| Job | Trigger | Descrizione |
+|---|---|---|
+| **Lint** | PR + push main | ESLint + Stylelint |
+| **Test** | PR + push main | Vitest |
+| **Build** | PR + push main | Vite build + verifica `dist/` |
+| **Publish** | solo push main | Pubblica `@davide03memoli/arcade-ui` su npm |
+| **Storybook** | solo push main | Deploy su GitHub Pages |
 
-| Job           | Trigger        | Descrizione                               |
-|---------------|----------------|-------------------------------------------|
-| **Lint**      | PR + push main | ESLint + Stylelint                        |
-| **Test**      | PR + push main | Vitest (richiede Lint verde)              |
-| **Build**     | PR + push main | Vite build + verifica file `dist/`        |
-| **Publish**   | solo push main | Pubblica su npm `@davide03memoli/arcade-ui` |
+> Prima del publish viene verificato automaticamente che la versione in `package.json` non sia già pubblicata su npm.
 
 ---
 
@@ -96,12 +130,12 @@ La pipeline (`.github/workflows/ci.yml`) si attiva su ogni push e PR verso `main
 Seguiamo [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
-feat: nuova funzionalità
-fix: correzione di un bug
-docs: solo documentazione
-style: formattazione, nessuna logica
+feat:     nuova funzionalità
+fix:      correzione di un bug
+docs:     solo documentazione
+style:    formattazione, nessuna logica
 refactor: refactoring senza nuove feature
-test: aggiunta o modifica di test
-ci: modifiche alla pipeline
-chore: task di manutenzione
+test:     aggiunta o modifica di test
+ci:       modifiche alla pipeline
+chore:    task di manutenzione (es. bump versione)
 ```
