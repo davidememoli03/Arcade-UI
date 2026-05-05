@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen&display=swap');
+
+/* src/tokens/typography.css
+   Token di tipografia arcade.
+   Font caricati da Google Fonts (vedi Passo 4).
+   ─────────────────────────────────────────── */
+
+:root {
+    /* ── Font stack ──────────────────────────────
+     pixel    : carattere a blocchi, titoli e UI
+     terminal : stile CRT, body a schermo pieno
+     mono     : codice, debug, valori tecnici
+  ──────────────────────────────────────────── */
+    --arc-font-pixel: 'Press Start 2P', 'Courier New', courier, monospace;
+    --arc-font-terminal: 'VT323', 'Courier New', courier, monospace;
+    --arc-font-mono: 'Silkscreen', 'Courier New', courier, monospace;
+
+    /* ── Scala tipografica ───────────────────────
+     Ogni livello definisce font-size e line-height.
+     I livelli pixel usano --arc-font-pixel,
+     body usa --arc-font-terminal (più leggibile).
+  ──────────────────────────────────────────── */
+
+    /* display: titolo hero / schermata game over */
+    --arc-text-display-size: 64px;
+    --arc-text-display-lh: 1.1;
+    --arc-text-display-font: var(--arc-font-pixel);
+
+    /* h1: titoli di sezione principali */
+    --arc-text-h1-size: 32px;
+    --arc-text-h1-lh: 1.2;
+    --arc-text-h1-font: var(--arc-font-pixel);
+
+    /* h2: sottotitoli, intestazioni card */
+    --arc-text-h2-size: 24px;
+    --arc-text-h2-lh: 1.3;
+    --arc-text-h2-font: var(--arc-font-pixel);
+
+    /* h3: label gruppi, intestazioni minori */
+    --arc-text-h3-size: 20px;
+    --arc-text-h3-lh: 1.4;
+    --arc-text-h3-font: var(--arc-font-pixel);
+
+    /* body: testo corrente, dialoghi, descrizioni */
+    --arc-text-body-size: 20px;
+    --arc-text-body-lh: 1.6;
+    --arc-text-body-font: var(--arc-font-terminal);
+
+    /* caption: etichette, note, placeholder */
+    --arc-text-caption-size: 14px;
+    --arc-text-caption-lh: 1.5;
+    --arc-text-caption-font: var(--arc-font-mono);
+
+}

@@ -1,40 +1,45 @@
 /* src/styles/arcade-ui.css */
 @import url('../tokens/colors.css');
+@import url('../tokens/typography.css');
+@import url('../tokens/spacing.css');
+@import url('../tokens/animation.css');
 
 /* ───────────────────────────────────────────
-   Token non-colore (font, sizing, effetti)
+   Token non-colore (effetti, interazione)
 ─────────────────────────────────────────── */
 :root {
-    --arcade-font:       'Courier New', courier, monospace;
-    --arcade-radius:     4px;
-    --arcade-glow:       0 0 8px var(--arc-color-cyan), 0 0 16px var(--arc-color-cyan-glow);
-    --arcade-bg-hover:   #001a1a; /* sfondo btn al hover: scuro tinted cyan */
-    --arcade-bg-active:  #033; /* sfondo btn al click */
+    --arcade-glow: 0 0 8px var(--arc-color-cyan), 0 0 16px var(--arc-color-cyan-glow);
+
+    /* sfondo btn al hover: scuro tinted cyan */
+    --arcade-bg-hover: #001a1a;
+
+    /* sfondo btn al click */
+    --arcade-bg-active: #033;
 }
 
 /* ───────────────────────────────────────────
    Button  (.arcade-btn)
 ─────────────────────────────────────────── */
 .arcade-btn {
-    display:        inline-block;
-    padding:        0.5em 1.4em;
-    background:     var(--arc-color-bg);
-    color:          var(--arc-color-text);
-    border:         2px solid var(--arc-color-cyan);
-    border-radius:  var(--arcade-radius);
-    font-family:    var(--arcade-font);
-    font-size:      0.9rem;
+    display: inline-block;
+    padding: 0.5em 1.4em;
+    background: var(--arc-color-bg);
+    color: var(--arc-color-text);
+    border: 2px solid var(--arc-color-cyan);
+    border-radius: var(--arc-radius-pixel);
+    font-family: var(--arc-font-pixel);
+    font-size: 0.9rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    cursor:         pointer;
-    transition:     box-shadow 0.15s ease, background 0.15s ease;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, background 0.15s ease;
 }
 
 .arcade-btn:disabled {
-    color:        var(--arc-color-disabled);
+    color: var(--arc-color-disabled);
     border-color: var(--arc-color-disabled);
-    cursor:       not-allowed;
-    box-shadow:   none;
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
 .arcade-btn:hover:not(:disabled) {
@@ -50,30 +55,30 @@
    Panel  (.arcade-panel)
 ─────────────────────────────────────────── */
 .arcade-panel {
-    display:        flex;
+    display: flex;
     flex-direction: column;
-    gap:            0.75em;
-    padding:        1.5em 2em;
-    background:     var(--arc-color-bg-panel);
-    border:         2px solid var(--arc-color-cyan);
-    border-radius:  var(--arcade-radius);
-    box-shadow:     var(--arcade-glow);
-    font-family:    var(--arcade-font);
-    max-width:      480px;
+    gap: 0.75em;
+    padding: 1.5em 2em;
+    background: var(--arc-color-bg-panel);
+    border: 2px solid var(--arc-color-cyan);
+    border-radius: var(--arc-radius-pixel);
+    box-shadow: var(--arcade-glow);
+    font-family: var(--arc-font-pixel);
+    max-width: 480px;
 }
 
 .arcade-panel-title {
-    margin:         0;
-    font-size:      1.4rem;
+    margin: 0;
+    font-size: 1.4rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color:          var(--arc-color-text);
+    color: var(--arc-color-text);
 }
 
 .arcade-panel-body {
-    margin:      0;
-    font-size:   0.95rem;
-    color:       var(--arc-color-text-muted);
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--arc-color-text-muted);
     line-height: 1.5;
 }
 
@@ -81,30 +86,30 @@
    Input  (.arcade-input, .arcade-label)
 ─────────────────────────────────────────── */
 .arcade-input {
-    display:        block;
-    width:          100%;
-    padding:        0.45em 0.8em;
-    background:     var(--arc-color-bg);
-    color:          var(--arc-color-text);
-    border:         2px solid var(--arc-color-cyan);
-    border-radius:  var(--arcade-radius);
-    font-family:    var(--arcade-font);
-    font-size:      1rem;
+    display: block;
+    width: 100%;
+    padding: 0.45em 0.8em;
+    background: var(--arc-color-bg);
+    color: var(--arc-color-text);
+    border: 2px solid var(--arc-color-cyan);
+    border-radius: var(--arc-radius-pixel);
+    font-family: var(--arc-font-terminal);
+    font-size: 1rem;
     letter-spacing: 0.1em;
-    outline:        none;
-    transition:     box-shadow 0.15s ease;
-    box-sizing:     border-box;
+    outline: none;
+    transition: box-shadow 0.15s ease;
+    box-sizing: border-box;
 }
 
 .arcade-input::placeholder {
-    color:   var(--arc-color-text-muted);
+    color: var(--arc-color-text-muted);
     opacity: 1;
 }
 
 .arcade-input:disabled {
-    color:        var(--arc-color-disabled);
+    color: var(--arc-color-disabled);
     border-color: var(--arc-color-disabled);
-    cursor:       not-allowed;
+    cursor: not-allowed;
 }
 
 .arcade-input:focus {
@@ -112,12 +117,12 @@
 }
 
 .arcade-label {
-    display:        flex;
+    display: flex;
     flex-direction: column;
-    gap:            0.4em;
-    font-family:    var(--arcade-font);
-    font-size:      0.8rem;
+    gap: 0.4em;
+    font-family: var(--arc-font-mono);
+    font-size: 0.8rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color:          var(--arc-color-text);
+    color: var(--arc-color-text);
 }

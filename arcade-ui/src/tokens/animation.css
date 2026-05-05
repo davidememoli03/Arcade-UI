@@ -1,0 +1,86 @@
+/* src/tokens/animation.css
+   Token di animazione arcade: durate, easing e keyframes.
+   ─────────────────────────────────────────────────────── */
+
+:root {
+    /* ── Durate ──────────────────────────────────
+     instant  : feedback immediato (toggle, flash)
+     fast     : transizioni brevi (hover, focus)
+     normal   : transizioni standard (slide, fade)
+     slow     : animazioni enfatizzate (apertura modal)
+     dramatic : intro, game over, cutscene
+  ──────────────────────────────────────────── */
+    --arc-anim-instant: 50ms;
+    --arc-anim-fast: 150ms;
+    --arc-anim-normal: 300ms;
+    --arc-anim-slow: 600ms;
+    --arc-anim-dramatic: 1200ms;
+
+    /* ── Easing ──────────────────────────────────
+     step    : cambio binario, ON/OFF puro
+     pixel   : 4 frame, animazione pixelart fluida
+     arcade  : 8 frame, movimento arcade classico
+  ──────────────────────────────────────────── */
+    --arc-ease-step: steps(1);
+    --arc-ease-pixel: steps(4);
+    --arc-ease-arcade: steps(8);
+
+}
+
+/* ── Keyframes globali ───────────────────────────
+   Disponibili a tutti i componenti dopo l'import.
+──────────────────────────────────────────────── */
+
+/* blink: cursore testo, indicatore attivo */
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* pulse-glow: alone neon pulsante */
+@keyframes pulse-glow {
+    0%,
+    100% {
+        box-shadow: 0 0 4px var(--arc-color-cyan),
+            0 0 8px var(--arc-color-cyan-glow);
+    }
+
+    50% {
+        box-shadow: 0 0 12px var(--arc-color-cyan),
+            0 0 24px var(--arc-color-cyan-glow),
+            0 0 40px var(--arc-color-cyan-glow);
+    }
+}
+
+/* glitch: scorrimento orizzontale glitch effect */
+@keyframes glitch {
+    0% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-3px);
+    }
+
+    40% {
+        transform: translateX(3px);
+    }
+
+    60% {
+        transform: translateX(-2px);
+    }
+
+    80% {
+        transform: translateX(2px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
