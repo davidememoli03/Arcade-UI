@@ -1,52 +1,49 @@
 /* src/styles/arcade-ui.css */
+@import url('../tokens/colors.css');
 
 /* ───────────────────────────────────────────
-   Tokens
+   Token non-colore (font, sizing, effetti)
 ─────────────────────────────────────────── */
 :root {
-    --arcade-bg:        #0a0010;
-    --arcade-surface:   #110020;
-    --arcade-border:    #0ff;
-    --arcade-text:      #0ff;
-    --arcade-text-dim:  #077;
-    --arcade-disabled:  #345;
-    --arcade-font:      'Courier New', courier, monospace;
-    --arcade-radius:    4px;
-    --arcade-glow:      0 0 8px #0ff, 0 0 16px #0ff4;
+    --arcade-font:       'Courier New', courier, monospace;
+    --arcade-radius:     4px;
+    --arcade-glow:       0 0 8px var(--arc-color-cyan), 0 0 16px var(--arc-color-cyan-glow);
+    --arcade-bg-hover:   #001a1a; /* sfondo btn al hover: scuro tinted cyan */
+    --arcade-bg-active:  #033; /* sfondo btn al click */
 }
 
 /* ───────────────────────────────────────────
    Button  (.arcade-btn)
 ─────────────────────────────────────────── */
 .arcade-btn {
-    display:          inline-block;
-    padding:          0.5em 1.4em;
-    background:       #000;
-    color:            var(--arcade-text);
-    border:           2px solid var(--arcade-border);
-    border-radius:    var(--arcade-radius);
-    font-family:      var(--arcade-font);
-    font-size:        0.9rem;
-    letter-spacing:   0.12em;
-    text-transform:   uppercase;
-    cursor:           pointer;
-    transition:       box-shadow 0.15s ease, background 0.15s ease;
+    display:        inline-block;
+    padding:        0.5em 1.4em;
+    background:     var(--arc-color-bg);
+    color:          var(--arc-color-text);
+    border:         2px solid var(--arc-color-cyan);
+    border-radius:  var(--arcade-radius);
+    font-family:    var(--arcade-font);
+    font-size:      0.9rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor:         pointer;
+    transition:     box-shadow 0.15s ease, background 0.15s ease;
 }
 
 .arcade-btn:disabled {
-    color:        var(--arcade-disabled);
-    border-color: var(--arcade-disabled);
+    color:        var(--arc-color-disabled);
+    border-color: var(--arc-color-disabled);
     cursor:       not-allowed;
     box-shadow:   none;
 }
 
 .arcade-btn:hover:not(:disabled) {
-    background:   #001a1a;
-    box-shadow:   var(--arcade-glow);
+    background: var(--arcade-bg-hover);
+    box-shadow: var(--arcade-glow);
 }
 
 .arcade-btn:active:not(:disabled) {
-    background:   #033;
+    background: var(--arcade-bg-active);
 }
 
 /* ───────────────────────────────────────────
@@ -57,8 +54,8 @@
     flex-direction: column;
     gap:            0.75em;
     padding:        1.5em 2em;
-    background:     var(--arcade-surface);
-    border:         2px solid var(--arcade-border);
+    background:     var(--arc-color-bg-panel);
+    border:         2px solid var(--arc-color-cyan);
     border-radius:  var(--arcade-radius);
     box-shadow:     var(--arcade-glow);
     font-family:    var(--arcade-font);
@@ -70,13 +67,13 @@
     font-size:      1.4rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color:          var(--arcade-text);
+    color:          var(--arc-color-text);
 }
 
 .arcade-panel-body {
     margin:      0;
     font-size:   0.95rem;
-    color:       var(--arcade-text-dim);
+    color:       var(--arc-color-text-muted);
     line-height: 1.5;
 }
 
@@ -87,9 +84,9 @@
     display:        block;
     width:          100%;
     padding:        0.45em 0.8em;
-    background:     #000;
-    color:          var(--arcade-text);
-    border:         2px solid var(--arcade-border);
+    background:     var(--arc-color-bg);
+    color:          var(--arc-color-text);
+    border:         2px solid var(--arc-color-cyan);
     border-radius:  var(--arcade-radius);
     font-family:    var(--arcade-font);
     font-size:      1rem;
@@ -100,13 +97,13 @@
 }
 
 .arcade-input::placeholder {
-    color:   var(--arcade-text-dim);
+    color:   var(--arc-color-text-muted);
     opacity: 1;
 }
 
 .arcade-input:disabled {
-    color:        var(--arcade-disabled);
-    border-color: var(--arcade-disabled);
+    color:        var(--arc-color-disabled);
+    border-color: var(--arc-color-disabled);
     cursor:       not-allowed;
 }
 
@@ -122,5 +119,5 @@
     font-size:      0.8rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color:          var(--arcade-text);
+    color:          var(--arc-color-text);
 }
