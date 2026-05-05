@@ -18,26 +18,57 @@
 /* Instabilità fosforica: variazioni di opacità sparse e rare */
 @keyframes scanline-flicker {
     0%,
-    100% { opacity: 1; }
+    100% {
+        opacity: 1;
+    }
 
-    5%   { opacity: 0.97; }
+    5% {
+        opacity: 0.97;
+    }
 
-    10%  { opacity: 1; }
+    10% {
+        opacity: 1;
+    }
 
-    80%  { opacity: 1; }
+    80% {
+        opacity: 1;
+    }
 
-    85%  { opacity: 0.98; }
+    85% {
+        opacity: 0.98;
+    }
 
-    90%  { opacity: 1; }
+    90% {
+        opacity: 1;
+    }
 }
 
 /* Accensione CRT: scaleY da quasi-zero a 1 con flash di luminosità */
 @keyframes crt-power-on {
-    0%   { transform: scaleY(0.004); filter: brightness(4); }
-    25%  { transform: scaleY(0.04);  filter: brightness(3); }
-    50%  { transform: scaleY(0.2);   filter: brightness(2); }
-    75%  { transform: scaleY(1.02);  filter: brightness(1.2); }
-    100% { transform: scaleY(1);     filter: brightness(1); }
+    0% {
+        transform: scaleY(0.004);
+        filter: brightness(4);
+    }
+
+    25% {
+        transform: scaleY(0.04);
+        filter: brightness(3);
+    }
+
+    50% {
+        transform: scaleY(0.2);
+        filter: brightness(2);
+    }
+
+    75% {
+        transform: scaleY(1.02);
+        filter: brightness(1.2);
+    }
+
+    100% {
+        transform: scaleY(1);
+        filter: brightness(1);
+    }
 }
 
 /* ── Shared: contenuto dei pseudo-elementi ──────────────────────────────── */
@@ -63,7 +94,7 @@
     background: radial-gradient(
         ellipse at center,
         transparent var(--arc-crt-vignette-start),
-        rgba(0, 0, 0, var(--arc-crt-vignette-opacity)) 100%
+        rgb(0 0 0 / var(--arc-crt-vignette-opacity)) 100%
     );
     z-index: 9997;
 }
@@ -73,10 +104,10 @@
     position: fixed;
     background: repeating-linear-gradient(
         to bottom,
-        transparent                                              0px,
+        transparent                                              0,
         transparent                                              calc(var(--arc-crt-line-size) - 1px),
-        rgba(0, 0, 0, var(--arc-crt-scanline-opacity))          calc(var(--arc-crt-line-size) - 1px),
-        rgba(0, 0, 0, var(--arc-crt-scanline-opacity))          var(--arc-crt-line-size)
+        rgb(0 0 0 / var(--arc-crt-scanline-opacity))            calc(var(--arc-crt-line-size) - 1px),
+        rgb(0 0 0 / var(--arc-crt-scanline-opacity))            var(--arc-crt-line-size)
     );
     background-size: 100% var(--arc-crt-line-size);
     will-change: opacity;
@@ -98,7 +129,7 @@
     background: radial-gradient(
         ellipse at center,
         transparent var(--arc-crt-vignette-start),
-        rgba(0, 0, 0, var(--arc-crt-vignette-opacity)) 100%
+        rgb(0 0 0 / var(--arc-crt-vignette-opacity)) 100%
     );
     z-index: 1;
 }
@@ -108,10 +139,10 @@
     position: absolute;
     background: repeating-linear-gradient(
         to bottom,
-        transparent                                              0px,
+        transparent                                              0,
         transparent                                              calc(var(--arc-crt-line-size) - 1px),
-        rgba(0, 0, 0, var(--arc-crt-scanline-opacity))          calc(var(--arc-crt-line-size) - 1px),
-        rgba(0, 0, 0, var(--arc-crt-scanline-opacity))          var(--arc-crt-line-size)
+        rgb(0 0 0 / var(--arc-crt-scanline-opacity))            calc(var(--arc-crt-line-size) - 1px),
+        rgb(0 0 0 / var(--arc-crt-scanline-opacity))            var(--arc-crt-line-size)
     );
     background-size: 100% var(--arc-crt-line-size);
     will-change: opacity;
@@ -141,7 +172,7 @@
 
 /* ── Mobile: disabilitato sotto 480px ───────────────────────────────────── */
 
-@media (max-width: 479px) {
+@media (width <= 479px) {
     .arc-crt-global::before,
     .arc-crt-global::after,
     .arc-crt-screen::before,

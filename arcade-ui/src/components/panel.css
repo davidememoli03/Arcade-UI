@@ -121,6 +121,15 @@
         0 0 16px var(--arc-color-green-glow);
 }
 
+.arc-panel-purple {
+    --panel-accent: var(--arc-color-purple);
+
+    border-color: var(--arc-color-purple);
+    box-shadow:
+        inset 0 0 12px rgb(191 0 255 / 8%),
+        0 0 16px var(--arc-color-purple-glow);
+}
+
 /* ── Variante glass ──────────────────────────────────────────────────
    backdrop-filter blur: effetto vetro smerigliato.
    Richiede un elemento dietro al panel con contenuto visibile.
