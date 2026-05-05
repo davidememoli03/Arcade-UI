@@ -107,6 +107,18 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verifica versione non già pubblicata
+        run: |
+          PKG_NAME=$(node -p "require('./package.json').name")
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          echo "📦 Versione locale: $PKG_VERSION"
+          PUBLISHED=$(npm view "$PKG_NAME@$PKG_VERSION" version 2>/dev/null || echo "")
+          if [ "$PUBLISHED" = "$PKG_VERSION" ]; then
+            echo "❌ La versione $PKG_VERSION è già pubblicata su npm. Bumpa la versione in package.json prima di fare merge su main."
+            exit 1
+          fi
+          echo "✅ Versione $PKG_VERSION non ancora pubblicata, procedo."
+
       - name: Publish
         run: npm publish --access=public
         env:
