@@ -22,8 +22,8 @@ export default defineConfig({
           howler: 'Howler'
         },
         assetFileNames: (assetInfo) => {
-            if (assetInfo.names?.[0] === 'style.css') return 'arcade-ui.css'
-            return assetInfo.names?.[0] ?? 'asset.[ext]'
+          if (assetInfo.names?.[0] === 'style.css') return 'arcade-ui.css'
+          return assetInfo.names?.[0] ?? 'asset.[ext]'
         }
       }
     }
