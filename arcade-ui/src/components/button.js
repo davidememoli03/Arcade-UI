@@ -1,28 +1,14 @@
 // src/components/button.js
-// Auto-bind effetti sonori su bottoni con data-arc-sound-*
-// Richiede howler come peer dependency (npm install howler)
+// Binding suoni su bottoni — delega ad AudioManager.
 
-import { Howl } from 'howler'
+import { AudioManager } from '../audio/AudioManager.js'
 
-const cache = new Map()
-
-function getSound(src) {
-  if (!cache.has(src)) {
-    cache.set(src, new Howl({ src: [src], volume: 0.5 }))
-  }
-  return cache.get(src)
-}
-
+/**
+ * Collega i suoni built-in agli elementi con data-arc-sound-hover / data-arc-sound-click
+ * trovati in `root`. Chiamato automaticamente da AudioManager al DOMContentLoaded.
+ *
+ * @param {Document|Element} root
+ */
 export function bindButtonSounds(root = document) {
-  root.querySelectorAll('[data-arc-sound-hover], [data-arc-sound-click]').forEach(btn => {
-    const hoverSrc = btn.dataset.arcSoundHover
-    const clickSrc = btn.dataset.arcSoundClick
-
-    if (hoverSrc) {
-      btn.addEventListener('mouseenter', () => getSound(hoverSrc).play())
-    }
-    if (clickSrc) {
-      btn.addEventListener('click', () => getSound(clickSrc).play())
-    }
-  })
+  AudioManager.getInstance().bindButtons(root)
 }

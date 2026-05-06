@@ -1,10 +1,14 @@
 {
   "name": "@davide03memoli/arcade-ui",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "main": "dist/arcade-ui.cjs.js",
   "module": "dist/arcade-ui.es.js",
   "exports": {
     ".": {
+      "import": "./dist/arcade-ui.es.js",
+      "require": "./dist/arcade-ui.cjs.js"
+    },
+    "./js": {
       "import": "./dist/arcade-ui.es.js",
       "require": "./dist/arcade-ui.cjs.js"
     },
@@ -23,7 +27,7 @@
   "types": "dist/arcade-ui.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run minify:css && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts",
+    "build": "vite build && npm run minify:css && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts && (cp -r public/sfx dist/sfx 2>/dev/null || true)",
     "build:watch": "vite build --watch",
     "preview": "vite preview",
     "minify:css": "postcss dist/arcade-ui.css --use cssnano -o dist/arcade-ui.min.css",
