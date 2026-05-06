@@ -1,144 +1,79 @@
-# @davide03memoli/arcade-ui
+<div align="center">
 
-Libreria di componenti UI ispirata ai videogiochi arcade anni '80.  
-Stile retrò, palette neon, animazioni pixelart, zero dipendenze (solo Howler per audio opzionale).
+```
+  ▄▄▄  ██▀▄ ▄▄▄  ▄▄▄  ██▀▄ ██▀
+  ▄▄▀▀ ██ █ ██   ██ █  ██ █ ██▄
+  ██▀▀ ██▀▄ ██   ██▀▀▄ ██▀▄ ██
+  ██▄▄ ██ ▀ ▀▀▀  ██▄▄▀ ██ ▀ ▀▀▀  UI
+```
 
-[![CI](https://github.com/davidememoli03/Arcade-UI/actions/workflows/ci.yml/badge.svg)](https://github.com/davidememoli03/Arcade-UI/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/@davide03memoli/arcade-ui)](https://www.npmjs.com/package/@davide03memoli/arcade-ui)
-[![Storybook](https://img.shields.io/badge/storybook-live-ff4785)](https://davidememoli03.github.io/Arcade-UI/)
+**80s arcade-style UI component library**  
+Neon palette · Pixel animations · Built-in SFX · Zero runtime dependencies
+
+[![npm version](https://img.shields.io/npm/v/@davide03memoli/arcade-ui?style=flat-square&color=00f5ff)](https://www.npmjs.com/package/@davide03memoli/arcade-ui)
+[![license](https://img.shields.io/npm/l/@davide03memoli/arcade-ui?style=flat-square&color=ffd700)](./LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/davidememoli03/Arcade-UI/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/davidememoli03/Arcade-UI/actions/workflows/ci.yml)
+[![Storybook](https://img.shields.io/badge/Storybook-live-ff4785?style=flat-square&logo=storybook)](https://davidememoli03.github.io/Arcade-UI/)
+
+</div>
 
 ---
 
-## Installazione
+## ⚡ Quick Start — CDN
+
+No build tools. Drop three lines into any HTML file and you're done:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/dist/arcade-ui.min.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/dist/arcade-ui.es.js"></script>
+```
+
+```html
+<button class="arc-btn arc-btn-primary">INSERT COIN</button>
+```
+
+---
+
+## 📦 Quick Start — npm
 
 ```bash
 npm install @davide03memoli/arcade-ui
 ```
 
-### Font (opzionale ma consigliato)
-
-Aggiungi i font arcade nel `<head>` del tuo HTML:
-
-```html
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen&display=swap"
-  rel="stylesheet"
-/>
-```
-
-### Peer dependency (per effetti sonori)
-
-```bash
-npm install howler
-```
-
----
-
-## Setup
-
-Importa il CSS all'entry point della tua applicazione:
-
 ```js
 // main.js / main.ts
 import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
+import { AudioManager } from '@davide03memoli/arcade-ui'
 ```
-
-Oppure usa la versione minificata:
-
-```js
-import '@davide03memoli/arcade-ui/dist/arcade-ui.min.css'
-```
-
-Da questo momento tutte le classi CSS e i token CSS sono disponibili globalmente.
-
----
-
-## Componenti
-
-### Button — `.arcade-btn`
-
-Bottone con bordo neon e glow al hover.
 
 ```html
-<!-- Default -->
-<button class="arcade-btn">INSERT COIN</button>
-
-<!-- Disabled -->
-<button class="arcade-btn" disabled>GAME OVER</button>
-```
-
-**Esempio con colore accento:**
-
-```html
-<!-- Bordo rosso — pericolo / vita persa -->
-<button class="arcade-btn" style="
-  border-color: var(--arc-color-red);
-  color: var(--arc-color-red);
-">CONTINUE?</button>
-
-<!-- Bordo giallo — avviso / monete -->
-<button class="arcade-btn" style="
-  border-color: var(--arc-color-yellow);
-  color: var(--arc-color-yellow);
-">BONUS ×3</button>
+<button class="arc-btn arc-btn-primary">INSERT COIN</button>
 ```
 
 ---
 
-### Panel — `.arcade-panel`
+## 🎮 Full Example
 
-Card con sfondo scuro, bordo neon e glow ambientale.
-
-```html
-<div class="arcade-panel">
-  <h2 class="arcade-panel-title">HIGH SCORE</h2>
-  <p class="arcade-panel-body">Congratulations! You reached rank #1.</p>
-  <button class="arcade-btn">PLAY AGAIN</button>
-</div>
-```
-
-**Elementi interni:**
-
-| Classe | Elemento | Uso |
-|---|---|---|
-| `.arcade-panel-title` | `<h2>` / `<h3>` | Titolo del pannello |
-| `.arcade-panel-body` | `<p>` | Testo descrittivo |
-
----
-
-### Input — `.arcade-input` / `.arcade-label`
-
-Campo di testo con stile terminale e glow al focus.
-
-```html
-<!-- Input semplice -->
-<input class="arcade-input" placeholder="ENTER YOUR NAME" />
-
-<!-- Input con label -->
-<label class="arcade-label">
-  PLAYER NAME
-  <input class="arcade-input" placeholder="AAA" maxlength="3" />
-</label>
-
-<!-- Disabled -->
-<input class="arcade-input" placeholder="LOCKED" disabled />
-```
-
----
-
-## Esempio completo — Schermata Game Over
+A complete working page — copy, save as `index.html`, open in browser:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="node_modules/@davide03memoli/arcade-ui/dist/arcade-ui.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arcade UI Demo</title>
+
+  <!-- Fonts (optional, recommended) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen&display=swap"
+        rel="stylesheet">
+
+  <!-- Arcade UI -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/dist/arcade-ui.min.css">
+
   <style>
     body {
       background: var(--arc-color-bg);
@@ -152,23 +87,36 @@ Campo di testo con stile terminale e glow al focus.
 </head>
 <body>
 
-  <div class="arcade-panel">
-    <h2 class="arcade-panel-title">GAME OVER</h2>
-    <p class="arcade-panel-body">You scored 42,000 points.</p>
+  <div class="arc-panel arc-panel-cyan" style="max-width: 420px; width: 100%;">
+    <div class="arc-panel-header">
+      <span class="arc-glow-cyan" style="font-family: var(--arc-font-pixel); font-size: .85rem;">
+        GAME OVER
+      </span>
+      <span class="arc-badge arc-badge-red arc-badge-pulse" style="margin-left: auto;">
+        RANK #1
+      </span>
+    </div>
 
-    <label class="arcade-label">
-      ENTER YOUR NAME
-      <input class="arcade-input" placeholder="AAA" maxlength="3" />
-    </label>
+    <div class="arc-panel-body">
+      <div class="arc-input-wrapper">
+        <label class="arc-label">ENTER YOUR NAME</label>
+        <input class="arc-input" placeholder="AAA" maxlength="3">
+      </div>
+    </div>
 
-    <div style="display:flex; gap: var(--arc-space-2); margin-top: var(--arc-space-2);">
-      <button class="arcade-btn">SAVE</button>
-      <button class="arcade-btn" style="
-        border-color: var(--arc-color-red);
-        color: var(--arc-color-red);
-      ">QUIT</button>
+    <div class="arc-panel-footer">
+      <button class="arc-btn arc-btn-primary">SAVE SCORE</button>
+      <button class="arc-btn arc-btn-ghost">SKIP</button>
+      <button class="arc-btn arc-btn-danger" data-arc-sound-click="gameover">QUIT</button>
     </div>
   </div>
+
+  <!-- Audio (built-in Web Audio synth — no files needed) -->
+  <script type="module">
+    import { AudioManager } from 'https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/dist/arcade-ui.es.js'
+    const audio = AudioManager.getInstance()
+    audio.bindButtons(document.body)
+  </script>
 
 </body>
 </html>
@@ -176,179 +124,210 @@ Campo di testo con stile terminale e glow al focus.
 
 ---
 
-## Token CSS
+## 📋 Components
 
-Tutti i token sono disponibili come CSS custom properties dopo l'import del foglio di stile.  
-Puoi usarli nel tuo CSS per costruire componenti consistenti con il tema arcade.
+| Component | Classes | Variants | Storybook |
+|-----------|---------|----------|-----------|
+| **Button** | `.arc-btn` | `arc-btn-primary` · `arc-btn-ghost` · `arc-btn-danger` · `arc-btn-sm` · `arc-btn-lg` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-button--primary) |
+| **Panel** | `.arc-panel` | `arc-panel-cyan` · `arc-panel-red` · `arc-panel-yellow` · `arc-panel-green` · `arc-panel-purple` · `arc-panel-glass` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-panel--default) |
+| **Input** | `.arc-input` · `.arc-label` | `.arc-textarea` · `.arc-select` · `.arc-input-hint` · `.arc-input-hint-error` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-input--default) |
+| **Badge** | `.arc-badge` | `arc-badge-cyan` · `arc-badge-red` · `arc-badge-yellow` · `arc-badge-green` · `arc-badge-purple` · `arc-badge-outline` · `arc-badge-pulse` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-badge--default) |
+| **Accordion** | `.arc-accordion` | `arc-accordion-cyan` · `arc-accordion-red` · `arc-accordion-yellow` · `arc-accordion-green` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-accordion--default) |
+| **Glow** | `.arc-glow-{color}` · `.arc-box-glow-{color}` | cyan · red · yellow · green · purple | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glow--text) |
+| **Glitch** | `.arc-glitch` · `.arc-glitch-hover` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glitch--always-on) |
+| **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
+| **Animations** | `.arc-u-blink` · `.arc-u-pulse` · `.arc-u-glitch` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-animation--keyframes) |
 
-### Colori
-
-```css
-/* Sfondi */
-var(--arc-color-bg)           /* #000 — schermo principale */
-var(--arc-color-bg-alt)       /* #0a0010 — livello alternativo */
-var(--arc-color-bg-panel)     /* #110020 — superficie card/panel */
-
-/* Neon */
-var(--arc-color-cyan)         /* #00f5ff — primario */
-var(--arc-color-red)          /* #ff2d55 — pericolo/errore */
-var(--arc-color-yellow)       /* #ffd700 — avvisi/monete */
-var(--arc-color-green)        /* #39ff14 — successo/health */
-var(--arc-color-purple)       /* #bf00ff — power-up */
-var(--arc-color-pink)         /* #ff69b4 — bonus/charm */
-
-/* Testo */
-var(--arc-color-text)         /* alias di --arc-color-cyan */
-var(--arc-color-text-muted)   /* testo secondario/placeholder */
-var(--arc-color-text-accent)  /* alias di --arc-color-yellow */
-var(--arc-color-disabled)     /* controlli non interattivi */
-```
-
-### Tipografia
-
-```css
-/* Font stack */
-var(--arc-font-pixel)         /* Press Start 2P — titoli */
-var(--arc-font-terminal)      /* VT323 — body/dialoghi */
-var(--arc-font-mono)          /* Silkscreen — codice/label */
-
-/* Scala (ogni livello ha -size, -lh, -font) */
-var(--arc-text-display-size)  /* 64px */
-var(--arc-text-h1-size)       /* 32px */
-var(--arc-text-h2-size)       /* 24px */
-var(--arc-text-h3-size)       /* 20px */
-var(--arc-text-body-size)     /* 20px */
-var(--arc-text-caption-size)  /* 14px */
-```
-
-### Spaziatura (griglia 8px)
-
-```css
-var(--arc-space-1)   /*  8px */
-var(--arc-space-2)   /* 16px */
-var(--arc-space-3)   /* 24px */
-var(--arc-space-4)   /* 32px */
-var(--arc-space-6)   /* 48px */
-var(--arc-space-8)   /* 64px */
-var(--arc-space-12)  /* 96px */
-```
-
-### Border radius e width
-
-```css
-var(--arc-radius-none)    /* 0px — spigoli netti */
-var(--arc-radius-pixel)   /* 4px — arrotondamento minimo */
-
-var(--arc-border-sm)      /* 2px */
-var(--arc-border-md)      /* 4px */
-var(--arc-border-lg)      /* 6px */
-```
-
-### Animazioni
-
-```css
-/* Durate */
-var(--arc-anim-instant)   /* 50ms */
-var(--arc-anim-fast)      /* 150ms */
-var(--arc-anim-normal)    /* 300ms */
-var(--arc-anim-slow)      /* 600ms */
-var(--arc-anim-dramatic)  /* 1200ms */
-
-/* Easing */
-var(--arc-ease-step)      /* steps(1) */
-var(--arc-ease-pixel)     /* steps(4) */
-var(--arc-ease-arcade)    /* steps(8) */
-```
-
-**Keyframes predefiniti:** `blink`, `pulse-glow`, `glitch`
-
-```css
-/* Esempio d'uso */
-.my-cursor {
-  animation: blink var(--arc-anim-normal) var(--arc-ease-step) infinite;
-}
-
-.my-button-active {
-  animation: pulse-glow var(--arc-anim-slow) var(--arc-ease-pixel) infinite;
-}
-```
-
----
-
-## Esempio avanzato — Componente personalizzato
-
-Puoi costruire qualsiasi componente riutilizzando i token:
-
-```css
-/* my-badge.css */
-.my-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--arc-space-1);
-  padding: 0 var(--arc-space-2);
-  height: 28px;
-  background: var(--arc-color-bg-panel);
-  border: var(--arc-border-sm) solid var(--arc-color-green);
-  border-radius: var(--arc-radius-pixel);
-  color: var(--arc-color-green);
-  font-family: var(--arc-font-mono);
-  font-size: var(--arc-text-caption-size);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-```
+### Panel anatomy
 
 ```html
-<span class="my-badge">★ CHAMPION</span>
+<div class="arc-panel arc-panel-cyan">
+  <div class="arc-panel-header">Title</div>
+  <div class="arc-panel-body">Content</div>
+  <div class="arc-panel-footer">
+    <button class="arc-btn arc-btn-primary">OK</button>
+  </div>
+</div>
+```
+
+### Input anatomy
+
+```html
+<div class="arc-input-wrapper">
+  <label class="arc-label">PLAYER NAME</label>
+  <input class="arc-input" placeholder="AAA" maxlength="3">
+  <span class="arc-input-hint">max 3 characters</span>
+</div>
 ```
 
 ---
 
-## Breakpoint
+## 🎨 Design Tokens
+
+Import individual token files for zero-specificity overrides:
+
+```js
+import '@davide03memoli/arcade-ui/tokens/colors'
+import '@davide03memoli/arcade-ui/tokens/animation'
+import '@davide03memoli/arcade-ui/tokens/spacing'
+import '@davide03memoli/arcade-ui/tokens/typography'
+```
+
+### Key tokens
 
 ```css
-/* Mobile-first con i breakpoint Arcade UI */
-@media (min-width: 480px) {   /* var(--arc-bp-pocket) */
-  /* layout smartphone */
-}
+/* Backgrounds */
+--arc-color-bg            /* #000 */
+--arc-color-bg-alt        /* #0a0010 */
+--arc-color-bg-panel      /* #110020 */
 
-@media (min-width: 1280px) {  /* var(--arc-bp-handheld) */
-  /* layout desktop */
-}
+/* Neon palette */
+--arc-color-cyan          /* #00f5ff — primary */
+--arc-color-red           /* #ff2d55 — danger */
+--arc-color-yellow        /* #ffd700 — warning / coins */
+--arc-color-green         /* #39ff14 — success */
+--arc-color-purple        /* #bf00ff — power-up */
+
+/* Typography */
+--arc-font-pixel          /* Press Start 2P */
+--arc-font-terminal       /* VT323 */
+--arc-font-mono           /* Silkscreen */
+
+/* Spacing (8px grid) */
+--arc-space-1  /*  8px */   --arc-space-2  /* 16px */
+--arc-space-3  /* 24px */   --arc-space-4  /* 32px */
+--arc-space-6  /* 48px */   --arc-space-8  /* 64px */
+
+/* Animation */
+--arc-anim-fast           /* 150ms */
+--arc-anim-normal         /* 300ms */
+--arc-ease-pixel          /* steps(4) */
+--arc-ease-arcade         /* steps(8) */
 ```
 
 ---
 
-## TypeScript
+## 🔊 Audio — AudioManager
 
-Il pacchetto include le dichiarazioni di tipo:
+Built-in SFX synthesized via **Web Audio API** — no mp3 files, no extra dependencies.
 
-```ts
-import { version } from '@davide03memoli/arcade-ui'
-// version: string
+```js
+import { AudioManager } from '@davide03memoli/arcade-ui'
+
+const audio = AudioManager.getInstance()
+
+audio.play('coin')      // dialog open
+audio.play('select')    // confirm / primary button click
+audio.play('blip')      // navigation hover
+audio.play('error')     // validation failed
+audio.play('win')       // completion
+audio.play('gameover')  // game over
+
+audio.setVolume(0.5)    // 0–1, persisted in sessionStorage
+audio.mute()
+audio.unmute()
+```
+
+Auto-binding — add to any `.arc-btn` at DOM-ready:
+
+```js
+// Fires automatically at DOMContentLoaded.
+// Call manually for dynamically added elements:
+audio.bindButtons(myNewSection)
+```
+
+Override sounds per-element:
+
+```html
+<!-- custom sound on click -->
+<button class="arc-btn arc-btn-primary" data-arc-sound-click="win">YOU WIN</button>
+
+<!-- custom sound on hover -->
+<button class="arc-btn" data-arc-sound-hover="error">DANGER ZONE</button>
+
+<!-- silence hover -->
+<button class="arc-btn" data-arc-sound-hover="">SILENT</button>
+```
+
+Custom sounds via [Howler.js](https://howlerjs.com/) (optional peer dep):
+
+```bash
+npm install howler
+```
+
+```js
+audio.register('powerup', '/sounds/powerup.mp3')
+audio.play('powerup')
 ```
 
 ---
 
-## Formati disponibili
+## ⚙️ JS API
 
-| Formato | File |
-|---|---|
-| ESM | `dist/arcade-ui.es.js` |
-| CJS | `dist/arcade-ui.cjs.js` |
-| CSS | `dist/arcade-ui.css` |
-| CSS minificato | `dist/arcade-ui.min.css` |
-| Types | `dist/arcade-ui.d.ts` |
+| Export | Description |
+|--------|-------------|
+| `AudioManager` | Singleton for SFX playback |
+| `initGlitch(root?)` | Populate `data-text` on all `.arc-glitch` elements |
+| `triggerGlitch(el, duration?)` | Trigger glitch burst on an element |
+| `glitch` | `{ initGlitch, triggerGlitch }` namespace |
+| `bindButtonSounds(root?)` | Manually bind sounds to `.arc-btn` elements |
+| `version` | Package version string |
+
+```js
+import { initGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
+
+initGlitch()                    // auto-init all .arc-glitch
+triggerGlitch(el, 600)          // burst for 600ms
+```
 
 ---
 
-## Storybook
+## 📦 Package Formats
 
-Esplora i componenti e i token in modo interattivo:  
-**[https://davidememoli03.github.io/Arcade-UI/](https://davidememoli03.github.io/Arcade-UI/)**
+| Format | Import path |
+|--------|-------------|
+| ESM | `@davide03memoli/arcade-ui` |
+| CJS | `require('@davide03memoli/arcade-ui')` |
+| CSS (full) | `@davide03memoli/arcade-ui/dist/arcade-ui.css` |
+| CSS (minified) | `@davide03memoli/arcade-ui/dist/arcade-ui.min.css` |
+| Token: colors | `@davide03memoli/arcade-ui/tokens/colors` |
+| Token: animation | `@davide03memoli/arcade-ui/tokens/animation` |
+| Token: spacing | `@davide03memoli/arcade-ui/tokens/spacing` |
+| Token: typography | `@davide03memoli/arcade-ui/tokens/typography` |
+| Types | `dist/arcade-ui.d.ts` (auto-resolved) |
+
+CDN base URL: `https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/`
 
 ---
 
-## Licenza
+## 🌐 Browser Support
 
-[MIT](../LICENSE)
+| Browser | Minimum version |
+|---------|----------------|
+| Chrome / Edge | 88+ |
+| Firefox | 78+ |
+| Safari | 14+ |
+
+Requires: CSS Custom Properties · CSS Grid · Web Audio API
+
+> Internet Explorer is not supported.
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a branch: `git checkout -b feat/my-feature`
+3. Make changes inside `arcade-ui/src/`
+4. Run the checks: `npm run lint && npm test && npm run build`
+5. Open a pull request against `main`
+
+The CI pipeline (lint → test → build → publish) runs automatically on every PR.
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
+
+---
+
+## 📄 License
+
+[MIT](./LICENSE) © 2026 Davide Memoli
