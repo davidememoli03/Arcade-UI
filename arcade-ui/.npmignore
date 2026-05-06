@@ -1,0 +1,26 @@
+# Source non necessaria nel pacchetto npm
+# (il campo "files" in package.json è il whitelist principale;
+#  questo file esclude ulteriori file che npm includerebbe di default)
+
+# Codice sorgente (eccetto src/tokens distribuito via "files")
+src/
+!src/tokens/
+
+# Tool config
+.storybook/
+.github/
+docs/
+tests/
+public/
+
+# File di configurazione
+vite.config.js
+vitest.config.js
+eslint.config.js
+.stylelintrc.json
+index.html
+
+# Dev artifacts
+*.log
+*.local
+node_modules/

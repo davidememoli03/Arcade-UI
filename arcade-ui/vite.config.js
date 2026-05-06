@@ -7,6 +7,7 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
   build: {
+    copyPublicDir: false,
     lib: {
       entry: resolve(__dirname, 'src/index.js'),
       name: 'ArcadeUI',

@@ -1,8 +1,33 @@
 {
   "name": "@davide03memoli/arcade-ui",
-  "version": "0.8.0",
+  "version": "1.0.0",
+  "description": "UI component library inspired by 80s arcade games. Retro style, neon palette, pixel animations, built-in SFX — zero runtime dependencies.",
+  "keywords": [
+    "ui",
+    "arcade",
+    "retro",
+    "css",
+    "components",
+    "design-system",
+    "pixel",
+    "neon",
+    "audio",
+    "web-audio",
+    "animation"
+  ],
+  "homepage": "https://davidememoli03.github.io/Arcade-UI/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidememoli03/Arcade-UI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/davidememoli03/Arcade-UI/issues"
+  },
+  "license": "MIT",
+  "author": "Davide Memoli",
   "main": "dist/arcade-ui.cjs.js",
   "module": "dist/arcade-ui.es.js",
+  "types": "dist/arcade-ui.d.ts",
   "exports": {
     ".": {
       "import": "./dist/arcade-ui.es.js",
@@ -13,21 +38,25 @@
       "require": "./dist/arcade-ui.cjs.js"
     },
     "./dist/arcade-ui.css": "./dist/arcade-ui.css",
-    "./dist/arcade-ui.min.css": "./dist/arcade-ui.min.css"
+    "./dist/arcade-ui.min.css": "./dist/arcade-ui.min.css",
+    "./tokens/colors": "./src/tokens/colors.css",
+    "./tokens/animation": "./src/tokens/animation.css",
+    "./tokens/spacing": "./src/tokens/spacing.css",
+    "./tokens/typography": "./src/tokens/typography.css"
   },
   "files": [
     "dist",
-    "src"
+    "src/tokens",
+    "LICENSE"
   ],
   "sideEffects": [
     "*.css"
   ],
   "private": false,
   "type": "module",
-  "types": "dist/arcade-ui.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run minify:css && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts && (cp -r public/sfx dist/sfx 2>/dev/null || true)",
+    "build": "vite build && npm run minify:css && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts",
     "build:watch": "vite build --watch",
     "preview": "vite preview",
     "minify:css": "postcss dist/arcade-ui.css --use cssnano -o dist/arcade-ui.min.css",
@@ -35,11 +64,17 @@
     "lint:js": "eslint src",
     "lint:css": "stylelint src/**/*.css",
     "test": "vitest run",
+    "prepublishOnly": "npm run lint && npm test && npm run build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
     "howler": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "howler": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@storybook/html-vite": "^10.3.6",

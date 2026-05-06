@@ -23,6 +23,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: arcade-ui/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -45,6 +46,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: arcade-ui/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -64,6 +66,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: arcade-ui/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -73,18 +76,18 @@ jobs:
 
       - name: Verifica dist/
         run: |
-          test -f dist/arcade-ui.es.js  || (echo "❌ arcade-ui.es.js mancante"  && exit 1)
-          test -f dist/arcade-ui.cjs.js || (echo "❌ arcade-ui.cjs.js mancante" && exit 1)
-          test -f dist/arcade-ui.css    || (echo "❌ arcade-ui.css mancante"    && exit 1)
-          test -f dist/arcade-ui.min.css|| (echo "❌ arcade-ui.min.css mancante"&& exit 1)
-          test -f dist/arcade-ui.d.ts   || (echo "❌ arcade-ui.d.ts mancante"   && exit 1)
+          test -f dist/arcade-ui.es.js   || (echo "❌ arcade-ui.es.js mancante"   && exit 1)
+          test -f dist/arcade-ui.cjs.js  || (echo "❌ arcade-ui.cjs.js mancante"  && exit 1)
+          test -f dist/arcade-ui.css     || (echo "❌ arcade-ui.css mancante"     && exit 1)
+          test -f dist/arcade-ui.min.css || (echo "❌ arcade-ui.min.css mancante" && exit 1)
+          test -f dist/arcade-ui.d.ts    || (echo "❌ arcade-ui.d.ts mancante"    && exit 1)
           echo "✅ tutti i file dist/ presenti"
 
-      - name: Upload dist
+      - name: Upload dist artifact
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist/
+          path: arcade-ui/dist/
 
   release:
     name: Publish su npm
@@ -99,6 +102,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: arcade-ui/package-lock.json
           registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
@@ -120,6 +124,6 @@ jobs:
           echo "✅ Versione $PKG_VERSION non ancora pubblicata, procedo."
 
       - name: Publish
-        run: npm publish --access=public
+        run: npm publish --access=public --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
