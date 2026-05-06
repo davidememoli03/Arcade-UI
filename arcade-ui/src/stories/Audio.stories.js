@@ -37,7 +37,7 @@ function sfxGrid(audio, log) {
 
   sfx.forEach(({ id, icon, color, label }) => {
     const btn = document.createElement('button')
-    btn.className = `arc-btn arc-btn-ghost`
+    btn.className = 'arc-btn arc-btn-ghost'
     btn.style.cssText = `border-color:var(--arc-color-${color === 'green' ? 'green' : color === 'yellow' ? 'yellow' : color === 'red' ? 'red' : 'cyan'});color:var(--arc-color-${color === 'green' ? 'green' : color === 'yellow' ? 'yellow' : color === 'red' ? 'red' : 'cyan'});gap:.35rem;padding:10px 8px;font-size:11px;justify-content:flex-start;`
     btn.innerHTML = `<span>${icon}</span> ${label}`
     btn.addEventListener('click', () => {
@@ -179,7 +179,7 @@ export const Overview = {
     logSection.innerHTML = `<span style="${css.label}">Play log</span>`
 
     const logBox = document.createElement('div')
-    logBox.style.cssText = `padding:.75rem 1rem;background:var(--arc-color-bg-panel);border:1px solid #1a0a2e;min-height:3.5rem;display:flex;flex-direction:column;gap:.2rem;`
+    logBox.style.cssText = 'padding:.75rem 1rem;background:var(--arc-color-bg-panel);border:1px solid #1a0a2e;min-height:3.5rem;display:flex;flex-direction:column;gap:.2rem;'
     logBox.innerHTML = `<span style="${css.note}">Interagisci con i bottoni per vedere il log…</span>`
 
     // override addLog to write to logBox instead
@@ -326,14 +326,14 @@ export const SFXShowcase = {
     // Header
     const header = document.createElement('div')
     header.style.cssText = `display:grid;grid-template-columns:100px 1fr 1fr;gap:.5rem;padding:.4rem .75rem;${css.label}border-bottom:1px solid #1a0a2e;`
-    header.innerHTML = `<span>PLAY</span><span>ID</span><span>TRIGGER DEFAULT</span>`
+    header.innerHTML = '<span>PLAY</span><span>ID</span><span>TRIGGER DEFAULT</span>'
     table.appendChild(header)
 
     rows.forEach(({ id, trigger, color }) => {
       const arcColor = `var(--arc-color-${color === 'green' ? 'green' : color === 'yellow' ? 'yellow' : color === 'red' ? 'red' : 'cyan'})`
 
       const row = document.createElement('div')
-      row.style.cssText = `display:grid;grid-template-columns:100px 1fr 1fr;gap:.5rem;align-items:center;padding:.35rem .75rem;border-bottom:1px solid #0d001a;`
+      row.style.cssText = 'display:grid;grid-template-columns:100px 1fr 1fr;gap:.5rem;align-items:center;padding:.35rem .75rem;border-bottom:1px solid #0d001a;'
 
       const btn = document.createElement('button')
       btn.className = 'arc-btn arc-btn-ghost arc-btn-sm'
@@ -357,18 +357,18 @@ export const SFXShowcase = {
     wrap.appendChild(table)
 
     const codeEx = document.createElement('pre')
-    codeEx.style.cssText = `font-family:var(--arc-font-mono);font-size:.72rem;color:var(--arc-color-text-muted);background:var(--arc-color-bg-panel);padding:1rem;margin:0;line-height:1.7;overflow:auto;`
+    codeEx.style.cssText = 'font-family:var(--arc-font-mono);font-size:.72rem;color:var(--arc-color-text-muted);background:var(--arc-color-bg-panel);padding:1rem;margin:0;line-height:1.7;overflow:auto;'
     codeEx.textContent = [
-      "import { AudioManager } from '@davide03memoli/arcade-ui'",
+      'import { AudioManager } from \'@davide03memoli/arcade-ui\'',
       '',
       'const audio = AudioManager.getInstance()',
       '',
-      "audio.play('coin')      // apertura dialog",
-      "audio.play('select')    // conferma",
-      "audio.play('blip')      // navigazione",
-      "audio.play('error')     // errore",
-      "audio.play('win')       // vittoria",
-      "audio.play('gameover')  // game over",
+      'audio.play(\'coin\')      // apertura dialog',
+      'audio.play(\'select\')    // conferma',
+      'audio.play(\'blip\')      // navigazione',
+      'audio.play(\'error\')     // errore',
+      'audio.play(\'win\')       // vittoria',
+      'audio.play(\'gameover\')  // game over',
     ].join('\n')
 
     wrap.appendChild(codeEx)
