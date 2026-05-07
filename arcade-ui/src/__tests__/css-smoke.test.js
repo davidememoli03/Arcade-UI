@@ -130,6 +130,30 @@ describe('CSS smoke — badge.css', () => {
   it('definisce .arc-badge-red', () => expect(css).toContain('.arc-badge-red'))
 })
 
+describe('CSS smoke — tabs.css', () => {
+  const css = readCss('components', 'tabs.css')
+
+  it('definisce .arc-tabs', () => expect(css).toContain('.arc-tabs'))
+  it('definisce .arc-tab-radio', () => expect(css).toContain('.arc-tab-radio'))
+  it('definisce .arc-tab-list', () => expect(css).toContain('.arc-tab-list'))
+  it('definisce .arc-tab', () => expect(css).toContain('.arc-tab'))
+  it('definisce .arc-tab-panel', () => expect(css).toContain('.arc-tab-panel'))
+  it('definisce .arc-tab-active (JS-driven)', () => expect(css).toContain('.arc-tab-active'))
+  it('definisce .arc-tab-panel-active (JS-driven)', () => expect(css).toContain('.arc-tab-panel-active'))
+  it('definisce variante .arc-tabs-cyan', () => expect(css).toContain('.arc-tabs-cyan'))
+  it('definisce variante .arc-tabs-magenta', () => expect(css).toContain('.arc-tabs-magenta'))
+  it('definisce variante .arc-tabs-yellow', () => expect(css).toContain('.arc-tabs-yellow'))
+  it('definisce variante .arc-tabs-green', () => expect(css).toContain('.arc-tabs-green'))
+  it('definisce variante .arc-tabs-red', () => expect(css).toContain('.arc-tabs-red'))
+  it('definisce variante .arc-tabs-purple', () => expect(css).toContain('.arc-tabs-purple'))
+  it('usa --tabs-accent come custom property', () => expect(css).toContain('--tabs-accent'))
+  it('usa --tabs-glow come custom property', () => expect(css).toContain('--tabs-glow'))
+  it('contiene keyframes arc-tab-panel-in', () => expect(css).toContain('arc-tab-panel-in'))
+  it('contiene regole CSS-only :has()', () => expect(css).toContain(':has(.arc-tab-radio'))
+  it('contiene :nth-child(n of .arc-tab-panel)', () => expect(css).toContain('of .arc-tab-panel'))
+  it('nasconde i pannelli per default', () => expect(css).toContain('display: none'))
+})
+
 describe('CSS smoke — card.css', () => {
   const css = readCss('components', 'card.css')
 

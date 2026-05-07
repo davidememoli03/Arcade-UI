@@ -1,0 +1,236 @@
+/* src/components/tabs.css
+   Componente arc-tabs: navigazione a schede stile menu arcade.
+   Supporta due modalità:
+     1. CSS-only — <input type="radio"> + :has() + :checked (Chrome 111+, Firefox 113+, Safari 14.1+)
+     2. JS-driven — .arc-tab-active / .arc-tab-panel-active gestite da arcTabs()
+   ─────────────────────────────────────────────────────────────────── */
+
+/* ── Keyframes ───────────────────────────────────────────────────────── */
+
+/* Panel switch: flash rapido + slide giù dal pixel-art border */
+@keyframes arc-tab-panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Contenitore radice ──────────────────────────────────────────────
+   --tabs-accent / --tabs-glow: ereditati da variante colore.
+   Default: cyan.
+──────────────────────────────────────────────────────────────────── */
+.arc-tabs {
+    --tabs-accent: var(--arc-color-cyan);
+    --tabs-glow: var(--arc-color-cyan-glow);
+
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: var(--arc-color-bg-panel);
+    border: var(--arc-border-md) solid var(--tabs-accent);
+    box-shadow:
+        0 0 14px var(--tabs-glow),
+        inset 0 0 12px rgb(0 0 0 / 40%);
+}
+
+/* ── Radio inputs: visually hidden, accessibili via label ────────────
+   clip-path: inset(50%) è la tecnica moderna (vs. clip: rect).
+──────────────────────────────────────────────────────────────────── */
+.arc-tab-radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ── Tab bar ─────────────────────────────────────────────────────────
+   Sfondo puro nero, separato dal pannello dal bordo accent in basso.
+   overflow-x: auto per scorrimento orizzontale su mobile.
+──────────────────────────────────────────────────────────────────── */
+.arc-tab-list {
+    display: flex;
+    flex-direction: row;
+    background: var(--arc-color-bg);
+    border-bottom: var(--arc-border-md) solid var(--tabs-accent);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.arc-tab-list::-webkit-scrollbar {
+    display: none;
+}
+
+/* ── Singolo tab ─────────────────────────────────────────────────────
+   Funziona sia come <label> (CSS-only) che come <button> (JS-driven).
+   border-top: 4px trasparente → sostituito da accent sul tab attivo.
+   border-right: separatore pixel-art tra i tab.
+──────────────────────────────────────────────────────────────────── */
+.arc-tab {
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    font-family: var(--arc-font-pixel);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--arc-color-text-muted);
+    cursor: pointer;
+
+    /* Reset per <button> */
+    appearance: none;
+    border: none;
+    background: transparent;
+
+    /* Bordo superiore (indicatore attivo) + separatore verticale */
+    border-top: var(--arc-border-lg) solid transparent;
+    border-right: var(--arc-border-sm) solid color-mix(in srgb, var(--tabs-accent) 25%, transparent);
+    transition:
+        color var(--arc-anim-fast) var(--arc-ease-pixel),
+        background var(--arc-anim-fast) var(--arc-ease-pixel),
+        text-shadow var(--arc-anim-fast) var(--arc-ease-pixel);
+    white-space: nowrap;
+    user-select: none;
+}
+
+/* Ultimo tab: nessun separatore a destra */
+.arc-tab:last-child {
+    border-right: none;
+}
+
+/* ── Tab hover ────────────────────────────────────────────────────── */
+.arc-tab:hover {
+    color: var(--tabs-accent);
+    background: color-mix(in srgb, var(--tabs-accent) 8%, transparent);
+}
+
+/* ── Tab focus da tastiera ────────────────────────────────────────── */
+.arc-tab:focus-visible {
+    outline: 2px solid var(--tabs-accent);
+    outline-offset: -3px;
+    z-index: 1;
+}
+
+/* ── Tab attivo ──────────────────────────────────────────────────────
+   Bordo superiore neon (4px accent) + glow sul testo.
+   Regole combinate: JS-driven (.arc-tab-active) e CSS-only (:has()).
+   Nota: le regole :has() richiedono Chrome 111+, Firefox 113+, Safari 14.1+.
+──────────────────────────────────────────────────────────────────── */
+
+/* JS-driven */
+.arc-tab.arc-tab-active,
+
+/* CSS-only: 1° radio checked → 1° tab attivo */
+.arc-tabs:has(.arc-tab-radio:nth-child(1):checked) .arc-tab-list .arc-tab:nth-child(1),
+
+/* CSS-only: 2° radio checked → 2° tab attivo */
+.arc-tabs:has(.arc-tab-radio:nth-child(2):checked) .arc-tab-list .arc-tab:nth-child(2),
+
+/* CSS-only: 3° radio checked → 3° tab attivo */
+.arc-tabs:has(.arc-tab-radio:nth-child(3):checked) .arc-tab-list .arc-tab:nth-child(3),
+
+/* CSS-only: 4° radio checked → 4° tab attivo */
+.arc-tabs:has(.arc-tab-radio:nth-child(4):checked) .arc-tab-list .arc-tab:nth-child(4),
+
+/* CSS-only: 5° radio checked → 5° tab attivo */
+.arc-tabs:has(.arc-tab-radio:nth-child(5):checked) .arc-tab-list .arc-tab:nth-child(5),
+
+/* CSS-only: 6° radio checked → 6° tab attivo */
+.arc-tabs:has(.arc-tab-radio:nth-child(6):checked) .arc-tab-list .arc-tab:nth-child(6) {
+    color: var(--tabs-accent);
+    background: color-mix(in srgb, var(--tabs-accent) 12%, transparent);
+    border-top-color: var(--tabs-accent);
+    text-shadow:
+        0 0 8px var(--tabs-accent),
+        0 0 20px var(--tabs-glow);
+    cursor: default;
+}
+
+/* ── Pannelli contenuto ──────────────────────────────────────────────
+   Nascosti per default.
+   Diventano visibili via JS (.arc-tab-panel-active) o CSS (:has()).
+──────────────────────────────────────────────────────────────────── */
+.arc-tab-panel {
+    display: none;
+    padding: var(--arc-space-3);
+    font-family: var(--arc-font-terminal);
+    font-size: var(--arc-text-body-size);
+    line-height: var(--arc-text-body-lh);
+    color: var(--arc-color-text-muted);
+}
+
+/* ── Pannello visibile (JS-driven) ───────────────────────────────── */
+.arc-tab-panel.arc-tab-panel-active {
+    display: block;
+    animation: arc-tab-panel-in var(--arc-anim-fast) var(--arc-ease-pixel) forwards;
+}
+
+/* ── Pannello visibile (CSS-only, :has() + :nth-child(n of S)) ──────
+   Nota: :nth-child(n of .class) richiede Chrome 111+, Firefox 113+.
+──────────────────────────────────────────────────────────────────── */
+.arc-tabs:has(.arc-tab-radio:nth-child(1):checked) .arc-tab-panel:nth-child(1 of .arc-tab-panel),
+.arc-tabs:has(.arc-tab-radio:nth-child(2):checked) .arc-tab-panel:nth-child(2 of .arc-tab-panel),
+.arc-tabs:has(.arc-tab-radio:nth-child(3):checked) .arc-tab-panel:nth-child(3 of .arc-tab-panel),
+.arc-tabs:has(.arc-tab-radio:nth-child(4):checked) .arc-tab-panel:nth-child(4 of .arc-tab-panel),
+.arc-tabs:has(.arc-tab-radio:nth-child(5):checked) .arc-tab-panel:nth-child(5 of .arc-tab-panel),
+.arc-tabs:has(.arc-tab-radio:nth-child(6):checked) .arc-tab-panel:nth-child(6 of .arc-tab-panel) {
+    display: block;
+    animation: arc-tab-panel-in var(--arc-anim-fast) var(--arc-ease-pixel) forwards;
+}
+
+/* ── Varianti colore ─────────────────────────────────────────────────
+   Sovrascrivono --tabs-accent e --tabs-glow.
+──────────────────────────────────────────────────────────────────── */
+.arc-tabs-cyan {
+    --tabs-accent: var(--arc-color-cyan);
+    --tabs-glow: var(--arc-color-cyan-glow);
+}
+
+.arc-tabs-magenta {
+    --tabs-accent: #f0c;
+    --tabs-glow: rgb(255 0 204 / 25%);
+}
+
+.arc-tabs-yellow {
+    --tabs-accent: var(--arc-color-yellow);
+    --tabs-glow: var(--arc-color-yellow-glow);
+}
+
+.arc-tabs-green {
+    --tabs-accent: var(--arc-color-green);
+    --tabs-glow: var(--arc-color-green-glow);
+}
+
+.arc-tabs-red {
+    --tabs-accent: var(--arc-color-red);
+    --tabs-glow: var(--arc-color-red-glow);
+}
+
+.arc-tabs-purple {
+    --tabs-accent: var(--arc-color-purple);
+    --tabs-glow: var(--arc-color-purple-glow);
+}
+
+/* ── Responsive: padding ridotto su mobile ──────────────────────── */
+@media (width <= 480px) {
+    .arc-tab {
+        padding: 10px 12px;
+        font-size: 0.5rem;
+    }
+
+    .arc-tab-panel {
+        padding: var(--arc-space-2);
+    }
+}

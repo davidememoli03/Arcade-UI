@@ -129,6 +129,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | Component | Classes | Variants | Storybook |
 |-----------|---------|----------|-----------|
 | **Button** | `.arc-btn` | `arc-btn-primary` · `arc-btn-ghost` · `arc-btn-danger` · `arc-btn-sm` · `arc-btn-lg` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-button--primary) |
+| **Tabs** | `.arc-tabs` · `.arc-tab-list` · `.arc-tab` · `.arc-tab-panel` | `arc-tabs-cyan` · `arc-tabs-magenta` · `arc-tabs-yellow` · `arc-tabs-green` · `arc-tabs-red` · `arc-tabs-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-tabs--multi-panel-demo) |
 | **Card** | `.arc-card` | `arc-card-cyan` · `arc-card-red` · `arc-card-yellow` · `arc-card-green` · `arc-card-purple` · `arc-card-glow` · `arc-card-selected` · `arc-card-locked` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-card--character-select-screen) |
 | **Panel** | `.arc-panel` | `arc-panel-cyan` · `arc-panel-red` · `arc-panel-yellow` · `arc-panel-green` · `arc-panel-purple` · `arc-panel-glass` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-panel--default) |
 | **Input** | `.arc-input` · `.arc-label` | `.arc-textarea` · `.arc-select` · `.arc-input-hint` · `.arc-input-hint-error` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-input--default) |
@@ -142,6 +143,72 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Glitch** | `.arc-glitch` · `.arc-glitch-hover` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glitch--always-on) |
 | **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
 | **Animations** | `.arc-u-blink` · `.arc-u-pulse` · `.arc-u-glitch` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-animation--keyframes) |
+
+### Tabs anatomy
+
+Menu di navigazione a schede stile HUD arcade. Supporta due modalità di funzionamento senza conflitti.
+
+**Modalità CSS-only** — zero JavaScript, usa `<input type="radio">` nascosti + selettori `:has()` + `:checked`:
+
+```html
+<div class="arc-tabs arc-tabs-cyan">
+  <!-- radio inputs: uno per tab, stessa name, id unici -->
+  <input class="arc-tab-radio" type="radio" name="my-tabs" id="tab-1" checked>
+  <input class="arc-tab-radio" type="radio" name="my-tabs" id="tab-2">
+  <input class="arc-tab-radio" type="radio" name="my-tabs" id="tab-3">
+
+  <!-- tab bar: label collegati agli input via for= -->
+  <div class="arc-tab-list" role="tablist">
+    <label class="arc-tab" for="tab-1">STAGE 1</label>
+    <label class="arc-tab" for="tab-2">STAGE 2</label>
+    <label class="arc-tab" for="tab-3">STAGE 3</label>
+  </div>
+
+  <!-- pannelli contenuto: uno per tab, nello stesso ordine -->
+  <div class="arc-tab-panel">Contenuto Stage 1</div>
+  <div class="arc-tab-panel">Contenuto Stage 2</div>
+  <div class="arc-tab-panel">Contenuto Stage 3</div>
+</div>
+```
+
+> **Requisiti CSS-only:** Chrome 111+, Firefox 113+, Safari 14.1+ (`:has()` + `:nth-child(n of .class)`). Supporta fino a 6 tab.
+
+**Modalità JS-driven** — aggiungere `data-arc-tabs` al contenitore e usare `<button>` nei tab; l'inizializzazione avviene automaticamente a `DOMContentLoaded`:
+
+```html
+<div class="arc-tabs arc-tabs-cyan" data-arc-tabs>
+  <div class="arc-tab-list" role="tablist">
+    <button class="arc-tab" role="tab">STAGE 1</button>
+    <button class="arc-tab" role="tab">STAGE 2</button>
+  </div>
+  <div class="arc-tab-panel" role="tabpanel">Contenuto Stage 1</div>
+  <div class="arc-tab-panel" role="tabpanel">Contenuto Stage 2</div>
+</div>
+```
+
+```js
+import { arcTabs, bindTabs } from '@davide03memoli/arcade-ui'
+
+// Auto-bind tutti gli elementi [data-arc-tabs]
+bindTabs()
+
+// Oppure inizializza manualmente un singolo elemento
+const tabs = arcTabs(document.querySelector('.arc-tabs'))
+tabs.activate(2) // attiva il 3° tab (0-based)
+```
+
+Navigazione da tastiera conforme al pattern ARIA Tabs: `ArrowLeft`/`ArrowRight` per navigare, `Home`/`End` per il primo/ultimo tab.
+
+**Varianti colore** — aggiungere a `.arc-tabs`:
+
+| Classe | Uso consigliato |
+|---|---|
+| `arc-tabs-cyan` | Primary — HUD, pannelli principali |
+| `arc-tabs-magenta` | Secondary — alert, sezioni speciali |
+| `arc-tabs-yellow` | Coins, inventario, ricompense |
+| `arc-tabs-green` | Salute, stato, completamento |
+| `arc-tabs-red` | Pericolo, errori critici |
+| `arc-tabs-purple` | Magia, poteri speciali |
 
 ### Card anatomy
 
