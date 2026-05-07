@@ -243,7 +243,7 @@ arcModal.bindModalTriggers(document.getElementById('dynamic-section'))
 ### Progress anatomy
 
 ```html
-<!-- Determined — set fill with --arc-progress -->
+<!-- Determined — set fill with --arc-progress directly on .arc-progress -->
 <div class="arc-progress-wrapper arc-progress-cyan">
   <span class="arc-progress-label">LOADING  75%</span>
   <div class="arc-progress"

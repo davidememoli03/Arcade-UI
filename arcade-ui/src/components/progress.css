@@ -25,13 +25,14 @@
 
 /* ── Track (binario esterno) ──────────────────────────────────────────
    --progress-accent / --progress-glow: default cyan, varianti sovrascrivono.
-   --arc-progress: percentuale di fill; impostata via style="" sull'host.
+   --arc-progress: NON definita qui per non bloccare l'ereditarietà CSS.
+   Impostala via style="--arc-progress:75%" direttamente su .arc-progress.
+   .arc-progress-bar la legge con fallback 0% tramite var(--arc-progress, 0%).
    overflow: hidden isola i segmenti del fill.
 ──────────────────────────────────────────────────────────────────── */
 .arc-progress {
     --progress-accent: var(--arc-color-cyan);
     --progress-glow:   var(--arc-color-cyan-glow);
-    --arc-progress:    0%;
 
     position: relative;
     width: 100%;

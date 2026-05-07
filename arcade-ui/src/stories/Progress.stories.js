@@ -26,6 +26,8 @@ function bar({
 }) {
   const sizeClass  = size ? ` arc-progress-${size}` : ''
   const indetClass = indeterminate ? ' arc-progress-indeterminate' : ''
+  // style="" va sempre su .arc-progress, mai sul wrapper, per evitare
+  // che la custom property venga ereditata e poi sovrascritta dalla regola CSS
   const style      = !indeterminate ? ` style="--arc-progress:${value}%"` : ''
   const ariaValue  = !indeterminate ? `aria-valuenow="${value}"` : 'aria-valuenow="0"'
   const labelHTML  = label
@@ -34,11 +36,11 @@ function bar({
 
   if (label || wrapperClass) {
     return `\
-<div class="arc-progress-wrapper ${wrapperClass || progressClass}"${style}>
+<div class="arc-progress-wrapper ${wrapperClass || progressClass}">
   ${labelHTML}<div class="arc-progress${indetClass}${sizeClass}"
        role="progressbar" ${ariaValue}
        aria-valuemin="0" aria-valuemax="100"
-       aria-label="${label || 'Progress'}">
+       aria-label="${label || 'Progress'}"${style}>
     <div class="arc-progress-bar"></div>
   </div>
 </div>`
@@ -143,7 +145,7 @@ export const GameHUD = {
   <div class="arc-panel-header">PLAYER 1</div>
   <div class="arc-panel-body" style="display:flex;flex-direction:column;gap:12px">
 
-    <div class="arc-progress-wrapper arc-progress-green" style="--arc-progress:78%">
+    <div class="arc-progress-wrapper arc-progress-green">
       <span class="arc-progress-label">HP  78/100</span>
       <div class="arc-progress" role="progressbar"
            aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"
@@ -152,7 +154,7 @@ export const GameHUD = {
       </div>
     </div>
 
-    <div class="arc-progress-wrapper arc-progress-yellow" style="--arc-progress:40%">
+    <div class="arc-progress-wrapper arc-progress-yellow">
       <span class="arc-progress-label">MP  40/100</span>
       <div class="arc-progress" role="progressbar"
            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
@@ -161,7 +163,7 @@ export const GameHUD = {
       </div>
     </div>
 
-    <div class="arc-progress-wrapper arc-progress-cyan" style="--arc-progress:62%">
+    <div class="arc-progress-wrapper arc-progress-cyan">
       <span class="arc-progress-label">XP  620/1000</span>
       <div class="arc-progress" role="progressbar"
            aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"
