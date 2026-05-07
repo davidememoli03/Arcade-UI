@@ -1,77 +1,25 @@
-/* src/tokens/colors.css
-   Palette neon arcade — CSS custom properties.
-   Usa sempre var() nei componenti, mai valori hardcoded.
-   ─────────────────────────────────────────────────── */
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
 
 :root {
-    /* ── Sfondi ──────────────────────────────────────
-     bg       : schermo principale, nero assoluto
-     bg-alt   : livello alternativo (striping, hover)
-     bg-panel : superficie card / dialog / panel
-  ──────────────────────────────────────────────── */
-    --arc-color-bg:       #000;
-    --arc-color-bg-alt:   #0a0010;
-    --arc-color-bg-panel: #110020;
-
-    /* ── Neon ────────────────────────────────────────
-     Colori vividi, usati per bordi, glow e accenti.
-     Il canale alpha 4 indica ~25% di opacità (box-shadow).
-  ──────────────────────────────────────────────── */
-    --arc-color-cyan: #00f5ff;
-
-    /* colore primario, default border/text */
-    --arc-color-cyan-glow: #00f5ff4;
-
-    /* glow cyan al 25% */
-    --arc-color-red: #ff2d55;
-
-    /* pericolo, vita persa, errore */
-    --arc-color-red-glow: #ff2d554;
-    --arc-color-yellow: #ffd700;
-
-    /* monete, avvisi, highlight */
-    --arc-color-yellow-glow: #ffd7004;
-    --arc-color-green: #39ff14;
-
-    /* vittoria, successo, health */
-    --arc-color-green-glow: #39ff144;
-    --arc-color-purple: #bf00ff;
-
-    /* magia, power-up speciali */
-    --arc-color-purple-glow: #bf00ff4;
-    --arc-color-pink: #ff69b4;
-
-    /* bonus, extra life, charm */
-    --arc-color-pink-glow: #ff69b44;
-
-    /* ── Testo ───────────────────────────────────────
-     text        : testo principale
-     text-muted  : testo secondario / placeholder
-     text-accent : highlight inline nel testo
-  ──────────────────────────────────────────────── */
-    --arc-color-text:        var(--arc-color-cyan);
-    --arc-color-text-muted:  #077;
-    --arc-color-text-accent: var(--arc-color-yellow);
-
-    /* ── Stato ───────────────────────────────────────
-     disabled : controlli non interattivi
-  ──────────────────────────────────────────────── */
-    --arc-color-disabled: #345;
-
-}
-
-/* ── Dark mode automatica ─────────────────────────
-   Gli schermi arcade sono sempre scuri, ma se il
-   browser è in light mode forziamo il tema scuro
-   sovrascrivendo le variabili critiche.
-──────────────────────────────────────────────────── */
-@media (prefers-color-scheme: light) {
-    :root {
-        /* manteniamo il look arcade anche in light mode */
-        --arc-color-bg:       #000;
-        --arc-color-bg-alt:   #0a0010;
-        --arc-color-bg-panel: #110020;
-
-    }
-
+  --arc-color-bg: #000; /** Main screen background, absolute black */
+  --arc-color-bg-alt: #0a0010; /** Alternate surface (hover, striping) */
+  --arc-color-bg-panel: #110020; /** Card / panel / dialog surface */
+  --arc-color-cyan: #00f5ff; /** Primary neon — default border and text */
+  --arc-color-cyan-glow: #00f5ff40; /** Cyan at 25% opacity for glow shadows */
+  --arc-color-red: #ff2d55; /** Danger, life lost, error */
+  --arc-color-red-glow: #ff2d5540; /** Red at 25% opacity */
+  --arc-color-yellow: #ffd700; /** Coins, warnings, highlights */
+  --arc-color-yellow-glow: #ffd70040; /** Yellow at 25% opacity */
+  --arc-color-green: #39ff14; /** Victory, success, health */
+  --arc-color-green-glow: #39ff1440; /** Green at 25% opacity */
+  --arc-color-purple: #bf00ff; /** Magic, special power-ups */
+  --arc-color-purple-glow: #bf00ff40; /** Purple at 25% opacity */
+  --arc-color-pink: #ff69b4; /** Bonus, extra life, charm */
+  --arc-color-pink-glow: #ff69b440; /** Pink at 25% opacity */
+  --arc-color-text: #00f5ff; /** Primary text colour (mirrors cyan) */
+  --arc-color-text-muted: #077; /** Secondary / placeholder text */
+  --arc-color-text-accent: #ffd700; /** Inline highlight (mirrors yellow) */
+  --arc-color-disabled: #345; /** Disabled controls */
 }

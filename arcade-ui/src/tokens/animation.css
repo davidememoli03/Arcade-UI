@@ -1,35 +1,17 @@
 /* src/tokens/animation.css
-   Token di animazione arcade: durate, easing e keyframes.
-   ─────────────────────────────────────────────────────── */
+   Thin wrapper: importa le custom properties generate da Style Dictionary
+   (src/tokens/animation-vars.css) e aggiunge i @keyframes globali che SD
+   non può generare automaticamente.
 
-:root {
-    /* ── Durate ──────────────────────────────────
-     instant  : feedback immediato (toggle, flash)
-     fast     : transizioni brevi (hover, focus)
-     normal   : transizioni standard (slide, fade)
-     slow     : animazioni enfatizzate (apertura modal)
-     dramatic : intro, game over, cutscene
-  ──────────────────────────────────────────── */
-    --arc-anim-instant: 50ms;
-    --arc-anim-fast: 150ms;
-    --arc-anim-normal: 300ms;
-    --arc-anim-slow: 600ms;
-    --arc-anim-dramatic: 1200ms;
+   Per modificare durate e easing aggiornare src/tokens/tokens.json
+   e rieseguire `npm run build:tokens`.
+   ─────────────────────────────────────────────────────────────────── */
 
-    /* ── Easing ──────────────────────────────────
-     step    : cambio binario, ON/OFF puro
-     pixel   : 4 frame, animazione pixelart fluida
-     arcade  : 8 frame, movimento arcade classico
-  ──────────────────────────────────────────── */
-    --arc-ease-step: steps(1);
-    --arc-ease-pixel: steps(4);
-    --arc-ease-arcade: steps(8);
+@import url('./animation-vars.css');
 
-}
-
-/* ── Keyframes globali ───────────────────────────
-   Disponibili a tutti i componenti dopo l'import.
-──────────────────────────────────────────────── */
+/* ── Keyframes globali ───────────────────────────────────────────────
+   Disponibili a tutti i componenti dopo l'import di arcade-ui.css.
+──────────────────────────────────────────────────────────────────── */
 
 /* blink: cursore testo, indicatore attivo */
 @keyframes blink {

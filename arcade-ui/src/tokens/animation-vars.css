@@ -1,0 +1,14 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --arc-anim-instant: 50ms; /** Immediate feedback (toggle, flash) */
+  --arc-anim-fast: 150ms; /** Short transitions (hover, focus) */
+  --arc-anim-normal: 300ms; /** Standard transitions (slide, fade) */
+  --arc-anim-slow: 600ms; /** Emphasised animations (modal open) */
+  --arc-anim-dramatic: 1200ms; /** Intro, game-over, cutscene */
+  --arc-ease-step: steps(1); /** Binary ON/OFF, no interpolation */
+  --arc-ease-pixel: steps(4); /** 4-frame pixel-art transition */
+  --arc-ease-arcade: steps(8); /** 8-frame classic arcade movement */
+}

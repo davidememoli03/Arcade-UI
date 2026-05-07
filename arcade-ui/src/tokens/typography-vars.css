@@ -1,0 +1,21 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --arc-font-pixel: 'Press Start 2P', 'Courier New', courier, monospace; /** Block characters — titles and UI */
+  --arc-font-terminal: 'VT323', 'Courier New', courier, monospace; /** CRT-style — body text */
+  --arc-font-mono: 'Silkscreen', 'Courier New', courier, monospace; /** Code, debug, technical values */
+  --arc-text-display-size: 64px; /** Hero / Game Over title */
+  --arc-text-display-lh: 1.1;
+  --arc-text-h1-size: 32px; /** Primary section heading */
+  --arc-text-h1-lh: 1.2;
+  --arc-text-h2-size: 24px; /** Sub-title, card heading */
+  --arc-text-h2-lh: 1.3;
+  --arc-text-h3-size: 20px; /** Group label, minor heading */
+  --arc-text-h3-lh: 1.4;
+  --arc-text-body-size: 20px; /** Running text, dialogues */
+  --arc-text-body-lh: 1.6;
+  --arc-text-caption-size: 14px; /** Labels, notes, placeholders */
+  --arc-text-caption-lh: 1.5;
+}

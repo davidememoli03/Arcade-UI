@@ -1,54 +1,25 @@
-/* src/tokens/spacing.css
-   Token di spaziatura, griglia 8px, breakpoint,
-   border-radius e border-width.
-   ─────────────────────────────────────────── */
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
 
 :root {
-    /* ── Griglia 8px ─────────────────────────────
-     Ogni step è un multiplo di 8px.
-     Usare sempre questi token invece di valori px arbitrari.
-     1 →  8px  (gap minimo, padding icone)
-     2 → 16px  (padding componenti compatti)
-     3 → 24px  (padding componenti standard)
-     4 → 32px  (margini interni sezione)
-     6 → 48px  (spaziatura tra sezioni)
-     8 → 64px  (padding layout principale)
-    12 → 96px  (hero padding, separatori grandi)
-  ──────────────────────────────────────────── */
-    --arc-space-1: 8px;
-    --arc-space-2: 16px;
-    --arc-space-3: 24px;
-    --arc-space-4: 32px;
-    --arc-space-5: 40px;
-    --arc-space-6: 48px;
-    --arc-space-7: 56px;
-    --arc-space-8: 64px;
-    --arc-space-9: 72px;
-    --arc-space-10: 80px;
-    --arc-space-11: 88px;
-    --arc-space-12: 96px;
-
-    /* ── Breakpoint ──────────────────────────────
-     pocket   : smartphone, schermi piccoli
-     handheld : tablet, monitor da gioco standard
-  ──────────────────────────────────────────── */
-    --arc-bp-pocket: 480px;
-    --arc-bp-handheld: 1280px;
-
-    /* ── Border radius ───────────────────────────
-     none  : spigoli netti, stile pixelart puro
-     pixel : arrotondamento minimo (default UI)
-  ──────────────────────────────────────────── */
-    --arc-radius-none: 0px;
-    --arc-radius-pixel: 4px;
-
-    /* ── Border width ────────────────────────────
-     sm : bordo sottile, input, card secondarie
-     md : bordo standard, panel, button
-     lg : bordo enfatizzato, highlight attivo
-  ──────────────────────────────────────────── */
-    --arc-border-sm: 2px;
-    --arc-border-md: 4px;
-    --arc-border-lg: 6px;
-
+  --arc-space-1: 8px;
+  --arc-space-2: 16px;
+  --arc-space-3: 24px;
+  --arc-space-4: 32px;
+  --arc-space-5: 40px;
+  --arc-space-6: 48px;
+  --arc-space-7: 56px;
+  --arc-space-8: 64px;
+  --arc-space-9: 72px;
+  --arc-space-10: 80px;
+  --arc-space-11: 88px;
+  --arc-space-12: 96px;
+  --arc-bp-pocket: 480px; /** Smartphone / small screens */
+  --arc-bp-handheld: 1280px; /** Tablet / standard game monitor */
+  --arc-radius-none: 0px; /** Sharp pixel-art corners (default UI) */
+  --arc-radius-pixel: 4px; /** Minimal rounding */
+  --arc-border-sm: 2px; /** Thin border — inputs, secondary cards */
+  --arc-border-md: 4px; /** Standard border — panels, buttons */
+  --arc-border-lg: 6px; /** Emphasised border — active highlight */
 }

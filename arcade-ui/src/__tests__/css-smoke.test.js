@@ -6,7 +6,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'fs'
 import { resolve, dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const src = (...parts) => resolve(__dirname, '..', ...parts)
@@ -173,12 +173,24 @@ describe('CSS smoke — tokens/colors.css', () => {
   it('definisce --arc-color-disabled', () => expect(css).toContain('--arc-color-disabled'))
 })
 
-describe('CSS smoke — tokens/typography.css', () => {
+describe('CSS smoke — tokens/typography.css (wrapper)', () => {
   const css = readCss('tokens', 'typography.css')
+
+  it('importa typography-vars.css generato da SD', () =>
+    expect(css).toContain("@import url('./typography-vars.css')"))
+  it('importa Google Fonts', () =>
+    expect(css).toContain('fonts.googleapis.com'))
+})
+
+describe('CSS smoke — tokens/typography-vars.css (generato da SD)', () => {
+  const css = readCss('tokens', 'typography-vars.css')
 
   it('definisce --arc-font-pixel', () => expect(css).toContain('--arc-font-pixel'))
   it('definisce --arc-font-terminal', () => expect(css).toContain('--arc-font-terminal'))
   it('definisce --arc-font-mono', () => expect(css).toContain('--arc-font-mono'))
+  it('definisce --arc-text-h1-size', () => expect(css).toContain('--arc-text-h1-size'))
+  it('definisce --arc-text-body-size', () => expect(css).toContain('--arc-text-body-size'))
+  it('reca il banner auto-generated', () => expect(css).toContain('auto-generated'))
 })
 
 describe('CSS smoke — tokens/spacing.css', () => {
@@ -189,12 +201,44 @@ describe('CSS smoke — tokens/spacing.css', () => {
   it('definisce --arc-radius-pixel', () => expect(css).toContain('--arc-radius-pixel'))
 })
 
-describe('CSS smoke — tokens/animation.css', () => {
+describe('CSS smoke — tokens/animation.css (wrapper)', () => {
   const css = readCss('tokens', 'animation.css')
+
+  it('importa animation-vars.css generato da SD', () =>
+    expect(css).toContain("@import url('./animation-vars.css')"))
+  it('mantiene @keyframes blink', () => expect(css).toContain('@keyframes blink'))
+  it('mantiene @keyframes pulse-glow', () => expect(css).toContain('@keyframes pulse-glow'))
+  it('mantiene @keyframes glitch', () => expect(css).toContain('@keyframes glitch'))
+})
+
+describe('CSS smoke — tokens/animation-vars.css (generato da SD)', () => {
+  const css = readCss('tokens', 'animation-vars.css')
 
   it('definisce --arc-anim-fast', () => expect(css).toContain('--arc-anim-fast'))
   it('definisce --arc-anim-normal', () => expect(css).toContain('--arc-anim-normal'))
   it('definisce --arc-ease-pixel', () => expect(css).toContain('--arc-ease-pixel'))
+  it('definisce --arc-ease-arcade', () => expect(css).toContain('--arc-ease-arcade'))
+  it('reca il banner auto-generated', () => expect(css).toContain('auto-generated'))
+})
+
+// ─── Style Dictionary — tokens.flat.json ─────────────────────────────────────
+
+describe('Style Dictionary — tokens.flat.json', () => {
+  const raw  = readFileSync(src('tokens', 'tokens.flat.json'), 'utf-8')
+  const flat = JSON.parse(raw)
+
+  it('è un oggetto JSON valido', () => expect(typeof flat).toBe('object'))
+  it('contiene arc-color-bg', () => expect(flat).toHaveProperty('arc-color-bg'))
+  it('contiene arc-color-cyan', () => expect(flat).toHaveProperty('arc-color-cyan'))
+  it('contiene arc-space-1', () => expect(flat).toHaveProperty('arc-space-1'))
+  it('contiene arc-anim-fast', () => expect(flat).toHaveProperty('arc-anim-fast'))
+  it('contiene arc-font-pixel', () => expect(flat).toHaveProperty('arc-font-pixel'))
+  it('il valore di arc-color-cyan è #00f5ff', () =>
+    expect(flat['arc-color-cyan']).toBe('#00f5ff'))
+  it('il valore di arc-space-1 è 8px', () =>
+    expect(flat['arc-space-1']).toBe('8px'))
+  it('il valore di arc-anim-fast è 150ms', () =>
+    expect(flat['arc-anim-fast']).toBe('150ms'))
 })
 
 // ─── Deprecated selectors are marked (not silently removed) ──────────────────
