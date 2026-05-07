@@ -4,8 +4,8 @@
 // in the source files. These run against src/ (always present, no build needed)
 // and catch accidental deletions or renames before they reach the bundle.
 import { describe, it, expect } from 'vitest'
-import { readFileSync } from 'fs'
-import { resolve, dirname } from 'path'
+import { readFileSync } from 'node:fs'
+import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
