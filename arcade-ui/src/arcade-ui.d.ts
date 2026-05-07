@@ -123,6 +123,31 @@ export declare const arcModal: {
   bindModalTriggers(root?: Document | Element): void
 }
 
+// ─── Progress bar (arc-progress) ────────────────────────────────────────────
+//
+// CSS-only component — no JS exports needed.
+// Control fill amount via the --arc-progress custom property:
+//   <div class="arc-progress" style="--arc-progress: 75%">
+//     <div class="arc-progress-bar"></div>
+//   </div>
+//
+// Variants: arc-progress-cyan | arc-progress-green | arc-progress-yellow |
+//           arc-progress-red  | arc-progress-purple
+//
+// Indeterminate: arc-progress-indeterminate  (looping sweep animation)
+//
+// Size:     arc-progress-sm (12px) | default (24px) | arc-progress-lg (40px)
+//
+// Wrapper:  arc-progress-wrapper + arc-progress-label for label support.
+//           Place the variant class on .arc-progress-wrapper to propagate
+//           the accent colour to the label via CSS inheritance.
+//
+// Update fill from JS:
+//   el.style.setProperty('--arc-progress', '60%')
+//   el.setAttribute('aria-valuenow', '60')
+//
+// See arcade-ui/README.md for full HTML structure.
+
 // ─── Button sounds ────────────────────────────────────────────────────────────
 
 /**

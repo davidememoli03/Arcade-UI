@@ -82,6 +82,27 @@ describe('CSS smoke — modal.css', () => {
   it('contiene keyframes arc-modal-backdrop-in', () => expect(css).toContain('arc-modal-backdrop-in'))
 })
 
+describe('CSS smoke — progress.css', () => {
+  const css = readCss('components', 'progress.css')
+
+  it('definisce .arc-progress', () => expect(css).toContain('.arc-progress'))
+  it('definisce .arc-progress-bar', () => expect(css).toContain('.arc-progress-bar'))
+  it('definisce .arc-progress-indeterminate', () => expect(css).toContain('.arc-progress-indeterminate'))
+  it('definisce .arc-progress-wrapper', () => expect(css).toContain('.arc-progress-wrapper'))
+  it('definisce .arc-progress-label', () => expect(css).toContain('.arc-progress-label'))
+  it('definisce .arc-progress-sm', () => expect(css).toContain('.arc-progress-sm'))
+  it('definisce .arc-progress-lg', () => expect(css).toContain('.arc-progress-lg'))
+  it('definisce variante .arc-progress-cyan', () => expect(css).toContain('.arc-progress-cyan'))
+  it('definisce variante .arc-progress-green', () => expect(css).toContain('.arc-progress-green'))
+  it('definisce variante .arc-progress-yellow', () => expect(css).toContain('.arc-progress-yellow'))
+  it('definisce variante .arc-progress-red', () => expect(css).toContain('.arc-progress-red'))
+  it('definisce variante .arc-progress-purple', () => expect(css).toContain('.arc-progress-purple'))
+  it('usa --progress-accent come custom property', () => expect(css).toContain('--progress-accent'))
+  it('usa --arc-progress per il fill width', () => expect(css).toContain('--arc-progress'))
+  it('contiene keyframes arc-progress-sweep', () => expect(css).toContain('arc-progress-sweep'))
+  it('usa repeating-linear-gradient per i blocchi', () => expect(css).toContain('repeating-linear-gradient'))
+})
+
 describe('CSS smoke — badge.css', () => {
   const css = readCss('components', 'badge.css')
 

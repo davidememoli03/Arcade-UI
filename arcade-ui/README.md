@@ -133,6 +133,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Input** | `.arc-input` · `.arc-label` | `.arc-textarea` · `.arc-select` · `.arc-input-hint` · `.arc-input-hint-error` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-input--default) |
 | **Dropdown** | `.arc-dropdown` | `arc-dropdown-cyan` · `arc-dropdown-green` · `arc-dropdown-red` · `arc-dropdown-yellow` · `arc-dropdown-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-dropdown--default) |
 | **Modal** | `.arc-modal` · `.arc-modal-backdrop` | `arc-modal-cyan` · `arc-modal-green` · `arc-modal-yellow` · `arc-modal-red` · `arc-modal-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-modal--default) |
+| **Progress** | `.arc-progress` · `.arc-progress-bar` | `arc-progress-cyan` · `arc-progress-green` · `arc-progress-yellow` · `arc-progress-red` · `arc-progress-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-progress--all-colors) |
 | **Badge** | `.arc-badge` | `arc-badge-cyan` · `arc-badge-red` · `arc-badge-yellow` · `arc-badge-green` · `arc-badge-purple` · `arc-badge-outline` · `arc-badge-pulse` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-badge--default) |
 | **Accordion** | `.arc-accordion` | `arc-accordion-cyan` · `arc-accordion-red` · `arc-accordion-yellow` · `arc-accordion-green` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-accordion--default) |
 | **Glow** | `.arc-glow-{color}` · `.arc-box-glow-{color}` | cyan · red · yellow · green · purple | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glow--text) |
@@ -238,6 +239,55 @@ arcModal.bindModalTriggers(document.getElementById('dynamic-section'))
 | `arc-modal-yellow` | Warning | Neon yellow |
 | `arc-modal-red` | Danger | Neon red |
 | `arc-modal-purple` | Neutral / special | Neon purple |
+
+### Progress anatomy
+
+```html
+<!-- Determined — set fill with --arc-progress -->
+<div class="arc-progress-wrapper arc-progress-cyan">
+  <span class="arc-progress-label">LOADING  75%</span>
+  <div class="arc-progress"
+       role="progressbar"
+       aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+       aria-label="Loading..."
+       style="--arc-progress: 75%">
+    <div class="arc-progress-bar"></div>
+  </div>
+</div>
+
+<!-- Indeterminate (loop sweep animation) -->
+<div class="arc-progress arc-progress-indeterminate arc-progress-cyan"
+     role="progressbar" aria-label="Loading..."
+     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+  <div class="arc-progress-bar"></div>
+</div>
+```
+
+Update fill dynamically by setting `--arc-progress` on the `.arc-progress` element:
+
+```js
+const bar = document.querySelector('.arc-progress')
+bar.style.setProperty('--arc-progress', '60%')
+bar.setAttribute('aria-valuenow', '60')
+```
+
+**Variants** — add the variant class to `.arc-progress` or `.arc-progress-wrapper` (the custom property is inherited):
+
+| Class | Use case | Colour |
+|---|---|---|
+| `arc-progress-cyan` | Primary / loading | Neon cyan |
+| `arc-progress-green` | Success / health | Neon green |
+| `arc-progress-yellow` | Warning / ammo | Neon yellow |
+| `arc-progress-red` | Danger / fuel | Neon red |
+| `arc-progress-purple` | Special / mana | Neon purple |
+
+**Size modifiers** — add to `.arc-progress`:
+
+| Class | Height |
+|---|---|
+| `arc-progress-sm` | 12px |
+| *(default)* | 24px |
+| `arc-progress-lg` | 40px |
 
 ---
 

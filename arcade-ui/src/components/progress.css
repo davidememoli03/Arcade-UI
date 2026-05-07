@@ -1,0 +1,179 @@
+/* src/components/progress.css
+   Componente arc-progress: barra di avanzamento stile arcade '80.
+   Barra segmentata a blocchi, glow neon, varianti colore,
+   modalità determinata e indeterminata.
+
+   Uso determinato:
+     <div class="arc-progress-wrapper arc-progress-cyan">
+       <span class="arc-progress-label">LOADING  75%</span>
+       <div class="arc-progress"
+            role="progressbar"
+            aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+            aria-label="Loading..."
+            style="--arc-progress: 75%">
+         <div class="arc-progress-bar"></div>
+       </div>
+     </div>
+
+   Uso indeterminato:
+     <div class="arc-progress arc-progress-indeterminate arc-progress-cyan"
+          role="progressbar" aria-label="Loading..." aria-valuenow="0"
+          aria-valuemin="0" aria-valuemax="100">
+       <div class="arc-progress-bar"></div>
+     </div>
+   ─────────────────────────────────────────────────────────────────── */
+
+/* ── Track (binario esterno) ──────────────────────────────────────────
+   --progress-accent / --progress-glow: default cyan, varianti sovrascrivono.
+   --arc-progress: percentuale di fill; impostata via style="" sull'host.
+   overflow: hidden isola i segmenti del fill.
+──────────────────────────────────────────────────────────────────── */
+.arc-progress {
+    --progress-accent: var(--arc-color-cyan);
+    --progress-glow:   var(--arc-color-cyan-glow);
+    --arc-progress:    0%;
+
+    position: relative;
+    width: 100%;
+    height: 24px;
+    background: var(--arc-color-bg-alt);
+    border: var(--arc-border-sm) solid var(--progress-accent);
+    box-shadow:
+        0 0 6px var(--progress-glow),
+        inset 0 0 4px rgb(0 0 0 / 60%);
+    overflow: hidden;
+}
+
+/* ── Fill bar ─────────────────────────────────────────────────────────
+   Blocchi pixel via repeating-linear-gradient (12px fill + 2px gap).
+   width letta da --arc-progress, settata via style="" sull'host.
+   transition con steps(24) per il classico riempimento a scatti.
+──────────────────────────────────────────────────────────────────── */
+.arc-progress-bar {
+    height: 100%;
+    width: var(--arc-progress, 0%);
+    background:
+        repeating-linear-gradient(
+            to right,
+            transparent          0,
+            transparent          12px,
+            rgb(0 0 0 / 55%)     12px,
+            rgb(0 0 0 / 55%)     14px
+        ),
+        var(--progress-accent);
+    box-shadow:
+        0 0 8px var(--progress-accent),
+        0 0 20px var(--progress-glow);
+    transition: width 0.6s steps(24, end);
+}
+
+/* ── Varianti colore ─────────────────────────────────────────────────
+   Si applicano a .arc-progress oppure a .arc-progress-wrapper.
+   CSS custom properties sono ereditate, quindi anche .arc-progress-label
+   dentro al wrapper riceve --progress-accent corretto.
+──────────────────────────────────────────────────────────────────── */
+.arc-progress-cyan {
+    --progress-accent: var(--arc-color-cyan);
+    --progress-glow:   var(--arc-color-cyan-glow);
+}
+
+.arc-progress-green {
+    --progress-accent: var(--arc-color-green);
+    --progress-glow:   var(--arc-color-green-glow);
+}
+
+.arc-progress-yellow {
+    --progress-accent: var(--arc-color-yellow);
+    --progress-glow:   var(--arc-color-yellow-glow);
+}
+
+.arc-progress-red {
+    --progress-accent: var(--arc-color-red);
+    --progress-glow:   var(--arc-color-red-glow);
+}
+
+.arc-progress-purple {
+    --progress-accent: var(--arc-color-purple);
+    --progress-glow:   var(--arc-color-purple-glow);
+}
+
+/* ── Indeterminate ───────────────────────────────────────────────────
+   La barra occupa il 100% del track; uno sweep luminoso scorre
+   in loop da sinistra a destra tramite ::after.
+──────────────────────────────────────────────────────────────────── */
+.arc-progress-indeterminate > .arc-progress-bar {
+    width: 100%;
+    transition: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.arc-progress-indeterminate > .arc-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 36%;
+    background: linear-gradient(
+        to right,
+        transparent              0%,
+        rgb(255 255 255 / 45%)   50%,
+        transparent              100%
+    );
+    animation: arc-progress-sweep 1.4s ease-in-out infinite;
+}
+
+@keyframes arc-progress-sweep {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(380%);
+    }
+}
+
+/* ── Size variants ───────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-progress-sm {
+    height: 12px;
+}
+
+.arc-progress-lg {
+    height: 40px;
+}
+
+/* ── Label + Wrapper ─────────────────────────────────────────────────
+   .arc-progress-wrapper: flex column che ospita label + track.
+   Variant class su .arc-progress-wrapper propaga --progress-accent
+   a .arc-progress-label e al .arc-progress figlio tramite ereditarietà.
+──────────────────────────────────────────────────────────────────── */
+.arc-progress-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arc-space-1);
+    width: 100%;
+}
+
+.arc-progress-label {
+    font-family: var(--arc-font-pixel);
+    font-size: var(--arc-text-caption-size);
+    line-height: 1;
+    color: var(--progress-accent, var(--arc-color-cyan));
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 6px var(--progress-glow, var(--arc-color-cyan-glow));
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+@media (width <= 480px) {
+    .arc-progress {
+        height: 20px;
+    }
+
+    .arc-progress-lg {
+        height: 32px;
+    }
+}
