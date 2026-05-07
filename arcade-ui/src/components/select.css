@@ -1,0 +1,234 @@
+/* src/components/select.css
+   Componente arc-dropdown: dropdown personalizzato stile arcade.
+   Struttura HTML:
+     <div class="arc-dropdown arc-dropdown-cyan">
+       <button class="arc-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+         <span class="arc-dropdown-value">SELECT OPTION</span>
+         <span class="arc-dropdown-chevron" aria-hidden="true"></span>
+       </button>
+       <ul class="arc-dropdown-menu" role="listbox">
+         <li class="arc-dropdown-option" role="option">OPTION A</li>
+         <li class="arc-dropdown-option arc-dropdown-option--selected" role="option">OPTION B</li>
+         <li class="arc-dropdown-option arc-dropdown-option--disabled" aria-disabled="true">OPTION C</li>
+       </ul>
+     </div>
+   Stato open/closed: aggiungere/rimuovere classe arc-dropdown--open sul wrapper,
+   oppure usare l'attributo [aria-expanded="true"] sul trigger (gestito dal JS minimal incluso).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Custom property accent ──────────────────────────────────────────
+   Ogni variante sovrascrive --dropdown-accent.
+   Default: cyan (nessuna variante aggiunta).
+──────────────────────────────────────────────────────────────────── */
+.arc-dropdown {
+    --dropdown-accent:      var(--arc-color-cyan);
+    --dropdown-accent-glow: var(--arc-color-cyan-glow);
+
+    position: relative;
+    display: inline-block;
+    min-width: 200px;
+    font-family: var(--arc-font-pixel);
+}
+
+/* ── Trigger ─────────────────────────────────────────────────────────
+   Eredita lo stile .arc-btn (box-shadow 3D, transizioni pixel).
+   Occupa l'intera larghezza del wrapper.
+──────────────────────────────────────────────────────────────────── */
+.arc-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--arc-color-bg-panel);
+    color: var(--dropdown-accent);
+    border: 2px solid var(--dropdown-accent);
+    border-radius: 0;
+    font-family: var(--arc-font-pixel);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 rgb(0 0 0 / 80%);
+    transition:
+        background var(--arc-anim-fast) var(--arc-ease-pixel),
+        box-shadow var(--arc-anim-fast) var(--arc-ease-pixel);
+}
+
+.arc-dropdown-trigger:hover {
+    background: color-mix(in srgb, var(--dropdown-accent) 8%, var(--arc-color-bg-panel));
+    box-shadow:
+        3px 3px 0 rgb(0 0 0 / 80%),
+        0 0 10px var(--dropdown-accent),
+        0 0 20px var(--dropdown-accent-glow);
+}
+
+.arc-dropdown-trigger:focus-visible {
+    outline: 3px solid var(--dropdown-accent);
+    outline-offset: 3px;
+}
+
+.arc-dropdown-trigger:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 rgb(0 0 0 / 80%);
+}
+
+/* ── Chevron pixel-art ───────────────────────────────────────────────
+   Triangolo CSS puro — nessun SVG esterno.
+   Ruota 180° quando il menu è aperto.
+──────────────────────────────────────────────────────────────────── */
+.arc-dropdown-chevron {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 12px;
+    flex-shrink: 0;
+    border-left:  5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top:   6px solid var(--dropdown-accent);
+    transition: transform var(--arc-anim-fast) var(--arc-ease-pixel);
+    filter: drop-shadow(0 0 4px var(--dropdown-accent));
+}
+
+/* ── Menu ─────────────────────────────────────────────────────────────
+   Posizionato sotto il trigger con z-index alto.
+   Sfondo scuro + scanlines tramite repeating-linear-gradient.
+   Bordo neon + glow coerente con la variante.
+──────────────────────────────────────────────────────────────────── */
+.arc-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgb(0 0 0 / 0%) 0px,
+            rgb(0 0 0 / 0%) 2px,
+            rgb(0 0 0 / 12%) 2px,
+            rgb(0 0 0 / 12%) 4px
+        ),
+        var(--arc-color-bg-panel);
+    border: 2px solid var(--dropdown-accent);
+    box-shadow:
+        0 0 12px var(--dropdown-accent),
+        0 0 24px var(--dropdown-accent-glow),
+        4px 4px 0 rgb(0 0 0 / 80%);
+    z-index: 100;
+    animation: arc-dropdown-open var(--arc-anim-fast) var(--arc-ease-pixel);
+}
+
+@keyframes arc-dropdown-open {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Stato aperto — classe .arc-dropdown--open o aria-expanded ───────
+   Entrambi i selettori aprono il menu.
+   Il JS minimal usa aria-expanded sul trigger;
+   si può anche aggiungere .arc-dropdown--open al wrapper via JS.
+──────────────────────────────────────────────────────────────────── */
+.arc-dropdown--open .arc-dropdown-menu,
+.arc-dropdown:has(.arc-dropdown-trigger[aria-expanded="true"]) .arc-dropdown-menu {
+    display: block;
+}
+
+.arc-dropdown--open .arc-dropdown-chevron,
+.arc-dropdown:has(.arc-dropdown-trigger[aria-expanded="true"]) .arc-dropdown-chevron {
+    transform: rotate(180deg);
+}
+
+/* ── Opzioni ─────────────────────────────────────────────────────────
+   Hover: bordo sinistro neon + testo glow + sfondo tinted.
+──────────────────────────────────────────────────────────────────── */
+.arc-dropdown-option {
+    display: block;
+    padding: 10px 16px;
+    font-family: var(--arc-font-pixel);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--arc-color-text-muted);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition:
+        color var(--arc-anim-fast) var(--arc-ease-pixel),
+        background var(--arc-anim-fast) var(--arc-ease-pixel),
+        border-color var(--arc-anim-fast) var(--arc-ease-pixel);
+}
+
+.arc-dropdown-option:hover {
+    color: var(--dropdown-accent);
+    background: color-mix(in srgb, var(--dropdown-accent) 8%, transparent);
+    border-left-color: var(--dropdown-accent);
+    text-shadow: 0 0 8px var(--dropdown-accent);
+}
+
+/* ── Opzione selezionata ─────────────────────────────────────────────
+   Bordo sinistro permanente + colore accent pieno.
+──────────────────────────────────────────────────────────────────── */
+.arc-dropdown-option--selected {
+    color: var(--dropdown-accent);
+    border-left-color: var(--dropdown-accent);
+    background: color-mix(in srgb, var(--dropdown-accent) 5%, transparent);
+}
+
+.arc-dropdown-option--selected::after {
+    content: ' ◀';
+    font-size: 9px;
+    opacity: 0.7;
+}
+
+/* ── Opzione disabilitata ─────────────────────────────────────────────
+   pointer-events: none blocca hover e click.
+──────────────────────────────────────────────────────────────────── */
+.arc-dropdown-option--disabled {
+    color: var(--arc-color-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+/* ── Trigger disabilitato ─────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-dropdown-trigger:disabled,
+.arc-dropdown--disabled .arc-dropdown-trigger {
+    color: var(--arc-color-disabled);
+    border-color: var(--arc-color-disabled);
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* ── Varianti colore ─────────────────────────────────────────────────
+   Sovrascrivono --dropdown-accent e --dropdown-accent-glow.
+──────────────────────────────────────────────────────────────────── */
+.arc-dropdown-cyan {
+    --dropdown-accent:      var(--arc-color-cyan);
+    --dropdown-accent-glow: var(--arc-color-cyan-glow);
+}
+
+.arc-dropdown-green {
+    --dropdown-accent:      var(--arc-color-green);
+    --dropdown-accent-glow: var(--arc-color-green-glow);
+}
+
+.arc-dropdown-red {
+    --dropdown-accent:      var(--arc-color-red);
+    --dropdown-accent-glow: var(--arc-color-red-glow);
+}
+
+.arc-dropdown-yellow {
+    --dropdown-accent:      var(--arc-color-yellow);
+    --dropdown-accent-glow: var(--arc-color-yellow-glow);
+}
+
+.arc-dropdown-purple {
+    --dropdown-accent:      var(--arc-color-purple);
+    --dropdown-accent-glow: var(--arc-color-purple-glow);
+}

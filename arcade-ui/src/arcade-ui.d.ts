@@ -69,6 +69,16 @@ export declare class AudioManager {
   bindButtons(root?: Document | Element): this
 }
 
+// ─── Dropdown (arc-dropdown) ─────────────────────────────────────────────────
+//
+// CSS-only component — no JS exports needed.
+// Toggle open/closed by setting aria-expanded="true" on .arc-dropdown-trigger.
+//
+// Variants: arc-dropdown-cyan | arc-dropdown-green | arc-dropdown-red |
+//           arc-dropdown-yellow | arc-dropdown-purple
+//
+// See arcade-ui/README.md for full HTML structure.
+
 // ─── Button sounds ────────────────────────────────────────────────────────────
 
 /**

@@ -45,6 +45,22 @@ describe('CSS smoke — input.css', () => {
   it('definisce .arc-input-wrapper', () => expect(css).toContain('.arc-input-wrapper'))
 })
 
+describe('CSS smoke — select.css (arc-dropdown)', () => {
+  const css = readCss('components', 'select.css')
+
+  it('definisce .arc-dropdown', () => expect(css).toContain('.arc-dropdown'))
+  it('definisce .arc-dropdown-trigger', () => expect(css).toContain('.arc-dropdown-trigger'))
+  it('definisce .arc-dropdown-menu', () => expect(css).toContain('.arc-dropdown-menu'))
+  it('definisce .arc-dropdown-option', () => expect(css).toContain('.arc-dropdown-option'))
+  it('definisce .arc-dropdown-chevron', () => expect(css).toContain('.arc-dropdown-chevron'))
+  it('definisce .arc-dropdown-option--selected', () => expect(css).toContain('.arc-dropdown-option--selected'))
+  it('definisce .arc-dropdown-option--disabled', () => expect(css).toContain('.arc-dropdown-option--disabled'))
+  it('definisce variante .arc-dropdown-cyan', () => expect(css).toContain('.arc-dropdown-cyan'))
+  it('definisce variante .arc-dropdown-red', () => expect(css).toContain('.arc-dropdown-red'))
+  it('definisce variante .arc-dropdown-green', () => expect(css).toContain('.arc-dropdown-green'))
+  it('usa --dropdown-accent come custom property', () => expect(css).toContain('--dropdown-accent'))
+})
+
 describe('CSS smoke — badge.css', () => {
   const css = readCss('components', 'badge.css')
 
