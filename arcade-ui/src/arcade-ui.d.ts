@@ -123,6 +123,23 @@ export declare const arcModal: {
   bindModalTriggers(root?: Document | Element): void
 }
 
+// ─── Tooltip ────────────────────────────────────────────────────────────────
+//
+// CSS-only component — no JS exports needed.
+// Add the data-tooltip attribute to any element:
+//   <button data-tooltip="Save changes">SAVE</button>
+//
+// Positions (add as class to the host element):
+//   arc-tooltip-top    (default — no class required)
+//   arc-tooltip-bottom
+//   arc-tooltip-left
+//   arc-tooltip-right
+//
+// Accessibility note: data-tooltip content is NOT read by screen readers.
+// Always pair with aria-label or aria-describedby carrying the same text.
+//
+// See arcade-ui/README.md for full usage examples.
+
 // ─── Progress bar (arc-progress) ────────────────────────────────────────────
 //
 // CSS-only component — no JS exports needed.

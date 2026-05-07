@@ -1,0 +1,150 @@
+/* src/components/tooltip.css
+   Componente arc-tooltip: tooltip CSS-only via attributo [data-tooltip].
+   Nessun JS necessario per il caso base.
+
+   Uso:
+     <button class="arc-btn arc-btn-primary"
+             data-tooltip="Press to confirm"
+             tabindex="0">
+       CONFIRM
+     </button>
+
+   Posizione (default: top):
+     class="arc-tooltip-bottom"   → tooltip sotto
+     class="arc-tooltip-left"     → tooltip a sinistra
+     class="arc-tooltip-right"    → tooltip a destra
+
+   Accessibilità: aggiungere aria-label o aria-describedby sull'host
+   per i lettori di schermo, poiché ::after non è accessibile.
+   ─────────────────────────────────────────────────────────────────── */
+
+/* ── Host element ─────────────────────────────────────────────────────
+   position: relative per ancorare il pseudo-elemento assoluto.
+   L'host non deve avere overflow: hidden (romperebbe il tooltip).
+──────────────────────────────────────────────────────────────────── */
+[data-tooltip] {
+    position: relative;
+}
+
+/* ── Tooltip box (::after) — posizione default: TOP ──────────────────
+   content: attr(data-tooltip) legge il testo dall'attributo.
+   z-index 9000 assicura visibilità sopra modal e overlay.
+   Inizialmente invisibile (opacity:0); appare on :hover / :focus-visible.
+──────────────────────────────────────────────────────────────────── */
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    z-index: 9000;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    padding: 6px 10px;
+    font-family: var(--arc-font-pixel);
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    color: var(--arc-color-cyan);
+    white-space: nowrap;
+    background: var(--arc-color-bg-panel);
+    border: var(--arc-border-sm) solid var(--arc-color-cyan);
+    box-shadow:
+        0 0 8px var(--arc-color-cyan-glow),
+        inset 0 0 4px rgb(0 0 0 / 40%);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        opacity var(--arc-anim-fast) var(--arc-ease-pixel),
+        transform var(--arc-anim-fast) var(--arc-ease-pixel);
+}
+
+/* ── Arrow (::before) — posizione default: TOP ───────────────────────
+   Triangolo CSS via border trick: solo border-top-color visibile.
+──────────────────────────────────────────────────────────────────── */
+[data-tooltip]::before {
+    content: '';
+    position: absolute;
+    z-index: 9001;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--arc-color-cyan);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--arc-anim-fast) var(--arc-ease-pixel);
+}
+
+/* ── Show on hover / focus-visible ──────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+[data-tooltip]:hover::before,
+[data-tooltip]:focus-visible::before {
+    opacity: 1;
+}
+
+/* ── Variante: bottom ────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-tooltip-bottom[data-tooltip]::after {
+    bottom: auto;
+    top: calc(100% + 10px);
+    transform: translateX(-50%) translateY(-6px);
+}
+
+.arc-tooltip-bottom[data-tooltip]::before {
+    bottom: auto;
+    top: calc(100% + 4px);
+    border-top-color: transparent;
+    border-bottom-color: var(--arc-color-cyan);
+}
+
+.arc-tooltip-bottom[data-tooltip]:hover::after,
+.arc-tooltip-bottom[data-tooltip]:focus-visible::after {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ── Variante: left ──────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-tooltip-left[data-tooltip]::after {
+    inset: 50% calc(100% + 10px) auto auto;
+    transform: translateY(-50%) translateX(-6px);
+}
+
+.arc-tooltip-left[data-tooltip]::before {
+    inset: 50% calc(100% + 4px) auto auto;
+    transform: translateY(-50%);
+    border-top-color: transparent;
+    border-left-color: var(--arc-color-cyan);
+}
+
+.arc-tooltip-left[data-tooltip]:hover::after,
+.arc-tooltip-left[data-tooltip]:focus-visible::after {
+    transform: translateY(-50%) translateX(0);
+}
+
+/* ── Variante: right ─────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-tooltip-right[data-tooltip]::after {
+    bottom: auto;
+    top: 50%;
+    left: calc(100% + 10px);
+    transform: translateY(-50%) translateX(6px);
+}
+
+.arc-tooltip-right[data-tooltip]::before {
+    bottom: auto;
+    top: 50%;
+    left: calc(100% + 4px);
+    transform: translateY(-50%);
+    border-top-color: transparent;
+    border-right-color: var(--arc-color-cyan);
+}
+
+.arc-tooltip-right[data-tooltip]:hover::after,
+.arc-tooltip-right[data-tooltip]:focus-visible::after {
+    transform: translateY(-50%) translateX(0);
+}

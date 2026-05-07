@@ -134,6 +134,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Dropdown** | `.arc-dropdown` | `arc-dropdown-cyan` · `arc-dropdown-green` · `arc-dropdown-red` · `arc-dropdown-yellow` · `arc-dropdown-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-dropdown--default) |
 | **Modal** | `.arc-modal` · `.arc-modal-backdrop` | `arc-modal-cyan` · `arc-modal-green` · `arc-modal-yellow` · `arc-modal-red` · `arc-modal-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-modal--default) |
 | **Progress** | `.arc-progress` · `.arc-progress-bar` | `arc-progress-cyan` · `arc-progress-green` · `arc-progress-yellow` · `arc-progress-red` · `arc-progress-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-progress--all-colors) |
+| **Tooltip** | `[data-tooltip]` | `arc-tooltip-top` · `arc-tooltip-bottom` · `arc-tooltip-left` · `arc-tooltip-right` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-tooltip--all-positions) |
 | **Badge** | `.arc-badge` | `arc-badge-cyan` · `arc-badge-red` · `arc-badge-yellow` · `arc-badge-green` · `arc-badge-purple` · `arc-badge-outline` · `arc-badge-pulse` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-badge--default) |
 | **Accordion** | `.arc-accordion` | `arc-accordion-cyan` · `arc-accordion-red` · `arc-accordion-yellow` · `arc-accordion-green` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-accordion--default) |
 | **Glow** | `.arc-glow-{color}` · `.arc-box-glow-{color}` | cyan · red · yellow · green · purple | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glow--text) |
@@ -288,6 +289,35 @@ bar.setAttribute('aria-valuenow', '60')
 | `arc-progress-sm` | 12px |
 | *(default)* | 24px |
 | `arc-progress-lg` | 40px |
+
+### Tooltip anatomy
+
+CSS-only: nessun JavaScript necessario. Aggiungere `data-tooltip="testo"` su qualsiasi elemento.
+
+```html
+<!-- Default: tooltip in alto (top) -->
+<button class="arc-btn arc-btn-primary"
+        data-tooltip="Press to confirm"
+        aria-label="Confirm — Press to confirm">
+  CONFIRM
+</button>
+
+<!-- Altre posizioni -->
+<button class="arc-btn arc-btn-ghost arc-tooltip-bottom"  data-tooltip="Goes back">BACK</button>
+<button class="arc-btn arc-btn-ghost arc-tooltip-left"    data-tooltip="Undo action">UNDO</button>
+<button class="arc-btn arc-btn-ghost arc-tooltip-right"   data-tooltip="Redo action">REDO</button>
+```
+
+Il tooltip usa `::after` per il box e `::before` per la freccia direzionale. Si attiva su `:hover` e `:focus-visible`.
+
+> **Accessibilità** — `::after` non è accessibile ai lettori di schermo. Aggiungere sempre `aria-label` o `aria-describedby` con lo stesso testo dell'attributo `data-tooltip`.
+
+| Classe | Direzione freccia | Tooltip posizionato |
+|---|---|---|
+| *(nessuna)* | ↓ punta in basso | sopra l'elemento |
+| `arc-tooltip-bottom` | ↑ punta in alto | sotto l'elemento |
+| `arc-tooltip-left` | → punta a destra | a sinistra dell'elemento |
+| `arc-tooltip-right` | ← punta a sinistra | a destra dell'elemento |
 
 ---
 

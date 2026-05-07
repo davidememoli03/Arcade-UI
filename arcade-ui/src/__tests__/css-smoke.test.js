@@ -82,6 +82,25 @@ describe('CSS smoke — modal.css', () => {
   it('contiene keyframes arc-modal-backdrop-in', () => expect(css).toContain('arc-modal-backdrop-in'))
 })
 
+describe('CSS smoke — tooltip.css', () => {
+  const css = readCss('components', 'tooltip.css')
+
+  it('definisce [data-tooltip]', () => expect(css).toContain('[data-tooltip]'))
+  it('definisce [data-tooltip]::after', () => expect(css).toContain('[data-tooltip]::after'))
+  it('definisce [data-tooltip]::before', () => expect(css).toContain('[data-tooltip]::before'))
+  it('usa attr(data-tooltip) nel content', () => expect(css).toContain('attr(data-tooltip)'))
+  it('definisce .arc-tooltip-bottom', () => expect(css).toContain('.arc-tooltip-bottom'))
+  it('definisce .arc-tooltip-left', () => expect(css).toContain('.arc-tooltip-left'))
+  it('definisce .arc-tooltip-right', () => expect(css).toContain('.arc-tooltip-right'))
+  it('usa opacity per show/hide', () => expect(css).toContain('opacity: 0'))
+  it('appare on :hover', () => expect(css).toContain(':hover::after'))
+  it('appare on :focus-visible', () => expect(css).toContain(':focus-visible::after'))
+  it('usa z-index alto', () => expect(css).toContain('z-index: 9000'))
+  it('usa font pixel', () => expect(css).toContain('var(--arc-font-pixel)'))
+  it('usa colore cyan di default', () => expect(css).toContain('var(--arc-color-cyan)'))
+  it('usa pointer-events: none', () => expect(css).toContain('pointer-events: none'))
+})
+
 describe('CSS smoke — progress.css', () => {
   const css = readCss('components', 'progress.css')
 
