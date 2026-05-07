@@ -22,24 +22,64 @@ import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
 
 ```html
 <!-- Bottone -->
-<button class="arcade-btn">INSERT COIN</button>
+<button class="arc-btn arc-btn-primary">INSERT COIN</button>
 
 <!-- Panel -->
-<div class="arcade-panel">
-  <h2 class="arcade-panel-title">GAME OVER</h2>
-  <p class="arcade-panel-body">You scored 42,000 points.</p>
-  <button class="arcade-btn">PLAY AGAIN</button>
+<div class="arc-panel">
+  <h2 class="arc-panel-title">GAME OVER</h2>
+  <p class="arc-panel-body">You scored 42,000 points.</p>
+  <button class="arc-btn arc-btn-primary">PLAY AGAIN</button>
 </div>
 
 <!-- Input -->
-<label class="arcade-label">
+<label class="arc-label">
   PLAYER NAME
-  <input class="arcade-input" placeholder="AAA" maxlength="3" />
+  <input class="arc-input" placeholder="AAA" maxlength="3" />
 </label>
 ```
 
 Per la documentazione completa (componenti, token CSS, esempi): **[arcade-ui/README.md](./arcade-ui/README.md)**  
 Per i componenti interattivi: **[Storybook live](https://davidememoli03.github.io/Arcade-UI/)**
+
+---
+
+## Migration Guide — da `.arcade-*` a `.arc-*`
+
+Le classi `.arcade-*` sono **deprecate** dalla v1.x e verranno **rimosse in v2.0**.  
+Sostituiscile con le classi `.arc-*` equivalenti:
+
+| Prima (deprecato) | Dopo (corrente) |
+|---|---|
+| `arcade-btn` | `arc-btn` + variante es. `arc-btn-primary` |
+| `arcade-panel` | `arc-panel` |
+| `arcade-panel-title` | `arc-panel-title` |
+| `arcade-panel-body` | `arc-panel-body` |
+| `arcade-input` | `arc-input` |
+| `arcade-label` | `arc-label` |
+
+**Esempio:**
+
+```html
+<!-- Prima -->
+<button class="arcade-btn">START</button>
+<div class="arcade-panel">
+  <h2 class="arcade-panel-title">SCORE</h2>
+  <p class="arcade-panel-body">42,000 pts</p>
+</div>
+<label class="arcade-label">
+  NAME <input class="arcade-input" />
+</label>
+
+<!-- Dopo -->
+<button class="arc-btn arc-btn-primary">START</button>
+<div class="arc-panel">
+  <h2 class="arc-panel-title">SCORE</h2>
+  <p class="arc-panel-body">42,000 pts</p>
+</div>
+<label class="arc-label">
+  NAME <input class="arc-input" />
+</label>
+```
 
 ---
 

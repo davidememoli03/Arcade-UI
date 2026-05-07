@@ -23,8 +23,13 @@
 }
 
 /* ───────────────────────────────────────────
-   Button  (.arcade-btn)
+   DEPRECATED LEGACY CLASSES (.arcade-*)
+   These classes are kept for backwards compatibility only.
+   They will be REMOVED in v2.0.
+   Migrate to .arc-* equivalents — see Migration Guide in README.
 ─────────────────────────────────────────── */
+
+/* @deprecated — use .arc-btn instead */
 .arcade-btn {
     display: inline-block;
     padding: 0.5em 1.4em;
@@ -40,6 +45,7 @@
     transition: box-shadow 0.15s ease, background 0.15s ease;
 }
 
+/* @deprecated — use .arc-btn:disabled */
 .arcade-btn:disabled {
     color: var(--arc-color-disabled);
     border-color: var(--arc-color-disabled);
@@ -47,18 +53,18 @@
     box-shadow: none;
 }
 
+/* @deprecated */
 .arcade-btn:hover:not(:disabled) {
     background: var(--arcade-bg-hover);
     box-shadow: var(--arcade-glow);
 }
 
+/* @deprecated */
 .arcade-btn:active:not(:disabled) {
     background: var(--arcade-bg-active);
 }
 
-/* ───────────────────────────────────────────
-   Panel  (.arcade-panel)
-─────────────────────────────────────────── */
+/* @deprecated — use .arc-panel instead */
 .arcade-panel {
     display: flex;
     flex-direction: column;
@@ -72,6 +78,7 @@
     max-width: 480px;
 }
 
+/* @deprecated — use .arc-panel-title instead */
 .arcade-panel-title {
     margin: 0;
     font-size: 1.4rem;
@@ -80,6 +87,7 @@
     color: var(--arc-color-text);
 }
 
+/* @deprecated — use .arc-panel-body instead */
 .arcade-panel-body {
     margin: 0;
     font-size: 0.95rem;
@@ -87,9 +95,7 @@
     line-height: 1.5;
 }
 
-/* ───────────────────────────────────────────
-   Input  (.arcade-input, .arcade-label)
-─────────────────────────────────────────── */
+/* @deprecated — use .arc-input instead */
 .arcade-input {
     display: block;
     width: 100%;
@@ -106,21 +112,25 @@
     box-sizing: border-box;
 }
 
+/* @deprecated */
 .arcade-input::placeholder {
     color: var(--arc-color-text-muted);
     opacity: 1;
 }
 
+/* @deprecated */
 .arcade-input:disabled {
     color: var(--arc-color-disabled);
     border-color: var(--arc-color-disabled);
     cursor: not-allowed;
 }
 
+/* @deprecated */
 .arcade-input:focus {
     box-shadow: var(--arcade-glow);
 }
 
+/* @deprecated — use .arc-label instead */
 .arcade-label {
     display: flex;
     flex-direction: column;
