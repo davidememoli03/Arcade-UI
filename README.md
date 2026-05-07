@@ -1,181 +1,169 @@
 # Arcade-UI
 
-Libreria di componenti UI ispirata ai videogiochi arcade anni '80.  
-Stile retrò, palette neon, animazioni pixelart — pubblicata su npm come `@davide03memoli/arcade-ui`.
+80s arcade-style UI component library — neon palette, pixel animations, built-in SFX.  
+Published to npm as [`@davide03memoli/arcade-ui`](https://www.npmjs.com/package/@davide03memoli/arcade-ui).
 
 [![CI](https://github.com/davidememoli03/Arcade-UI/actions/workflows/ci.yml/badge.svg)](https://github.com/davidememoli03/Arcade-UI/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/@davide03memoli/arcade-ui)](https://www.npmjs.com/package/@davide03memoli/arcade-ui)
-[![Storybook](https://img.shields.io/badge/storybook-live-ff4785)](https://davidememoli03.github.io/Arcade-UI/)
+[![npm](https://img.shields.io/npm/v/@davide03memoli/arcade-ui?style=flat-square&color=00f5ff)](https://www.npmjs.com/package/@davide03memoli/arcade-ui)
+[![Storybook](https://img.shields.io/badge/storybook-live-ff4785?style=flat-square&logo=storybook)](https://davidememoli03.github.io/Arcade-UI/)
+[![license](https://img.shields.io/npm/l/@davide03memoli/arcade-ui?style=flat-square&color=ffd700)](./arcade-ui/LICENSE)
 
 ---
 
-## Usare la libreria
+## Quick Start
 
 ```bash
 npm install @davide03memoli/arcade-ui
 ```
 
 ```js
-// Importa il CSS nell'entry point della tua app
 import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
 ```
 
 ```html
-<!-- Bottone -->
 <button class="arc-btn arc-btn-primary">INSERT COIN</button>
 
-<!-- Panel -->
-<div class="arc-panel">
-  <h2 class="arc-panel-title">GAME OVER</h2>
-  <p class="arc-panel-body">You scored 42,000 points.</p>
-  <button class="arc-btn arc-btn-primary">PLAY AGAIN</button>
+<div class="arc-panel arc-panel-cyan">
+  <div class="arc-panel-header">GAME OVER</div>
+  <div class="arc-panel-body">You scored 42,000 points.</div>
+  <div class="arc-panel-footer">
+    <button class="arc-btn arc-btn-primary">PLAY AGAIN</button>
+  </div>
 </div>
 
-<!-- Input -->
-<label class="arc-label">
-  PLAYER NAME
+<div class="arc-input-wrapper">
+  <label class="arc-label">PLAYER NAME</label>
   <input class="arc-input" placeholder="AAA" maxlength="3" />
-</label>
+</div>
 ```
 
-Per la documentazione completa (componenti, token CSS, esempi): **[arcade-ui/README.md](./arcade-ui/README.md)**  
-Per i componenti interattivi: **[Storybook live](https://davidememoli03.github.io/Arcade-UI/)**
-
----
-
-## Migration Guide — da `.arcade-*` a `.arc-*`
-
-Le classi `.arcade-*` sono **deprecate** dalla v1.x e verranno **rimosse in v2.0**.  
-Sostituiscile con le classi `.arc-*` equivalenti:
-
-| Prima (deprecato) | Dopo (corrente) |
-|---|---|
-| `arcade-btn` | `arc-btn` + variante es. `arc-btn-primary` |
-| `arcade-panel` | `arc-panel` |
-| `arcade-panel-title` | `arc-panel-title` |
-| `arcade-panel-body` | `arc-panel-body` |
-| `arcade-input` | `arc-input` |
-| `arcade-label` | `arc-label` |
-
-**Esempio:**
+**No build tools?** Drop two lines into any HTML file:
 
 ```html
-<!-- Prima -->
-<button class="arcade-btn">START</button>
-<div class="arcade-panel">
-  <h2 class="arcade-panel-title">SCORE</h2>
-  <p class="arcade-panel-body">42,000 pts</p>
-</div>
-<label class="arcade-label">
-  NAME <input class="arcade-input" />
-</label>
-
-<!-- Dopo -->
-<button class="arc-btn arc-btn-primary">START</button>
-<div class="arc-panel">
-  <h2 class="arc-panel-title">SCORE</h2>
-  <p class="arc-panel-body">42,000 pts</p>
-</div>
-<label class="arc-label">
-  NAME <input class="arc-input" />
-</label>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/dist/arcade-ui.min.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/dist/arcade-ui.es.js"></script>
 ```
+
+> For full component docs, design tokens, JS API, audio, and browser support see **[arcade-ui/README.md](./arcade-ui/README.md)** or the **[live Storybook](https://davidememoli03.github.io/Arcade-UI/)**.
 
 ---
 
-## Struttura del repository
+## Repository Structure
 
 ```
 Arcade-UI/
-├── arcade-ui/          # Codice sorgente e pacchetto npm
+├── arcade-ui/              # npm package — source, build, tests, Storybook
 │   ├── src/
-│   │   ├── tokens/     # CSS custom properties (colori, typo, spacing, animation)
-│   │   ├── styles/     # Componenti CSS (btn, panel, input)
-│   │   └── stories/    # Storybook stories
-│   ├── .storybook/     # Configurazione Storybook
+│   │   ├── tokens/         # CSS custom properties (colors, typography, spacing, animation)
+│   │   ├── components/     # Component CSS files (.arc-btn, .arc-panel, .arc-input …)
+│   │   ├── effects/        # JS effects (glitch)
+│   │   ├── audio/          # AudioManager (Web Audio API)
+│   │   └── stories/        # Storybook stories
+│   ├── .storybook/         # Storybook configuration
 │   └── package.json
-├── scripts/            # Script automazione workflow Git
-└── .github/workflows/  # Pipeline CI/CD
+├── scripts/                # Git workflow helpers (new-branch, open-pr, cleanup)
+└── .github/workflows/      # CI/CD pipelines (ci.yml, storybook.yml)
 ```
 
 ---
 
-## Setup locale
+## Local Setup
 
 ```bash
 cd arcade-ui
 npm install
 ```
 
-| Comando | Descrizione |
-|---|---|
-| `npm run dev` | Server di sviluppo Vite |
-| `npm run build` | Compila la libreria in `dist/` |
-| `npm test` | Esegue i test con Vitest |
-| `npm run lint` | Lint JS (ESLint) + CSS (Stylelint) |
-| `npm run storybook` | Storybook su `localhost:6006` |
-| `npm run build-storybook` | Build statica di Storybook |
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Vite dev server |
+| `npm run build` | Compile library to `dist/` |
+| `npm test` | Run tests with Vitest |
+| `npm run lint` | ESLint + Stylelint |
+| `npm run storybook` | Storybook at `localhost:6006` |
+| `npm run build-storybook` | Static Storybook build |
 
 ---
 
-## Workflow con Pull Request
+## Pull Request Workflow
 
-Tutto il lavoro passa per PR — non si committa mai direttamente su `main`.
-
-### 1. Crea un branch
+All work goes through PRs — never commit directly to `main`.
 
 ```bash
-./scripts/new-branch.sh feat/nome-feature
-```
+# 1. Create a branch
+./scripts/new-branch.sh feat/my-feature
 
-### 2. Lavora e committa
-
-```bash
+# 2. Work and commit
 git add .
-git commit -m "feat: descrizione della modifica"
-```
+git commit -m "feat: describe the change"
 
-### 3. Apri la PR
+# 3. Open a PR
+./scripts/open-pr.sh "feat: PR title"
 
-```bash
-./scripts/open-pr.sh "feat: titolo della PR"
-```
-
-### 4. Merge e pulizia
-
-```bash
+# 4. After merge — clean up local branches
 ./scripts/cleanup.sh
+# Use --dry-run to preview what would be deleted
 ```
-
-> `./scripts/cleanup.sh --dry-run` per vedere cosa verrebbe eliminato senza farlo.
 
 ---
 
-## Pipeline CI/CD
+## CI/CD Pipeline
 
-| Job | Trigger | Descrizione |
-|---|---|---|
-| **Lint** | PR + push main | ESLint + Stylelint |
-| **Test** | PR + push main | Vitest |
-| **Build** | PR + push main | Vite build + verifica `dist/` |
-| **Publish** | solo push main | Pubblica `@davide03memoli/arcade-ui` su npm |
-| **Storybook** | solo push main | Deploy su GitHub Pages |
+| Job | Trigger | Description |
+|-----|---------|-------------|
+| **Lint** | PR + push to `main` | ESLint + Stylelint |
+| **Test** | PR + push to `main` | Vitest |
+| **Build** | PR + push to `main` | Vite build + `dist/` file check |
+| **Publish** | push to `main` only | Publish `@davide03memoli/arcade-ui` to npm |
+| **Storybook** | push to `main` only | Deploy to GitHub Pages |
 
-> Prima del publish viene verificato automaticamente che la versione in `package.json` non sia già pubblicata su npm.
+> Publish is gated: the version in `package.json` must not already exist on npm.
 
 ---
 
-## Convenzioni per i commit
+## Commit Conventions
 
-Seguiamo [Conventional Commits](https://www.conventionalcommits.org/):
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
-feat:     nuova funzionalità
-fix:      correzione di un bug
-docs:     solo documentazione
-style:    formattazione, nessuna logica
-refactor: refactoring senza nuove feature
-test:     aggiunta o modifica di test
-ci:       modifiche alla pipeline
-chore:    task di manutenzione (es. bump versione)
+feat:     new feature
+fix:      bug fix
+docs:     documentation only
+style:    formatting, no logic change
+refactor: refactoring without new features
+test:     add or update tests
+ci:       pipeline changes
+chore:    maintenance tasks (e.g. version bump)
+```
+
+---
+
+## Migration Guide — `.arcade-*` → `.arc-*`
+
+The `.arcade-*` classes are **deprecated** as of v1.x and will be **removed in v2.0**.  
+Replace them with their `.arc-*` equivalents:
+
+| Deprecated | Current |
+|------------|---------|
+| `arcade-btn` | `arc-btn` + variant e.g. `arc-btn-primary` |
+| `arcade-panel` | `arc-panel` |
+| `arcade-panel-title` | `arc-panel-header` |
+| `arcade-panel-body` | `arc-panel-body` |
+| `arcade-input` | `arc-input` |
+| `arcade-label` | `arc-label` |
+
+```html
+<!-- Before (deprecated) -->
+<button class="arcade-btn">START</button>
+<div class="arcade-panel">
+  <h2 class="arcade-panel-title">SCORE</h2>
+  <p class="arcade-panel-body">42,000 pts</p>
+</div>
+
+<!-- After (current) -->
+<button class="arc-btn arc-btn-primary">START</button>
+<div class="arc-panel arc-panel-cyan">
+  <div class="arc-panel-header">SCORE</div>
+  <div class="arc-panel-body">42,000 pts</div>
+</div>
 ```
