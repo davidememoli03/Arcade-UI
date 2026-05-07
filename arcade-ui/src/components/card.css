@@ -1,0 +1,316 @@
+/* src/components/card.css
+   Componente arc-card: character-select card stile arcade.
+   Doppio bordo neon (outer border + inset box-shadow) + angoli pixel
+   decorativi su tutti e 4 i lati via background-image.
+   ─────────────────────────────────────────────────────────────────── */
+
+/* ── Keyframes ───────────────────────────────────────────────────────── */
+
+@keyframes card-glow-pulse {
+    0%,
+    100% {
+        box-shadow:
+            0 0 8px var(--card-glow, var(--arc-color-cyan-glow)),
+            0 0 16px var(--card-glow, var(--arc-color-cyan-glow)),
+            inset 0 0 0 2px var(--card-accent, var(--arc-color-cyan));
+    }
+
+    50% {
+        box-shadow:
+            0 0 24px var(--card-glow, var(--arc-color-cyan-glow)),
+            0 0 48px var(--card-glow, var(--arc-color-cyan-glow)),
+            0 0 72px var(--card-glow, var(--arc-color-cyan-glow)),
+            inset 0 0 0 2px var(--card-accent, var(--arc-color-cyan));
+    }
+}
+
+@keyframes card-selected-blink {
+    0%,
+    49% {
+        border-color: var(--card-accent, var(--arc-color-cyan));
+        box-shadow:
+            0 0 24px var(--card-glow, var(--arc-color-cyan-glow)),
+            0 0 48px var(--card-glow, var(--arc-color-cyan-glow)),
+            inset 0 0 0 2px var(--card-accent, var(--arc-color-cyan));
+    }
+
+    50%,
+    100% {
+        border-color: var(--arc-color-bg);
+        box-shadow: none;
+    }
+}
+
+/* ── Base ────────────────────────────────────────────────────────────
+   background-image: 8 layer gradient per gli angoli pixel a L
+   su tutti e 4 i lati (2 layer per angolo: H + V).
+   background-color rimane il dark panel; background-image disegna
+   sopra di esso senza interferire con il contenuto.
+──────────────────────────────────────────────────────────────────── */
+.arc-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    background-color: var(--arc-color-bg-panel);
+
+    /* 4-corner pixel decorations: H bar + V bar per ogni angolo */
+    background-image:
+        /* top-left */
+        linear-gradient(var(--card-accent, var(--arc-color-cyan)) 0 0),
+        linear-gradient(var(--card-accent, var(--arc-color-cyan)) 0 0),
+
+        /* top-right */
+        linear-gradient(var(--card-accent, var(--arc-color-cyan)) 0 0),
+        linear-gradient(var(--card-accent, var(--arc-color-cyan)) 0 0),
+
+        /* bottom-left */
+        linear-gradient(var(--card-accent, var(--arc-color-cyan)) 0 0),
+        linear-gradient(var(--card-accent, var(--arc-color-cyan)) 0 0),
+
+        /* bottom-right */
+        linear-gradient(var(--card-accent, var(--arc-color-cyan)) 0 0),
+        linear-gradient(var(--card-accent, var(--arc-color-cyan)) 0 0);
+    background-size:
+        14px 2px,
+        2px 14px,
+        14px 2px,
+        2px 14px,
+        14px 2px,
+        2px 14px,
+        14px 2px,
+        2px 14px;
+    background-position:
+        4px 4px,                                            /* top-left H  */
+        4px 4px,                                            /* top-left V  */
+        calc(100% - 18px) 4px,                             /* top-right H */
+        calc(100% - 6px) 4px,                              /* top-right V */
+        4px calc(100% - 6px),                              /* btm-left H  */
+        4px calc(100% - 18px),                             /* btm-left V  */
+        calc(100% - 18px) calc(100% - 6px),               /* btm-right H */
+        calc(100% - 6px) calc(100% - 18px);               /* btm-right V */
+
+    background-repeat: no-repeat;
+    border: var(--arc-border-md) solid var(--card-accent, var(--arc-color-cyan));
+    box-shadow:
+        0 0 10px var(--card-glow, var(--arc-color-cyan-glow)),
+        inset 0 0 0 2px var(--card-accent, var(--arc-color-cyan));
+    transition:
+        box-shadow var(--arc-anim-fast) var(--arc-ease-pixel),
+        transform var(--arc-anim-fast) var(--arc-ease-pixel);
+    cursor: pointer;
+}
+
+/* ── Hover ───────────────────────────────────────────────────────────
+   Non applicato a --locked per mantenere il look disabilitato.
+──────────────────────────────────────────────────────────────────── */
+.arc-card:hover:not(.arc-card-locked) {
+    transform: scale(1.04);
+    box-shadow:
+        0 0 20px var(--card-glow, var(--arc-color-cyan-glow)),
+        0 0 40px var(--card-glow, var(--arc-color-cyan-glow)),
+        inset 0 0 0 2px var(--card-accent, var(--arc-color-cyan));
+}
+
+/* ── Header ──────────────────────────────────────────────────────────
+   Contiene avatar, titolo e sottotitolo.
+   padding-top generoso per stare lontano dagli angoli decorativi.
+──────────────────────────────────────────────────────────────────── */
+.arc-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--arc-space-1);
+    padding: var(--arc-space-3) var(--arc-space-2) var(--arc-space-1);
+    border-bottom: var(--arc-border-sm) solid var(--card-accent, var(--arc-color-cyan));
+}
+
+/* ── Avatar / icona ──────────────────────────────────────────────────
+   Contenitore 72×72 per img, svg o emoji carattere.
+──────────────────────────────────────────────────────────────────── */
+.arc-card-avatar {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--arc-border-sm) solid var(--card-accent, var(--arc-color-cyan));
+    box-shadow: 0 0 10px var(--card-glow, var(--arc-color-cyan-glow));
+    background: rgb(0 245 255 / 5%);
+    font-size: 2.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+    overflow: hidden;
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
+.arc-card-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ── Titolo e sottotitolo ────────────────────────────────────────── */
+.arc-card-title {
+    margin: 0;
+    font-family: var(--arc-font-pixel);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--card-accent, var(--arc-color-cyan));
+    text-align: center;
+    overflow-wrap: break-word;
+    line-height: 1.4;
+}
+
+.arc-card-subtitle {
+    margin: 0;
+    font-family: var(--arc-font-terminal);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--arc-color-text-muted);
+    text-align: center;
+}
+
+/* ── Body ────────────────────────────────────────────────────────────
+   Contenuto principale: testo descrittivo e metadati.
+──────────────────────────────────────────────────────────────────── */
+.arc-card-body {
+    flex: 1;
+    padding: var(--arc-space-2);
+    font-family: var(--arc-font-terminal);
+    font-size: 0.85rem;
+    color: var(--arc-color-text-muted);
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: var(--arc-space-1);
+}
+
+/* ── Metadati: riga chiave / valore ──────────────────────────────── */
+.arc-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--arc-font-pixel);
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+    line-height: 1.6;
+}
+
+.arc-card-meta-key {
+    color: var(--arc-color-text-muted);
+    text-transform: uppercase;
+}
+
+.arc-card-meta-value {
+    color: var(--card-accent, var(--arc-color-cyan));
+    text-transform: uppercase;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────
+   Area azioni: bottoni centrati.
+──────────────────────────────────────────────────────────────────── */
+.arc-card-footer {
+    display: flex;
+    gap: var(--arc-space-1);
+    align-items: center;
+    justify-content: center;
+    padding: var(--arc-space-1) var(--arc-space-2) var(--arc-space-2);
+    border-top: var(--arc-border-sm) solid var(--card-accent, var(--arc-color-cyan));
+}
+
+/* ── Varianti colore ─────────────────────────────────────────────────
+   Sovrascrivono --card-accent e --card-glow.
+   La background-image, border e box-shadow seguono automaticamente.
+──────────────────────────────────────────────────────────────────── */
+.arc-card-cyan {
+    --card-accent: var(--arc-color-cyan);
+    --card-glow: var(--arc-color-cyan-glow);
+}
+
+.arc-card-red {
+    --card-accent: var(--arc-color-red);
+    --card-glow: var(--arc-color-red-glow);
+}
+
+.arc-card-yellow {
+    --card-accent: var(--arc-color-yellow);
+    --card-glow: var(--arc-color-yellow-glow);
+}
+
+.arc-card-green {
+    --card-accent: var(--arc-color-green);
+    --card-glow: var(--arc-color-green-glow);
+}
+
+.arc-card-purple {
+    --card-accent: var(--arc-color-purple);
+    --card-glow: var(--arc-color-purple-glow);
+}
+
+/* ── Variante -glow: glow pulsante continuo ─────────────────────── */
+.arc-card-glow {
+    animation-name: card-glow-pulse;
+    animation-duration: var(--arc-anim-dramatic);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+/* ── Variante -selected: bordo lampeggiante "character selected" ────
+   Nota: usa ::after per il label. Non combinare con -locked.
+──────────────────────────────────────────────────────────────────── */
+.arc-card-selected {
+    animation-name: card-selected-blink;
+    animation-duration: 500ms;
+    animation-timing-function: var(--arc-ease-step);
+    animation-iteration-count: infinite;
+}
+
+.arc-card-selected::after {
+    content: '▶ SELECT ◀';
+    position: absolute;
+    bottom: calc(-1 * var(--arc-space-3));
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--arc-font-pixel);
+    font-size: 0.45rem;
+    letter-spacing: 0.1em;
+    color: var(--card-accent, var(--arc-color-cyan));
+    text-shadow: 0 0 8px var(--card-glow, var(--arc-color-cyan-glow));
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* ── Variante -locked: opacità ridotta + overlay con icona lock ─────
+   Nota: usa ::after per l'overlay. Non combinare con -selected.
+──────────────────────────────────────────────────────────────────── */
+.arc-card-locked {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: saturate(0.25);
+}
+
+.arc-card-locked::after {
+    content: '🔒';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background: rgb(0 0 0 / 50%);
+    pointer-events: none;
+    z-index: 2;
+    filter: saturate(1);
+}
+
+/* ── Responsive: larghezza fluida su mobile ──────────────────────── */
+@media (width <= 480px) {
+    .arc-card {
+        width: 100%;
+        max-width: 280px;
+    }
+}

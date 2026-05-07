@@ -130,6 +130,34 @@ describe('CSS smoke — badge.css', () => {
   it('definisce .arc-badge-red', () => expect(css).toContain('.arc-badge-red'))
 })
 
+describe('CSS smoke — card.css', () => {
+  const css = readCss('components', 'card.css')
+
+  it('definisce .arc-card', () => expect(css).toContain('.arc-card'))
+  it('definisce .arc-card-header', () => expect(css).toContain('.arc-card-header'))
+  it('definisce .arc-card-body', () => expect(css).toContain('.arc-card-body'))
+  it('definisce .arc-card-footer', () => expect(css).toContain('.arc-card-footer'))
+  it('definisce .arc-card-avatar', () => expect(css).toContain('.arc-card-avatar'))
+  it('definisce .arc-card-title', () => expect(css).toContain('.arc-card-title'))
+  it('definisce .arc-card-subtitle', () => expect(css).toContain('.arc-card-subtitle'))
+  it('definisce .arc-card-meta', () => expect(css).toContain('.arc-card-meta'))
+  it('definisce .arc-card-meta-key', () => expect(css).toContain('.arc-card-meta-key'))
+  it('definisce .arc-card-meta-value', () => expect(css).toContain('.arc-card-meta-value'))
+  it('definisce variante .arc-card-cyan', () => expect(css).toContain('.arc-card-cyan'))
+  it('definisce variante .arc-card-red', () => expect(css).toContain('.arc-card-red'))
+  it('definisce variante .arc-card-yellow', () => expect(css).toContain('.arc-card-yellow'))
+  it('definisce variante .arc-card-green', () => expect(css).toContain('.arc-card-green'))
+  it('definisce variante .arc-card-purple', () => expect(css).toContain('.arc-card-purple'))
+  it('definisce variante .arc-card-glow', () => expect(css).toContain('.arc-card-glow'))
+  it('definisce variante .arc-card-selected', () => expect(css).toContain('.arc-card-selected'))
+  it('definisce variante .arc-card-locked', () => expect(css).toContain('.arc-card-locked'))
+  it('usa --card-accent come custom property', () => expect(css).toContain('--card-accent'))
+  it('usa --card-glow come custom property', () => expect(css).toContain('--card-glow'))
+  it('contiene keyframes card-glow-pulse', () => expect(css).toContain('card-glow-pulse'))
+  it('contiene keyframes card-selected-blink', () => expect(css).toContain('card-selected-blink'))
+  it('blocca il hover su --locked', () => expect(css).toContain('.arc-card:hover:not(.arc-card-locked)'))
+})
+
 describe('CSS smoke — accordion.css', () => {
   const css = readCss('components', 'accordion.css')
 

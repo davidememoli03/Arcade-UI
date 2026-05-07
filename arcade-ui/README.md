@@ -129,6 +129,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | Component | Classes | Variants | Storybook |
 |-----------|---------|----------|-----------|
 | **Button** | `.arc-btn` | `arc-btn-primary` · `arc-btn-ghost` · `arc-btn-danger` · `arc-btn-sm` · `arc-btn-lg` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-button--primary) |
+| **Card** | `.arc-card` | `arc-card-cyan` · `arc-card-red` · `arc-card-yellow` · `arc-card-green` · `arc-card-purple` · `arc-card-glow` · `arc-card-selected` · `arc-card-locked` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-card--character-select-screen) |
 | **Panel** | `.arc-panel` | `arc-panel-cyan` · `arc-panel-red` · `arc-panel-yellow` · `arc-panel-green` · `arc-panel-purple` · `arc-panel-glass` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-panel--default) |
 | **Input** | `.arc-input` · `.arc-label` | `.arc-textarea` · `.arc-select` · `.arc-input-hint` · `.arc-input-hint-error` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-input--default) |
 | **Dropdown** | `.arc-dropdown` | `arc-dropdown-cyan` · `arc-dropdown-green` · `arc-dropdown-red` · `arc-dropdown-yellow` · `arc-dropdown-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-dropdown--default) |
@@ -141,6 +142,61 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Glitch** | `.arc-glitch` · `.arc-glitch-hover` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glitch--always-on) |
 | **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
 | **Animations** | `.arc-u-blink` · `.arc-u-pulse` · `.arc-u-glitch` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-animation--keyframes) |
+
+### Card anatomy
+
+Character-select card ispirata agli schermi di selezione personaggio arcade. Struttura a header/body/footer, doppio bordo neon e angoli pixel decorativi su tutti e 4 i lati.
+
+```html
+<div class="arc-card arc-card-cyan">
+  <div class="arc-card-header">
+    <div class="arc-card-avatar">🥷</div>
+    <p class="arc-card-title">RYU</p>
+    <p class="arc-card-subtitle">Street Fighter</p>
+  </div>
+  <div class="arc-card-body">
+    <div class="arc-card-meta">
+      <span class="arc-card-meta-key">STR</span>
+      <span class="arc-card-meta-value">92</span>
+    </div>
+    <div class="arc-card-meta">
+      <span class="arc-card-meta-key">SPD</span>
+      <span class="arc-card-meta-value">85</span>
+    </div>
+  </div>
+  <div class="arc-card-footer">
+    <button class="arc-btn arc-btn-primary arc-btn-sm">SELECT</button>
+  </div>
+</div>
+```
+
+L'elemento `.arc-card-avatar` accetta testo (emoji, unicode), o un `<img>` interno:
+
+```html
+<div class="arc-card-avatar">
+  <img src="avatar.png" alt="Character portrait">
+</div>
+```
+
+**Varianti colore** — aggiungere a `.arc-card`:
+
+| Classe | Colore |
+|---|---|
+| `arc-card-cyan` | Neon cyan (default) |
+| `arc-card-red` | Neon red |
+| `arc-card-yellow` | Neon yellow |
+| `arc-card-green` | Neon green |
+| `arc-card-purple` | Neon purple |
+
+**Varianti stato** — aggiungere a `.arc-card`:
+
+| Classe | Comportamento |
+|---|---|
+| `arc-card-glow` | Glow pulsante continuo |
+| `arc-card-selected` | Bordo lampeggiante + label "▶ SELECT ◀" sotto la card |
+| `arc-card-locked` | Opacità ridotta, saturazione desaturata, overlay con 🔒 |
+
+> **Nota:** `arc-card-selected` e `arc-card-locked` usano entrambi lo pseudo-elemento `::after`. Non combinarli sullo stesso elemento.
 
 ### Panel anatomy
 
