@@ -177,7 +177,7 @@ describe('CSS smoke — tokens/typography.css (wrapper)', () => {
   const css = readCss('tokens', 'typography.css')
 
   it('importa typography-vars.css generato da SD', () =>
-    expect(css).toContain("@import url('./typography-vars.css')"))
+    expect(css).toContain('@import url(\'./typography-vars.css\')'))
   it('importa Google Fonts', () =>
     expect(css).toContain('fonts.googleapis.com'))
 })
@@ -205,7 +205,7 @@ describe('CSS smoke — tokens/animation.css (wrapper)', () => {
   const css = readCss('tokens', 'animation.css')
 
   it('importa animation-vars.css generato da SD', () =>
-    expect(css).toContain("@import url('./animation-vars.css')"))
+    expect(css).toContain('@import url(\'./animation-vars.css\')'))
   it('mantiene @keyframes blink', () => expect(css).toContain('@keyframes blink'))
   it('mantiene @keyframes pulse-glow', () => expect(css).toContain('@keyframes pulse-glow'))
   it('mantiene @keyframes glitch', () => expect(css).toContain('@keyframes glitch'))
