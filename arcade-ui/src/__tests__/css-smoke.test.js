@@ -61,6 +61,27 @@ describe('CSS smoke — select.css (arc-dropdown)', () => {
   it('usa --dropdown-accent come custom property', () => expect(css).toContain('--dropdown-accent'))
 })
 
+describe('CSS smoke — modal.css', () => {
+  const css = readCss('components', 'modal.css')
+
+  it('definisce .arc-modal-backdrop', () => expect(css).toContain('.arc-modal-backdrop'))
+  it('definisce .arc-modal-backdrop-open', () => expect(css).toContain('.arc-modal-backdrop-open'))
+  it('definisce .arc-modal', () => expect(css).toContain('.arc-modal'))
+  it('definisce .arc-modal-header', () => expect(css).toContain('.arc-modal-header'))
+  it('definisce .arc-modal-title', () => expect(css).toContain('.arc-modal-title'))
+  it('definisce .arc-modal-close', () => expect(css).toContain('.arc-modal-close'))
+  it('definisce .arc-modal-body', () => expect(css).toContain('.arc-modal-body'))
+  it('definisce .arc-modal-footer', () => expect(css).toContain('.arc-modal-footer'))
+  it('definisce variante .arc-modal-cyan', () => expect(css).toContain('.arc-modal-cyan'))
+  it('definisce variante .arc-modal-green', () => expect(css).toContain('.arc-modal-green'))
+  it('definisce variante .arc-modal-yellow', () => expect(css).toContain('.arc-modal-yellow'))
+  it('definisce variante .arc-modal-red', () => expect(css).toContain('.arc-modal-red'))
+  it('definisce variante .arc-modal-purple', () => expect(css).toContain('.arc-modal-purple'))
+  it('usa --modal-accent come custom property', () => expect(css).toContain('--modal-accent'))
+  it('contiene keyframes arc-modal-in', () => expect(css).toContain('arc-modal-in'))
+  it('contiene keyframes arc-modal-backdrop-in', () => expect(css).toContain('arc-modal-backdrop-in'))
+})
+
 describe('CSS smoke — badge.css', () => {
   const css = readCss('components', 'badge.css')
 

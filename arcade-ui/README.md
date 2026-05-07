@@ -132,6 +132,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Panel** | `.arc-panel` | `arc-panel-cyan` · `arc-panel-red` · `arc-panel-yellow` · `arc-panel-green` · `arc-panel-purple` · `arc-panel-glass` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-panel--default) |
 | **Input** | `.arc-input` · `.arc-label` | `.arc-textarea` · `.arc-select` · `.arc-input-hint` · `.arc-input-hint-error` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-input--default) |
 | **Dropdown** | `.arc-dropdown` | `arc-dropdown-cyan` · `arc-dropdown-green` · `arc-dropdown-red` · `arc-dropdown-yellow` · `arc-dropdown-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-dropdown--default) |
+| **Modal** | `.arc-modal` · `.arc-modal-backdrop` | `arc-modal-cyan` · `arc-modal-green` · `arc-modal-yellow` · `arc-modal-red` · `arc-modal-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-modal--default) |
 | **Badge** | `.arc-badge` | `arc-badge-cyan` · `arc-badge-red` · `arc-badge-yellow` · `arc-badge-green` · `arc-badge-purple` · `arc-badge-outline` · `arc-badge-pulse` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-badge--default) |
 | **Accordion** | `.arc-accordion` | `arc-accordion-cyan` · `arc-accordion-red` · `arc-accordion-yellow` · `arc-accordion-green` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-accordion--default) |
 | **Glow** | `.arc-glow-{color}` · `.arc-box-glow-{color}` | cyan · red · yellow · green · purple | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glow--text) |
@@ -187,6 +188,56 @@ trigger.addEventListener('click', () => {
   trigger.setAttribute('aria-expanded', String(!isOpen))
 })
 ```
+
+### Modal anatomy
+
+```html
+<div class="arc-modal-backdrop" id="my-modal" aria-hidden="true">
+  <div class="arc-modal arc-modal-cyan"
+       role="dialog" aria-modal="true"
+       aria-labelledby="my-modal-title">
+    <div class="arc-modal-header">
+      <span id="my-modal-title" class="arc-modal-title">GAME OVER</span>
+      <button class="arc-modal-close" aria-label="Close dialog">[X]</button>
+    </div>
+    <div class="arc-modal-body">Insert coin to continue.</div>
+    <div class="arc-modal-footer">
+      <button class="arc-btn arc-btn-primary">OK</button>
+      <button class="arc-btn arc-btn-ghost">CANCEL</button>
+    </div>
+  </div>
+</div>
+```
+
+Open/close the modal using the `arcModal` JS API, or bind a trigger button with `data-arc-modal-open`:
+
+```html
+<!-- trigger button (auto-bound at DOMContentLoaded) -->
+<button class="arc-btn arc-btn-primary" data-arc-modal-open="my-modal">OPEN</button>
+```
+
+```js
+import { arcModal } from '@davide03memoli/arcade-ui'
+
+// Open by backdrop id (also remembers the trigger for focus restoration)
+arcModal.open('my-modal', { trigger: document.getElementById('open-btn') })
+
+// Close programmatically
+arcModal.close('my-modal')
+
+// Re-bind triggers for dynamically injected HTML
+arcModal.bindModalTriggers(document.getElementById('dynamic-section'))
+```
+
+**Variants** — add the variant class to `.arc-modal`:
+
+| Class | Role | Accent colour |
+|---|---|---|
+| `arc-modal-cyan` | Info / default | Neon cyan |
+| `arc-modal-green` | Success | Neon green |
+| `arc-modal-yellow` | Warning | Neon yellow |
+| `arc-modal-red` | Danger | Neon red |
+| `arc-modal-purple` | Neutral / special | Neon purple |
 
 ---
 

@@ -79,6 +79,50 @@ export declare class AudioManager {
 //
 // See arcade-ui/README.md for full HTML structure.
 
+// ─── Modal (arc-modal) ───────────────────────────────────────────────────────
+//
+// Variants:   arc-modal-cyan | arc-modal-green | arc-modal-yellow |
+//             arc-modal-red  | arc-modal-purple
+//
+// Open state: add class `arc-modal-backdrop-open` to .arc-modal-backdrop,
+//             or call arcModal.open(id).
+//
+// HTML structure:
+//   <div class="arc-modal-backdrop" id="my-modal" aria-hidden="true">
+//     <div class="arc-modal arc-modal-cyan" role="dialog" aria-modal="true"
+//          aria-labelledby="my-modal-title">
+//       <div class="arc-modal-header">
+//         <span id="my-modal-title" class="arc-modal-title">TITLE</span>
+//         <button class="arc-modal-close" aria-label="Close">[X]</button>
+//       </div>
+//       <div class="arc-modal-body">Content here.</div>
+//       <div class="arc-modal-footer"><!-- optional --></div>
+//     </div>
+//   </div>
+
+export declare const arcModal: {
+  /**
+   * Opens the modal backdrop by ID or element reference.
+   * Traps focus inside the dialog and binds ESC + backdrop-click to close.
+   * @param target - backdrop element or its id attribute
+   * @param options.trigger - element that triggered the open; receives focus on close
+   */
+  open(target: string | Element, options?: { trigger?: Element }): void
+
+  /**
+   * Closes the modal backdrop by ID or element reference.
+   * Removes focus trap and restores focus to the trigger element.
+   * @param target - backdrop element or its id attribute
+   */
+  close(target: string | Element): void
+
+  /**
+   * Binds `[data-arc-modal-open="id"]` triggers and `.arc-modal-close` buttons
+   * found inside `root`. Called automatically at DOMContentLoaded.
+   */
+  bindModalTriggers(root?: Document | Element): void
+}
+
 // ─── Button sounds ────────────────────────────────────────────────────────────
 
 /**

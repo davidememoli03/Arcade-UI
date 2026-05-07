@@ -1,0 +1,267 @@
+/* src/components/modal.css
+   Componente arc-modal: dialog arcade con backdrop scanlines,
+   bordo neon doppio e angoli decorativi pixel-art.
+
+   Struttura HTML:
+     <div class="arc-modal-backdrop" aria-hidden="true">
+       <div class="arc-modal arc-modal-cyan"
+            role="dialog" aria-modal="true"
+            aria-labelledby="modal-title">
+         <div class="arc-modal-header">
+           <span id="modal-title" class="arc-modal-title">GAME OVER</span>
+           <button class="arc-modal-close" aria-label="Close">[X]</button>
+         </div>
+         <div class="arc-modal-body">Content here.</div>
+         <div class="arc-modal-footer">
+           <button class="arc-btn arc-btn-primary">OK</button>
+           <button class="arc-btn arc-btn-ghost">CANCEL</button>
+         </div>
+       </div>
+     </div>
+
+   Apertura/chiusura: arcModal.open(id) / arcModal.close(id)
+   oppure aggiungendo .arc-modal-backdrop-open al backdrop via JS.
+   ─────────────────────────────────────────────────────────── */
+
+/* ── Backdrop ─────────────────────────────────────────────────────────
+   Overlay fisso a tutta schermata con scanlines CRT.
+   Nascosto di default; visibile con .arc-modal-backdrop-open.
+──────────────────────────────────────────────────────────────────── */
+.arc-modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: var(--arc-space-4);
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgb(0 0 0 / 0%) 0,
+            rgb(0 0 0 / 0%) 3px,
+            rgb(0 0 0 / 18%) 3px,
+            rgb(0 0 0 / 18%) 4px
+        ),
+        rgb(0 0 0 / 88%);
+    animation: arc-modal-backdrop-in var(--arc-anim-fast) var(--arc-ease-pixel);
+    box-sizing: border-box;
+}
+
+.arc-modal-backdrop-open {
+    display: flex;
+}
+
+@keyframes arc-modal-backdrop-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ── Finestra modale ──────────────────────────────────────────────────
+   --modal-accent: default cyan; ogni variante sovrascrive.
+   Bordo neon doppio: outline interno (inset) + border esterno.
+   Angoli decorativi a L identici a .arc-panel (::before / ::after).
+   max-height + overflow-y: scroll per contenuto lungo.
+──────────────────────────────────────────────────────────────────── */
+.arc-modal {
+    --modal-accent:      var(--arc-color-cyan);
+    --modal-accent-glow: var(--arc-color-cyan-glow);
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 560px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: var(--arc-color-bg-panel);
+    border: var(--arc-border-md) solid var(--modal-accent);
+    outline: var(--arc-border-sm) solid var(--modal-accent);
+    outline-offset: -8px;
+    box-shadow:
+        inset 0 0 16px rgb(0 245 255 / 6%),
+        0 0 24px var(--modal-accent),
+        0 0 48px var(--modal-accent-glow);
+    animation: arc-modal-in var(--arc-anim-normal) var(--arc-ease-pixel);
+}
+
+@keyframes arc-modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Angoli decorativi a L ───────────────────────────────────────────
+   ::before → basso sinistra   ::after → basso destra
+──────────────────────────────────────────────────────────────────── */
+.arc-modal::before {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    width: 18px;
+    height: 18px;
+    border-bottom: 3px solid var(--modal-accent);
+    border-left: 3px solid var(--modal-accent);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.arc-modal::after {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 18px;
+    height: 18px;
+    border-bottom: 3px solid var(--modal-accent);
+    border-right: 3px solid var(--modal-accent);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────
+   Titolo pixel-font + bottone [X] di chiusura.
+──────────────────────────────────────────────────────────────────── */
+.arc-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--arc-space-2);
+    padding: var(--arc-space-3) var(--arc-space-4);
+    border-bottom: var(--arc-border-sm) solid var(--modal-accent);
+    flex-shrink: 0;
+}
+
+.arc-modal-title {
+    font-family: var(--arc-font-pixel);
+    font-size: var(--arc-text-h3-size);
+    line-height: var(--arc-text-h3-lh);
+    color: var(--modal-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow:
+        0 0 8px var(--modal-accent),
+        0 0 16px var(--modal-accent-glow);
+}
+
+/* ── Bottone chiusura [X] ─────────────────────────────────────────────
+   Senza background né bordo visibile di default.
+   Hover: glow rosso (pericolo / uscita).
+──────────────────────────────────────────────────────────────────── */
+.arc-modal-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: transparent;
+    color: var(--modal-accent);
+    border: var(--arc-border-sm) solid var(--modal-accent);
+    border-radius: 0;
+    font-family: var(--arc-font-pixel);
+    font-size: 11px;
+    cursor: pointer;
+    transition:
+        color var(--arc-anim-fast) var(--arc-ease-pixel),
+        border-color var(--arc-anim-fast) var(--arc-ease-pixel),
+        box-shadow var(--arc-anim-fast) var(--arc-ease-pixel);
+}
+
+.arc-modal-close:hover {
+    color: var(--arc-color-red);
+    border-color: var(--arc-color-red);
+    box-shadow:
+        0 0 8px var(--arc-color-red),
+        0 0 16px var(--arc-color-red-glow);
+}
+
+.arc-modal-close:focus-visible {
+    outline: 3px solid var(--modal-accent);
+    outline-offset: 3px;
+}
+
+/* ── Body ─────────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-modal-body {
+    flex: 1;
+    padding: var(--arc-space-4);
+    font-family: var(--arc-font-terminal);
+    font-size: var(--arc-text-body-size);
+    line-height: var(--arc-text-body-lh);
+    color: var(--arc-color-text-muted);
+    overflow-y: auto;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-modal-footer {
+    display: flex;
+    gap: var(--arc-space-2);
+    align-items: center;
+    padding: var(--arc-space-3) var(--arc-space-4);
+    border-top: var(--arc-border-sm) solid var(--modal-accent);
+    flex-shrink: 0;
+}
+
+/* ── Varianti colore ─────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-modal-cyan {
+    --modal-accent:      var(--arc-color-cyan);
+    --modal-accent-glow: var(--arc-color-cyan-glow);
+}
+
+.arc-modal-green {
+    --modal-accent:      var(--arc-color-green);
+    --modal-accent-glow: var(--arc-color-green-glow);
+}
+
+.arc-modal-yellow {
+    --modal-accent:      var(--arc-color-yellow);
+    --modal-accent-glow: var(--arc-color-yellow-glow);
+}
+
+.arc-modal-red {
+    --modal-accent:      var(--arc-color-red);
+    --modal-accent-glow: var(--arc-color-red-glow);
+}
+
+.arc-modal-purple {
+    --modal-accent:      var(--arc-color-purple);
+    --modal-accent-glow: var(--arc-color-purple-glow);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+@media (width <= 480px) {
+    .arc-modal-backdrop {
+        padding: var(--arc-space-2);
+    }
+
+    .arc-modal {
+        max-height: 92vh;
+    }
+
+    .arc-modal-header,
+    .arc-modal-body,
+    .arc-modal-footer {
+        padding: var(--arc-space-3);
+    }
+
+    .arc-modal-title {
+        font-size: var(--arc-text-caption-size);
+    }
+}
