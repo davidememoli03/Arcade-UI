@@ -1,31 +1,92 @@
 # SFX – Arcade UI
 
-Posiziona qui i file audio distribuiti con la libreria.
+## Built-in sounds (no files required)
 
-| File          | ID AudioManager | Trigger default               |
-|---------------|-----------------|-------------------------------|
-| coin.mp3      | `coin`          | Apertura dialog               |
-| select.mp3    | `select`        | Click `.arc-btn-primary`      |
-| blip.mp3      | `blip`          | Hover bottoni `.arc-btn`      |
-| error.mp3     | `error`         | Validazione fallita           |
-| win.mp3       | `win`           | Completamento                 |
-| gameover.mp3  | `gameover`      | Manuale                       |
+All built-in sound effects are **synthesized at runtime via the Web Audio API** —
+no MP3 files, no network requests, no extra dependencies.
 
-Questi file vengono copiati in `dist/sfx/` durante il build (`npm run build`).
-
-## Percorso base personalizzato
-
-Se i file sono serviti da CDN o da un path diverso, usa `setBasePath`:
+| ID | Trigger | Description |
+|----|---------|-------------|
+| `coin` | dialog open | Two-tone "bling" |
+| `select` | `.arc-btn-primary` click | Ascending sweep — confirm |
+| `blip` | `.arc-btn` hover | Short beep — navigation |
+| `error` | validation failed | Descending buzz |
+| `win` | completion | Ascending C-major arpeggio |
+| `gameover` | manual | Descending sequence |
 
 ```js
 import { AudioManager } from '@davide03memoli/arcade-ui'
 
-AudioManager.getInstance().setBasePath('https://cdn.example.com/arcade-ui')
-// cercherà https://cdn.example.com/arcade-ui/sfx/coin.mp3
+const audio = AudioManager.getInstance()
+audio.play('coin')      // works immediately — no files needed
+audio.play('select')
+audio.play('blip')
+audio.play('error')
+audio.play('win')
+audio.play('gameover')
 ```
 
-## Requisiti
+Buttons auto-bind at `DOMContentLoaded`: hover triggers `blip`, primary-button
+clicks trigger `select`. Override per element with `data-arc-sound-*` attributes:
 
-- Formato raccomandato: **MP3** (massima compatibilità)
-- Durata consigliata: < 2 secondi per SFX UI
-- Bitrate: 64–128 kbps (file leggeri per < 50 ms latency)
+```html
+<button class="arc-btn arc-btn-primary" data-arc-sound-click="win">YOU WIN</button>
+<button class="arc-btn" data-arc-sound-hover="">SILENT HOVER</button>
+```
+
+---
+
+## Custom sounds (bring your own files)
+
+To play your own audio files, install the optional peer dependency
+[Howler.js](https://howlerjs.com/) and register each sound before playing it:
+
+```bash
+npm install howler
+```
+
+```js
+import { AudioManager } from '@davide03memoli/arcade-ui'
+
+const audio = AudioManager.getInstance()
+
+// Register once (preloads the file)
+audio.register('powerup', '/sounds/powerup.mp3')
+audio.register('jump',    '/sounds/jump.ogg')
+
+// Play by ID
+audio.play('powerup')
+audio.play('jump')
+```
+
+### Recommended file specs
+
+| Property | Recommendation |
+|----------|----------------|
+| Format | MP3 (broadest support), OGG as fallback |
+| Duration | < 2 s for UI SFX |
+| Bitrate | 64–128 kbps (keeps latency < 50 ms) |
+| Sample rate | 44.1 kHz |
+
+### Serving files
+
+Arcade UI does **not** ship MP3 files in the npm package.
+Host your custom sounds wherever suits your project:
+
+- `public/sounds/` in your own app (Vite, Next.js, etc.)
+- A CDN or object storage bucket
+- Any reachable URL path
+
+Pass the full URL or root-relative path to `register()`:
+
+```js
+// Root-relative (served from your app's public dir)
+audio.register('powerup', '/sounds/powerup.mp3')
+
+// Absolute CDN URL
+audio.register('powerup', 'https://cdn.example.com/sfx/powerup.mp3')
+```
+
+> **Note:** This `public/sfx/` folder exists only as documentation.
+> Its contents are excluded from the npm package and are **not** copied to `dist/`
+> during build. Place your audio files in your own application's assets, not here.
