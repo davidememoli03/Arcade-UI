@@ -8,11 +8,11 @@
        </button>
        <ul class="arc-dropdown-menu" role="listbox">
          <li class="arc-dropdown-option" role="option">OPTION A</li>
-         <li class="arc-dropdown-option arc-dropdown-option--selected" role="option">OPTION B</li>
-         <li class="arc-dropdown-option arc-dropdown-option--disabled" aria-disabled="true">OPTION C</li>
+         <li class="arc-dropdown-option arc-dropdown-option-selected" role="option">OPTION B</li>
+         <li class="arc-dropdown-option arc-dropdown-option-disabled" aria-disabled="true">OPTION C</li>
        </ul>
      </div>
-   Stato open/closed: aggiungere/rimuovere classe arc-dropdown--open sul wrapper,
+   Stato open/closed: aggiungere/rimuovere classe arc-dropdown-open sul wrapper,
    oppure usare l'attributo [aria-expanded="true"] sul trigger (gestito dal JS minimal incluso).
    ───────────────────────────────────────────────────────────────────────────── */
 
@@ -107,7 +107,7 @@
     background:
         repeating-linear-gradient(
             to bottom,
-            rgb(0 0 0 / 0%) 0px,
+            rgb(0 0 0 / 0%) 0,
             rgb(0 0 0 / 0%) 2px,
             rgb(0 0 0 / 12%) 2px,
             rgb(0 0 0 / 12%) 4px
@@ -123,21 +123,28 @@
 }
 
 @keyframes arc-dropdown-open {
-    from { opacity: 0; transform: translateY(-4px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* ── Stato aperto — classe .arc-dropdown--open o aria-expanded ───────
+/* ── Stato aperto — classe .arc-dropdown-open o aria-expanded ────────
    Entrambi i selettori aprono il menu.
    Il JS minimal usa aria-expanded sul trigger;
-   si può anche aggiungere .arc-dropdown--open al wrapper via JS.
+   si può anche aggiungere .arc-dropdown-open al wrapper via JS.
 ──────────────────────────────────────────────────────────────────── */
-.arc-dropdown--open .arc-dropdown-menu,
+.arc-dropdown-open .arc-dropdown-menu,
 .arc-dropdown:has(.arc-dropdown-trigger[aria-expanded="true"]) .arc-dropdown-menu {
     display: block;
 }
 
-.arc-dropdown--open .arc-dropdown-chevron,
+.arc-dropdown-open .arc-dropdown-chevron,
 .arc-dropdown:has(.arc-dropdown-trigger[aria-expanded="true"]) .arc-dropdown-chevron {
     transform: rotate(180deg);
 }
@@ -171,13 +178,13 @@
 /* ── Opzione selezionata ─────────────────────────────────────────────
    Bordo sinistro permanente + colore accent pieno.
 ──────────────────────────────────────────────────────────────────── */
-.arc-dropdown-option--selected {
+.arc-dropdown-option-selected {
     color: var(--dropdown-accent);
     border-left-color: var(--dropdown-accent);
     background: color-mix(in srgb, var(--dropdown-accent) 5%, transparent);
 }
 
-.arc-dropdown-option--selected::after {
+.arc-dropdown-option-selected::after {
     content: ' ◀';
     font-size: 9px;
     opacity: 0.7;
@@ -186,7 +193,7 @@
 /* ── Opzione disabilitata ─────────────────────────────────────────────
    pointer-events: none blocca hover e click.
 ──────────────────────────────────────────────────────────────────── */
-.arc-dropdown-option--disabled {
+.arc-dropdown-option-disabled {
     color: var(--arc-color-disabled);
     cursor: not-allowed;
     pointer-events: none;
@@ -196,7 +203,7 @@
 /* ── Trigger disabilitato ─────────────────────────────────────────────
 ──────────────────────────────────────────────────────────────────── */
 .arc-dropdown-trigger:disabled,
-.arc-dropdown--disabled .arc-dropdown-trigger {
+.arc-dropdown-disabled .arc-dropdown-trigger {
     color: var(--arc-color-disabled);
     border-color: var(--arc-color-disabled);
     box-shadow: none;

@@ -171,9 +171,9 @@ A complete working page — copy, save as `index.html`, open in browser:
   </button>
   <ul class="arc-dropdown-menu" role="listbox">
     <li class="arc-dropdown-option" role="option">EASY</li>
-    <li class="arc-dropdown-option arc-dropdown-option--selected" role="option">NORMAL</li>
+    <li class="arc-dropdown-option arc-dropdown-option-selected" role="option">NORMAL</li>
     <li class="arc-dropdown-option" role="option">HARD</li>
-    <li class="arc-dropdown-option arc-dropdown-option--disabled" aria-disabled="true">NIGHTMARE</li>
+    <li class="arc-dropdown-option arc-dropdown-option-disabled" aria-disabled="true">NIGHTMARE</li>
   </ul>
 </div>
 ```

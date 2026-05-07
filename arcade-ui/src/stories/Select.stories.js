@@ -39,14 +39,14 @@ function wireDropdowns(container) {
 
 function dropdown({ variant = 'arc-dropdown-cyan', value = 'SELECT OPTION', options = [], disabled = false } = {}) {
   return `
-    <div class="arc-dropdown ${variant}${disabled ? ' arc-dropdown--disabled' : ''}">
+    <div class="arc-dropdown ${variant}${disabled ? ' arc-dropdown-disabled' : ''}">
       <button class="arc-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false"${disabled ? ' disabled' : ''}>
         <span class="arc-dropdown-value">${value}</span>
         <span class="arc-dropdown-chevron" aria-hidden="true"></span>
       </button>
       <ul class="arc-dropdown-menu" role="listbox">
         ${options.map(({ label, selected, disabled: dOpt }) => `
-          <li class="arc-dropdown-option${selected ? ' arc-dropdown-option--selected' : ''}${dOpt ? ' arc-dropdown-option--disabled' : ''}"
+          <li class="arc-dropdown-option${selected ? ' arc-dropdown-option-selected' : ''}${dOpt ? ' arc-dropdown-option-disabled' : ''}"
               role="option"
               ${dOpt ? 'aria-disabled="true"' : ''}>
             ${label}
@@ -89,10 +89,8 @@ export const Default = {
 }
 
 export const Open = {
-  render: () => dropdown({ options: DIFFICULTY_OPTIONS }).replace(
-    'aria-expanded="false"',
-    'aria-expanded="true"',
-  ),
+  render: () => dropdown({ options: DIFFICULTY_OPTIONS })
+    .replace('aria-expanded="false"', 'aria-expanded="true"'),
 }
 
 export const Cyan = {
