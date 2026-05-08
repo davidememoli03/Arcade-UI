@@ -143,6 +143,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Glitch** | `.arc-glitch` · `.arc-glitch-hover` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glitch--always-on) |
 | **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
 | **Toggle** | `.arc-toggle` · `.arc-toggle-input` · `.arc-toggle-switch` · `.arc-toggle-label` | `arc-toggle-on` · `arc-toggle-off` · `arc-toggle-label-left` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-toggle--all-states) |
+| **Slider** | `.arc-slider` · `.arc-slider-wrapper` · `.arc-slider-label` · `.arc-slider-display` · `.arc-slider-ticks` | `arc-slider-danger` · `arc-slider-success` · `arc-slider-yellow` · `arc-slider-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-slider--volume-panel-demo) |
 | **Animations** | `.arc-u-blink` · `.arc-u-pulse` · `.arc-u-glitch` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-animation--keyframes) |
 
 ### Tabs anatomy
@@ -327,6 +328,63 @@ LED switch che imita i pulsanti fisici dei cabinati arcade. CSS-only tramite `<i
 - Animazione ON: lampo bianco accecante → settle neon cyan (300 ms, steps pixel)
 - Animazione OFF: transizione a passi verso il rosso scuro
 - Stato disabled: desaturato (`filter: saturate(0.15)`), `cursor: not-allowed`
+
+### Slider anatomy
+
+Controllo volume/difficoltà stile impostazioni arcade. Track segmentato a blocchi con fill neon, thumb pixel-art quadrato. Basato su `<input type="range">` nativo — cross-browser (WebKit + Firefox).
+
+```html
+<!-- Base: slider standalone -->
+<input type="range" class="arc-slider"
+       min="0" max="100" value="75"
+       data-arc-slider
+       style="--arc-slider-value: 75%">
+
+<!-- Completo: con wrapper, label, display valore e tick marks -->
+<div class="arc-slider-wrapper">
+  <div class="arc-slider-header">
+    <span class="arc-slider-label">VOLUME</span>
+    <span class="arc-slider-display" id="vol-display">75</span>
+  </div>
+  <input type="range" class="arc-slider"
+         min="0" max="100" value="75"
+         data-arc-slider
+         data-arc-slider-display="vol-display"
+         style="--arc-slider-value: 75%">
+  <div class="arc-slider-ticks" aria-hidden="true">
+    <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+  </div>
+</div>
+```
+
+**`--arc-slider-value`** deve essere impostato inizialmente via `style=""` e aggiornato ad ogni drag. Usare `data-arc-slider` per l'auto-init JS oppure l'handler inline:
+
+```html
+<input type="range" class="arc-slider" value="50"
+       style="--arc-slider-value: 50%"
+       oninput="this.style.setProperty('--arc-slider-value',
+                ((this.value-this.min)/(this.max-this.min)*100)+'%')">
+```
+
+```js
+// Auto-bind tutti i [data-arc-slider] nel documento
+import { bindSliders } from '@davide03memoli/arcade-ui'
+bindSliders()
+
+// Aggiornamento manuale su un singolo input
+import { updateSlider } from '@davide03memoli/arcade-ui'
+updateSlider(document.querySelector('.arc-slider'))
+```
+
+**Varianti colore** — aggiungere a `.arc-slider` (e al `.arc-slider-wrapper` per propagare alle label):
+
+| Classe | Colore |
+|---|---|
+| *(default)* | Cyan |
+| `arc-slider-danger` | Red |
+| `arc-slider-success` | Green |
+| `arc-slider-yellow` | Yellow |
+| `arc-slider-purple` | Purple |
 
 ### Input anatomy
 

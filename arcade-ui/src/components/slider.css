@@ -1,0 +1,319 @@
+/* src/components/slider.css
+   Componente arc-slider: range input stile cabinato arcade.
+   Track segmentato a blocchi con fill neon, thumb pixel-art quadrato.
+
+   Struttura HTML base:
+     <input type="range" class="arc-slider"
+            min="0" max="100" value="75"
+            data-arc-slider
+            style="--arc-slider-value: 75%">
+
+   Con wrapper completo (label + ticks):
+     <div class="arc-slider-wrapper">
+       <div class="arc-slider-header">
+         <span class="arc-slider-label">VOLUME</span>
+         <span class="arc-slider-display">75</span>
+       </div>
+       <input type="range" class="arc-slider" min="0" max="100" value="75"
+              data-arc-slider style="--arc-slider-value: 75%">
+       <div class="arc-slider-ticks" aria-hidden="true">
+         <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+       </div>
+     </div>
+
+   Varianti colore (su .arc-slider):
+     .arc-slider-danger   → red
+     .arc-slider-success  → green
+
+   Aggiornamento fill: il JS bindSliders() / data-arc-slider gestisce
+   --arc-slider-value automaticamente. In alternativa, inline handler:
+     oninput="this.style.setProperty('--arc-slider-value',
+              ((this.value-this.min)/(this.max-this.min)*100)+'%')"
+   ─────────────────────────────────────────────────────────────────── */
+
+/* ── Token locali (default cyan) ────────────────────────────────────
+   Impostati sull'input stesso così i pseudo-elementi li ereditano.
+──────────────────────────────────────────────────────────────────── */
+.arc-slider {
+    --slider-accent: var(--arc-color-cyan);
+    --slider-glow:   var(--arc-color-cyan-glow);
+
+    /* Layout */
+    display: block;
+    width: 100%;
+    height: 28px;      /* altezza totale: include l'overflow del thumb */
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    background: transparent;
+    appearance: none;
+    box-sizing: border-box;
+}
+
+/* ── Stato :disabled ─────────────────────────────────────────────────
+   Dichiarato prima di :focus-visible per no-descending-specificity.
+──────────────────────────────────────────────────────────────────── */
+.arc-slider:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+    filter: saturate(0.15);
+    pointer-events: none;
+}
+
+/* ── Focus outline — accessibilità tastiera ──────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-slider:focus {
+    outline: none;
+}
+
+.arc-slider:focus-visible {
+    outline: 2px solid var(--slider-accent);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 4px rgb(0 245 255 / 20%);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   WEBKIT — Chrome, Safari, Edge (Chromium)
+═══════════════════════════════════════════════════════════════════ */
+
+/* ── WebKit: Track (binario) ─────────────────────────────────────────
+   background a due livelli:
+     1. repeating-linear-gradient: segmenti (blocco 10px + gap 2px)
+     2. linear-gradient: split fill/empty alla posizione --arc-slider-value
+──────────────────────────────────────────────────────────────────── */
+.arc-slider::-webkit-slider-runnable-track {
+    height: 16px;
+    background:
+        repeating-linear-gradient(
+            to right,
+            transparent          0,
+            transparent          10px,
+            rgb(0 0 0 / 60%)     10px,
+            rgb(0 0 0 / 60%)     12px
+        ),
+        linear-gradient(
+            to right,
+            var(--slider-accent)     0%,
+            var(--slider-accent)     var(--arc-slider-value, 0%),
+            var(--arc-color-bg-alt)  var(--arc-slider-value, 0%),
+            var(--arc-color-bg-alt)  100%
+        );
+    border: 2px solid var(--slider-accent);
+    box-shadow:
+        0 0 6px var(--slider-glow),
+        inset 0 0 4px rgb(0 0 0 / 60%);
+    transition:
+        border-color var(--arc-anim-fast) var(--arc-ease-pixel),
+        box-shadow var(--arc-anim-fast) var(--arc-ease-pixel);
+}
+
+/* ── WebKit: Thumb (cursore quadrato) ────────────────────────────────
+   margin-top: (track_height - thumb_height) / 2 = (16 - 28) / 2 = -6px
+   Nessun border-radius: pixel puro. Glow espanso al drag (:active).
+──────────────────────────────────────────────────────────────────── */
+.arc-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 28px;
+    margin-top: -6px;
+    background: var(--arc-color-bg-panel);
+    border: 2px solid var(--slider-accent);
+    box-shadow:
+        0 0 8px var(--slider-accent),
+        0 0 16px var(--slider-glow),
+        inset 0 0 4px rgb(0 0 0 / 60%);
+    cursor: grab;
+    transition:
+        box-shadow var(--arc-anim-fast) var(--arc-ease-pixel),
+        background var(--arc-anim-fast) var(--arc-ease-pixel);
+}
+
+.arc-slider:not(:disabled)::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    background: var(--slider-accent);
+    box-shadow:
+        0 0 16px var(--slider-accent),
+        0 0 40px var(--slider-glow),
+        0 0 60px var(--slider-glow);
+}
+
+.arc-slider:not(:disabled):hover::-webkit-slider-thumb {
+    background: rgb(0 245 255 / 15%);
+    box-shadow:
+        0 0 12px var(--slider-accent),
+        0 0 24px var(--slider-glow),
+        inset 0 0 4px rgb(0 0 0 / 60%);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   FIREFOX — ::-moz-range-*
+═══════════════════════════════════════════════════════════════════ */
+
+/* ── Firefox: Track ──────────────────────────────────────────────────
+   In Firefox, ::-moz-range-progress gestisce il fill; il track
+   mostra solo la parte non riempita (destra del thumb).
+──────────────────────────────────────────────────────────────────── */
+.arc-slider::-moz-range-track {
+    height: 16px;
+    background:
+        repeating-linear-gradient(
+            to right,
+            transparent          0,
+            transparent          10px,
+            rgb(0 0 0 / 60%)     10px,
+            rgb(0 0 0 / 60%)     12px
+        ),
+        var(--arc-color-bg-alt);
+    border: 2px solid var(--slider-accent);
+    box-shadow:
+        0 0 6px var(--slider-glow),
+        inset 0 0 4px rgb(0 0 0 / 60%);
+    cursor: pointer;
+}
+
+/* ── Firefox: Fill (porzione riempita) ───────────────────────────────
+   ::-moz-range-progress è disponibile solo in Firefox.
+   Stesso pattern segmentato del track ma con accent color.
+──────────────────────────────────────────────────────────────────── */
+.arc-slider::-moz-range-progress {
+    height: 16px;
+    background:
+        repeating-linear-gradient(
+            to right,
+            transparent          0,
+            transparent          10px,
+            rgb(0 0 0 / 30%)     10px,
+            rgb(0 0 0 / 30%)     12px
+        ),
+        var(--slider-accent);
+    box-shadow:
+        0 0 8px var(--slider-accent),
+        0 0 20px var(--slider-glow);
+}
+
+/* ── Firefox: Thumb ──────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-slider::-moz-range-thumb {
+    width: 20px;
+    height: 28px;
+    background: var(--arc-color-bg-panel);
+    border: 2px solid var(--slider-accent);
+    border-radius: 0;
+    box-shadow:
+        0 0 8px var(--slider-accent),
+        0 0 16px var(--slider-glow),
+        inset 0 0 4px rgb(0 0 0 / 60%);
+    cursor: grab;
+    transition:
+        box-shadow var(--arc-anim-fast) var(--arc-ease-pixel),
+        background var(--arc-anim-fast) var(--arc-ease-pixel);
+}
+
+.arc-slider:not(:disabled):hover::-moz-range-thumb {
+    background: rgb(0 245 255 / 15%);
+    box-shadow:
+        0 0 12px var(--slider-accent),
+        0 0 24px var(--slider-glow),
+        inset 0 0 4px rgb(0 0 0 / 60%);
+}
+
+.arc-slider:not(:disabled):active::-moz-range-thumb {
+    cursor: grabbing;
+    background: var(--slider-accent);
+    box-shadow:
+        0 0 16px var(--slider-accent),
+        0 0 40px var(--slider-glow),
+        0 0 60px var(--slider-glow);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   VARIANTI COLORE
+   Si applicano sull'elemento <input class="arc-slider arc-slider-*">
+   oppure sul wrapper (le custom property vengono ereditate).
+═══════════════════════════════════════════════════════════════════ */
+
+.arc-slider-danger {
+    --slider-accent: var(--arc-color-red);
+    --slider-glow:   var(--arc-color-red-glow);
+}
+
+.arc-slider-success {
+    --slider-accent: var(--arc-color-green);
+    --slider-glow:   var(--arc-color-green-glow);
+}
+
+.arc-slider-yellow {
+    --slider-accent: var(--arc-color-yellow);
+    --slider-glow:   var(--arc-color-yellow-glow);
+}
+
+.arc-slider-purple {
+    --slider-accent: var(--arc-color-purple);
+    --slider-glow:   var(--arc-color-purple-glow);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   WRAPPER, HEADER, TICKS
+   Elementi opzionali per il componente completo con label e valori.
+═══════════════════════════════════════════════════════════════════ */
+
+/* ── Contenitore colonna ─────────────────────────────────────────────
+   La variant class su .arc-slider-wrapper propaga --slider-accent
+   a .arc-slider-label e .arc-slider-display tramite ereditarietà.
+──────────────────────────────────────────────────────────────────── */
+.arc-slider-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arc-space-1);
+    width: 100%;
+}
+
+/* ── Header: label + display valore ─────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+
+/* ── Label testo ─────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-slider-label {
+    font-family: var(--arc-font-pixel);
+    font-size: var(--arc-text-caption-size);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slider-accent, var(--arc-color-cyan));
+    text-shadow: 0 0 6px var(--slider-glow, var(--arc-color-cyan-glow));
+    line-height: 1;
+}
+
+/* ── Display valore numerico ─────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+.arc-slider-display {
+    font-family: var(--arc-font-pixel);
+    font-size: var(--arc-text-caption-size);
+    letter-spacing: 0.05em;
+    color: var(--slider-accent, var(--arc-color-cyan));
+    opacity: 0.8;
+    line-height: 1;
+}
+
+/* ── Tick marks ──────────────────────────────────────────────────────
+   Flex row con justify-content: space-between per allineare i tick
+   all'inizio e alla fine del range.
+──────────────────────────────────────────────────────────────────── */
+.arc-slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2px;
+}
+
+.arc-slider-ticks > span {
+    font-family: var(--arc-font-pixel);
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    color: var(--arc-color-text-muted);
+    user-select: none;
+}
