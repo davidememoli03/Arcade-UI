@@ -4,15 +4,15 @@
 
    Struttura HTML:
      <label class="arc-toggle">
-       <input type="checkbox" class="arc-toggle__input">
-       <span class="arc-toggle__switch" aria-hidden="true"></span>
-       <span class="arc-toggle__label">LABEL</span>
+       <input type="checkbox" class="arc-toggle-input">
+       <span class="arc-toggle-switch" aria-hidden="true"></span>
+       <span class="arc-toggle-label">LABEL</span>
      </label>
 
    Modificatori:
-     .arc-toggle--on          Forza stato ON visivo (per HTML statico)
-     .arc-toggle--off         Forza stato OFF visivo (override su --on)
-     .arc-toggle--label-left  Sposta il testo a sinistra dello switch
+     .arc-toggle-on          Forza stato ON visivo (per HTML statico / JS)
+     .arc-toggle-off         Forza stato OFF visivo (override su :checked)
+     .arc-toggle-label-left  Sposta il testo a sinistra dello switch
    ─────────────────────────────────────────────────────────────────── */
 
 /* ── Keyframe: scorrimento LED ───────────────────────────────────────
@@ -58,7 +58,7 @@
 
 /* ── Wrapper <label> ─────────────────────────────────────────────────
    Flex row: il <input> è absolute quindi i flex item visibili
-   sono solo .arc-toggle__switch e .arc-toggle__label.
+   sono solo .arc-toggle-switch e .arc-toggle-label.
 ──────────────────────────────────────────────────────────────────── */
 .arc-toggle {
     position: relative;
@@ -75,16 +75,17 @@
 }
 
 /* ── Input nativo visivamente nascosto ───────────────────────────────
-   clip-path anziché display:none mantiene focus e tab-order.
+   clip-path: inset(50%) anziché l'attributo clip (deprecated).
+   La posizione assoluta mantiene focus e tab-order accessibile.
 ──────────────────────────────────────────────────────────────────── */
-.arc-toggle__input {
+.arc-toggle-input {
     position: absolute;
     width: 1px;
     height: 1px;
     margin: -1px;
     padding: 0;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
     white-space: nowrap;
     border: 0;
 }
@@ -93,7 +94,7 @@
    56 × 28 px: dimensioni del track housing arcade.
    ::before = housing (track), ::after = LED indicator (thumb).
 ──────────────────────────────────────────────────────────────────── */
-.arc-toggle__switch {
+.arc-toggle-switch {
     position: relative;
     display: inline-block;
     flex-shrink: 0;
@@ -101,11 +102,11 @@
     height: 28px;
 }
 
-/* ── Track housing (::before) ────────────────────────────────────────
+/* ── Track housing (::before) — stato OFF ────────────────────────────
    Rettangolo pieno, nessun border-radius: pixel puro.
-   Bordo rosso scuro nello stato OFF; transisce a cyan nell'ON.
+   Bordo rosso scuro; transisce a cyan nello stato ON.
 ──────────────────────────────────────────────────────────────────── */
-.arc-toggle__switch::before {
+.arc-toggle-switch::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -120,9 +121,10 @@
 /* ── LED indicator (::after) — stato OFF ────────────────────────────
    Quadrato 16 × 16 px posizionato sul lato sinistro del track.
    Colore: rosso scuro (#3d0005) con bordo (#7a0010).
-   4 px di padding dal bordo del track su tutti i lati.
+   Spaziatura: 6 px dal bordo del track su tutti i lati
+   (2 px bordo + 4 px padding interno).
 ──────────────────────────────────────────────────────────────────── */
-.arc-toggle__switch::after {
+.arc-toggle-switch::after {
     content: '';
     position: absolute;
     top: 6px;
@@ -141,37 +143,63 @@
         box-shadow var(--arc-anim-fast) var(--arc-ease-pixel);
 }
 
-/* ── Stato ON: track border e glow ──────────────────────────────────
-   Selettore multiplo:
-     a) input:checked + switch   → stato nativo HTML
-     b) .arc-toggle--on switch   → classe JS/statica
+/* ── Stato ON: modificatore .arc-toggle-on ───────────────────────────
+   Specificità 0,2,1 — dichiarato PRIMA delle regole :checked (0,3,1)
+   per rispettare no-descending-specificity.
 ──────────────────────────────────────────────────────────────────── */
-.arc-toggle__input:checked + .arc-toggle__switch::before,
-.arc-toggle--on .arc-toggle__switch::before {
+.arc-toggle-on .arc-toggle-switch::before {
     border-color: var(--arc-color-cyan);
     box-shadow:
         inset 2px 2px 0 rgb(0 0 0 / 60%),
         0 0 6px var(--arc-color-cyan-glow);
 }
 
-/* ── Stato ON: LED si sposta a destra e si illumina ─────────────────
-   Due animazioni parallele:
-     arc-toggle-slide  → spostamento istantaneo (50 ms, steps(1))
-     arc-toggle-flash  → lampo + glow espanso (300 ms, steps(4))
-   Entrambe usano forwards: il valore finale persiste.
-──────────────────────────────────────────────────────────────────── */
-.arc-toggle__input:checked + .arc-toggle__switch::after,
-.arc-toggle--on .arc-toggle__switch::after {
+.arc-toggle-on .arc-toggle-switch::after {
     animation:
         arc-toggle-slide var(--arc-anim-instant) var(--arc-ease-step) forwards,
         arc-toggle-flash var(--arc-anim-normal) var(--arc-ease-pixel) forwards;
 }
 
-/* ── Focus-visible — accessibilità da tastiera ───────────────────────
-   Visibile solo con Tab, mai con click (specificity identica
-   ma :focus-visible non scatta su pointer device).
+/* ── Label-left: dichiarato PRIMA di :checked ~ label ────────────────
+   Specificità 0,2,0 — richiesto da no-descending-specificity.
+   CSS order sposta il testo visivamente a sinistra; il selettore
+   DOM input + switch rimane intatto (order non altera DOM order).
 ──────────────────────────────────────────────────────────────────── */
-.arc-toggle__input:focus-visible + .arc-toggle__switch::before {
+.arc-toggle-label-left .arc-toggle-label {
+    order: -1;
+}
+
+/* ── Label ON: modificatore (spec 0,2,0) — prima di :checked ─────────
+──────────────────────────────────────────────────────────────────── */
+.arc-toggle-on .arc-toggle-label {
+    color: var(--arc-color-text);
+}
+
+/* ── Stato ON: input:checked (specificità 0,3,1 / 0,3,0) ────────────
+   Selettori nativi HTML; specificità più alta garantisce che
+   lo stato nativo non venga silenziato dai modificatori classe.
+──────────────────────────────────────────────────────────────────── */
+.arc-toggle-input:checked + .arc-toggle-switch::before {
+    border-color: var(--arc-color-cyan);
+    box-shadow:
+        inset 2px 2px 0 rgb(0 0 0 / 60%),
+        0 0 6px var(--arc-color-cyan-glow);
+}
+
+.arc-toggle-input:checked + .arc-toggle-switch::after {
+    animation:
+        arc-toggle-slide var(--arc-anim-instant) var(--arc-ease-step) forwards,
+        arc-toggle-flash var(--arc-anim-normal) var(--arc-ease-pixel) forwards;
+}
+
+.arc-toggle-input:checked ~ .arc-toggle-label {
+    color: var(--arc-color-text);
+}
+
+/* ── Focus-visible — accessibilità da tastiera ───────────────────────
+   Visibile solo con Tab, mai con click (specificity 0,3,1).
+──────────────────────────────────────────────────────────────────── */
+.arc-toggle-input:focus-visible + .arc-toggle-switch::before {
     outline: 2px solid var(--arc-color-cyan);
     outline-offset: 3px;
     box-shadow:
@@ -179,45 +207,17 @@
         0 0 0 4px rgb(0 245 255 / 25%);
 }
 
-/* ── Label text: si illumina quando ON ───────────────────────────────
-   ~ selettore generale funziona per ordine DOM, indipendente
-   dall'ordine visivo (modificatore --label-left usa CSS order).
+/* ── Stato OFF: modificatore .arc-toggle-off ─────────────────────────
+   Specificità 0,3,1 / 0,3,0 (stesso livello di :checked) e
+   dichiarato DOPO: vince per source order, override lo stato ON.
+   Struttura: .arc-toggle-off .arc-toggle-input + .arc-toggle-switch
 ──────────────────────────────────────────────────────────────────── */
-.arc-toggle__input:checked ~ .arc-toggle__label,
-.arc-toggle--on .arc-toggle__label {
-    color: var(--arc-color-text);
-}
-
-/* ── Stato disabled ──────────────────────────────────────────────────
-   :has() modifica il wrapper quando l'input è disabled.
-   pointer-events: none blocca anche hover sugli altri figli.
-   opacity + saturate: stile "LED bruciato" desaturato.
-──────────────────────────────────────────────────────────────────── */
-.arc-toggle:has(.arc-toggle__input:disabled) {
-    cursor: not-allowed;
-    opacity: 0.4;
-    filter: saturate(0.15);
-    pointer-events: none;
-}
-
-/* ── Modificatore: label a sinistra ──────────────────────────────────
-   CSS order sposta il testo visivamente a sinistra; il selettore
-   DOM input + switch rimane intatto (order non altera DOM order).
-──────────────────────────────────────────────────────────────────── */
-.arc-toggle--label-left .arc-toggle__label {
-    order: -1;
-}
-
-/* ── Modificatore --off: forza stato OFF visivo ──────────────────────
-   Override con specificity più alta su .arc-toggle--on.
-   Utile per HTML statico o reset JS esplicito.
-──────────────────────────────────────────────────────────────────── */
-.arc-toggle--off .arc-toggle__switch::before {
+.arc-toggle-off .arc-toggle-input + .arc-toggle-switch::before {
     border-color: #3a0008;
     box-shadow: inset 2px 2px 0 rgb(0 0 0 / 60%);
 }
 
-.arc-toggle--off .arc-toggle__switch::after {
+.arc-toggle-off .arc-toggle-input + .arc-toggle-switch::after {
     left: 6px;
     background: #3d0005;
     border-color: #7a0010;
@@ -227,6 +227,18 @@
     animation: none;
 }
 
-.arc-toggle--off .arc-toggle__label {
+.arc-toggle-off .arc-toggle-input ~ .arc-toggle-label {
     color: var(--arc-color-text-muted);
+}
+
+/* ── Stato disabled ──────────────────────────────────────────────────
+   :has() modifica il wrapper quando l'input è disabled.
+   pointer-events: none blocca anche hover sugli altri figli.
+   opacity + saturate: stile "LED bruciato" desaturato.
+──────────────────────────────────────────────────────────────────── */
+.arc-toggle:has(.arc-toggle-input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.4;
+    filter: saturate(0.15);
+    pointer-events: none;
 }

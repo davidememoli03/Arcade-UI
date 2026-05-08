@@ -20,7 +20,7 @@ export default {
 function renderToggle({ label, checked, disabled, labelLeft }) {
   const modifiers = [
     'arc-toggle',
-    labelLeft ? 'arc-toggle--label-left' : '',
+    labelLeft ? 'arc-toggle-label-left' : '',
   ].filter(Boolean).join(' ')
 
   const checkedAttr  = checked  ? 'checked'  : ''
@@ -28,9 +28,9 @@ function renderToggle({ label, checked, disabled, labelLeft }) {
 
   return `
     <label class="${modifiers}">
-      <input type="checkbox" class="arc-toggle__input" ${checkedAttr} ${disabledAttr}>
-      <span class="arc-toggle__switch" aria-hidden="true"></span>
-      <span class="arc-toggle__label">${label}</span>
+      <input type="checkbox" class="arc-toggle-input" ${checkedAttr} ${disabledAttr}>
+      <span class="arc-toggle-switch" aria-hidden="true"></span>
+      <span class="arc-toggle-label">${label}</span>
     </label>
   `
 }
@@ -68,25 +68,25 @@ export const DisabledOn = {
 }
 
 export const StaticClasses = {
-  name: 'Static Classes (--on / --off)',
+  name: 'Static Classes (arc-toggle-on / arc-toggle-off)',
   render: () => `
     <div style="display:flex;flex-direction:column;gap:20px;padding:2rem;">
       <p style="font-family:var(--arc-font-pixel);font-size:10px;color:var(--arc-color-text-muted);margin:0 0 8px;">
         Stato controllato via classe CSS (nessun input nativo)
       </p>
 
-      <!-- .arc-toggle--on -->
-      <label class="arc-toggle arc-toggle--on">
-        <input type="checkbox" class="arc-toggle__input">
-        <span class="arc-toggle__switch" aria-hidden="true"></span>
-        <span class="arc-toggle__label">NEON ON</span>
+      <!-- .arc-toggle-on -->
+      <label class="arc-toggle arc-toggle-on">
+        <input type="checkbox" class="arc-toggle-input">
+        <span class="arc-toggle-switch" aria-hidden="true"></span>
+        <span class="arc-toggle-label">NEON ON</span>
       </label>
 
-      <!-- .arc-toggle--off esplicito -->
-      <label class="arc-toggle arc-toggle--off">
-        <input type="checkbox" class="arc-toggle__input" checked>
-        <span class="arc-toggle__switch" aria-hidden="true"></span>
-        <span class="arc-toggle__label">FORCED OFF</span>
+      <!-- .arc-toggle-off con input checked -->
+      <label class="arc-toggle arc-toggle-off">
+        <input type="checkbox" class="arc-toggle-input" checked>
+        <span class="arc-toggle-switch" aria-hidden="true"></span>
+        <span class="arc-toggle-label">FORCED OFF</span>
       </label>
     </div>
   `,
@@ -98,33 +98,33 @@ export const AllStates = {
     <div style="display:flex;flex-direction:column;gap:24px;padding:2rem;">
 
       <label class="arc-toggle">
-        <input type="checkbox" class="arc-toggle__input">
-        <span class="arc-toggle__switch" aria-hidden="true"></span>
-        <span class="arc-toggle__label">OFF (default)</span>
+        <input type="checkbox" class="arc-toggle-input">
+        <span class="arc-toggle-switch" aria-hidden="true"></span>
+        <span class="arc-toggle-label">OFF (default)</span>
       </label>
 
       <label class="arc-toggle">
-        <input type="checkbox" class="arc-toggle__input" checked>
-        <span class="arc-toggle__switch" aria-hidden="true"></span>
-        <span class="arc-toggle__label">ON (checked)</span>
+        <input type="checkbox" class="arc-toggle-input" checked>
+        <span class="arc-toggle-switch" aria-hidden="true"></span>
+        <span class="arc-toggle-label">ON (checked)</span>
       </label>
 
-      <label class="arc-toggle arc-toggle--label-left">
-        <input type="checkbox" class="arc-toggle__input" checked>
-        <span class="arc-toggle__switch" aria-hidden="true"></span>
-        <span class="arc-toggle__label">LABEL LEFT</span>
-      </label>
-
-      <label class="arc-toggle">
-        <input type="checkbox" class="arc-toggle__input" disabled>
-        <span class="arc-toggle__switch" aria-hidden="true"></span>
-        <span class="arc-toggle__label">DISABLED OFF</span>
+      <label class="arc-toggle arc-toggle-label-left">
+        <input type="checkbox" class="arc-toggle-input" checked>
+        <span class="arc-toggle-switch" aria-hidden="true"></span>
+        <span class="arc-toggle-label">LABEL LEFT</span>
       </label>
 
       <label class="arc-toggle">
-        <input type="checkbox" class="arc-toggle__input" checked disabled>
-        <span class="arc-toggle__switch" aria-hidden="true"></span>
-        <span class="arc-toggle__label">DISABLED ON</span>
+        <input type="checkbox" class="arc-toggle-input" disabled>
+        <span class="arc-toggle-switch" aria-hidden="true"></span>
+        <span class="arc-toggle-label">DISABLED OFF</span>
+      </label>
+
+      <label class="arc-toggle">
+        <input type="checkbox" class="arc-toggle-input" checked disabled>
+        <span class="arc-toggle-switch" aria-hidden="true"></span>
+        <span class="arc-toggle-label">DISABLED ON</span>
       </label>
 
     </div>
@@ -139,28 +139,28 @@ export const FormExample = {
         <p class="arc-panel-title" style="font-size:12px;margin-bottom:1.5rem;">OPTIONS</p>
         <div style="display:flex;flex-direction:column;gap:16px;">
 
-          <label class="arc-toggle arc-toggle--label-left" style="justify-content:space-between;">
-            <input type="checkbox" class="arc-toggle__input" checked>
-            <span class="arc-toggle__switch" aria-hidden="true"></span>
-            <span class="arc-toggle__label">MUSIC</span>
+          <label class="arc-toggle arc-toggle-label-left" style="justify-content:space-between;">
+            <input type="checkbox" class="arc-toggle-input" checked>
+            <span class="arc-toggle-switch" aria-hidden="true"></span>
+            <span class="arc-toggle-label">MUSIC</span>
           </label>
 
-          <label class="arc-toggle arc-toggle--label-left" style="justify-content:space-between;">
-            <input type="checkbox" class="arc-toggle__input" checked>
-            <span class="arc-toggle__switch" aria-hidden="true"></span>
-            <span class="arc-toggle__label">SFX</span>
+          <label class="arc-toggle arc-toggle-label-left" style="justify-content:space-between;">
+            <input type="checkbox" class="arc-toggle-input" checked>
+            <span class="arc-toggle-switch" aria-hidden="true"></span>
+            <span class="arc-toggle-label">SFX</span>
           </label>
 
-          <label class="arc-toggle arc-toggle--label-left" style="justify-content:space-between;">
-            <input type="checkbox" class="arc-toggle__input">
-            <span class="arc-toggle__switch" aria-hidden="true"></span>
-            <span class="arc-toggle__label">SCANLINES</span>
+          <label class="arc-toggle arc-toggle-label-left" style="justify-content:space-between;">
+            <input type="checkbox" class="arc-toggle-input">
+            <span class="arc-toggle-switch" aria-hidden="true"></span>
+            <span class="arc-toggle-label">SCANLINES</span>
           </label>
 
-          <label class="arc-toggle arc-toggle--label-left" style="justify-content:space-between;">
-            <input type="checkbox" class="arc-toggle__input" disabled>
-            <span class="arc-toggle__switch" aria-hidden="true"></span>
-            <span class="arc-toggle__label">ONLINE</span>
+          <label class="arc-toggle arc-toggle-label-left" style="justify-content:space-between;">
+            <input type="checkbox" class="arc-toggle-input" disabled>
+            <span class="arc-toggle-switch" aria-hidden="true"></span>
+            <span class="arc-toggle-label">ONLINE</span>
           </label>
 
         </div>

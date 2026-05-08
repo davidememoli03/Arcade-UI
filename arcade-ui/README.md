@@ -142,7 +142,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Glow** | `.arc-glow-{color}` · `.arc-box-glow-{color}` | cyan · red · yellow · green · purple | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glow--text) |
 | **Glitch** | `.arc-glitch` · `.arc-glitch-hover` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glitch--always-on) |
 | **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
-| **Toggle** | `.arc-toggle` · `.arc-toggle__input` · `.arc-toggle__switch` · `.arc-toggle__label` | `arc-toggle--on` · `arc-toggle--off` · `arc-toggle--label-left` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-toggle--all-states) |
+| **Toggle** | `.arc-toggle` · `.arc-toggle-input` · `.arc-toggle-switch` · `.arc-toggle-label` | `arc-toggle-on` · `arc-toggle-off` · `arc-toggle-label-left` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-toggle--all-states) |
 | **Animations** | `.arc-u-blink` · `.arc-u-pulse` · `.arc-u-glitch` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-animation--keyframes) |
 
 ### Tabs anatomy
@@ -285,30 +285,30 @@ LED switch che imita i pulsanti fisici dei cabinati arcade. CSS-only tramite `<i
 ```html
 <!-- OFF (default) -->
 <label class="arc-toggle">
-  <input type="checkbox" class="arc-toggle__input">
-  <span class="arc-toggle__switch" aria-hidden="true"></span>
-  <span class="arc-toggle__label">SOUND FX</span>
+  <input type="checkbox" class="arc-toggle-input">
+  <span class="arc-toggle-switch" aria-hidden="true"></span>
+  <span class="arc-toggle-label">SOUND FX</span>
 </label>
 
 <!-- ON: attributo checked nativo -->
 <label class="arc-toggle">
-  <input type="checkbox" class="arc-toggle__input" checked>
-  <span class="arc-toggle__switch" aria-hidden="true"></span>
-  <span class="arc-toggle__label">MUSIC</span>
+  <input type="checkbox" class="arc-toggle-input" checked>
+  <span class="arc-toggle-switch" aria-hidden="true"></span>
+  <span class="arc-toggle-label">MUSIC</span>
 </label>
 
 <!-- Disabled -->
 <label class="arc-toggle">
-  <input type="checkbox" class="arc-toggle__input" disabled>
-  <span class="arc-toggle__switch" aria-hidden="true"></span>
-  <span class="arc-toggle__label">LOCKED</span>
+  <input type="checkbox" class="arc-toggle-input" disabled>
+  <span class="arc-toggle-switch" aria-hidden="true"></span>
+  <span class="arc-toggle-label">LOCKED</span>
 </label>
 
 <!-- Label a sinistra -->
-<label class="arc-toggle arc-toggle--label-left">
-  <input type="checkbox" class="arc-toggle__input" checked>
-  <span class="arc-toggle__switch" aria-hidden="true"></span>
-  <span class="arc-toggle__label">SCREEN FX</span>
+<label class="arc-toggle arc-toggle-label-left">
+  <input type="checkbox" class="arc-toggle-input" checked>
+  <span class="arc-toggle-switch" aria-hidden="true"></span>
+  <span class="arc-toggle-label">SCREEN FX</span>
 </label>
 ```
 
@@ -316,9 +316,9 @@ LED switch che imita i pulsanti fisici dei cabinati arcade. CSS-only tramite `<i
 
 | Classe | Descrizione |
 |---|---|
-| `arc-toggle--on` | Forza stato ON visivo (utile in HTML statico o con JS) |
-| `arc-toggle--off` | Forza stato OFF visivo (override su `--on` e su `checked`) |
-| `arc-toggle--label-left` | Sposta il testo a sinistra dello switch |
+| `arc-toggle-on` | Forza stato ON visivo (utile in HTML statico o con JS) |
+| `arc-toggle-off` | Forza stato OFF visivo (override su `arc-toggle-on` e su `checked`) |
+| `arc-toggle-label-left` | Sposta il testo a sinistra dello switch |
 
 **Design**
 
