@@ -224,6 +224,20 @@ export declare const arcModal: {
 // le CSS custom property (--table-accent, --table-glow) sono ereditate
 // da tutte le celle figlie.
 
+// ─── Pixel border (8-bit utilities) ─────────────────────────────────────────
+//
+// CSS-only — @layer arcade-pixel-border in src/components/pixel-border.css
+//
+// Classi:
+//   arc-border-pixel | arc-border-pixel-thick | arc-border-pixel-inset |
+//   arc-border-pixel-chamfer | arc-border-pixel-glow (combinare con una base)
+//
+// Variabili:
+//   --arc-border-color      (default --arc-color-cyan)
+//   --arc-border-pixel-bg   (default --arc-color-bg-panel)
+//
+// Token mixin su :root: --arc-border-pixel-step … --arc-border-pixel-step8
+
 // ─── Toast / Notification (arc-toast) ────────────────────────────────────────
 //
 // Notifiche arcade-style che imitano i messaggi di sistema ("PLAYER 1 READY",

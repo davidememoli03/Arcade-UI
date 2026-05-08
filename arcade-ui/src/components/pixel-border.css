@@ -1,0 +1,139 @@
+/* src/components/pixel-border.css
+   Utility: bordi stile 8-bit tramite box-shadow a strati (pixel-art CSS).
+
+   Variabili (sull’elemento o su :root):
+     --arc-border-color       Colore neon del telaio (default: --arc-color-cyan)
+     --arc-border-pixel-bg    Anello “vuoto” tra i due bordi (default: --arc-color-bg-panel)
+
+   Pattern riusabile (@layer arcade-pixel-border):
+     --arc-border-pixel-step … --arc-border-pixel-step4  definiscono lo spessore in step;
+     riuso: copia le dichiarazioni box-shadow da .arc-border-pixel.
+
+   Classi:
+     .arc-border-pixel              Doppio anello standard
+     .arc-border-pixel-thick        Anelli più spessi
+     .arc-border-pixel-inset        Bordo + incavo (inner highlight / shadow)
+     .arc-border-pixel-chamfer      Come standard + rinforzi agli angoli (look 8-bit)
+     .arc-border-pixel-glow         Da usare IN COMBINAZIONE (es. .arc-border-pixel.arc-border-pixel-glow)
+
+   Esempio:
+     <div class="arc-border-pixel arc-border-pixel-glow" style="padding:var(--arc-space-4);background:var(--arc-color-bg-panel)">…</div>
+   ─────────────────────────────────────────────────────────── */
+
+@layer arcade-pixel-border {
+    :root {
+        --arc-border-pixel-step:   var(--arc-border-sm, 2px);
+        --arc-border-pixel-step2:  calc(var(--arc-border-pixel-step) * 2);
+        --arc-border-pixel-step3:  calc(var(--arc-border-pixel-step) * 3);
+        --arc-border-pixel-step4:  calc(var(--arc-border-pixel-step) * 4);
+        --arc-border-pixel-step6:  calc(var(--arc-border-pixel-step) * 6);
+        --arc-border-pixel-step8:  calc(var(--arc-border-pixel-step) * 8);
+    }
+
+    .arc-border-pixel {
+        --arc-border-color:    var(--arc-color-cyan);
+        --arc-border-pixel-bg: var(--arc-color-bg-panel);
+
+        box-shadow:
+            0 0 0 var(--arc-border-pixel-step) var(--arc-border-color),
+            0 0 0 var(--arc-border-pixel-step3) var(--arc-border-pixel-bg),
+            0 0 0 var(--arc-border-pixel-step4) var(--arc-border-color);
+    }
+
+    .arc-border-pixel-thick {
+        --arc-border-color:    var(--arc-color-cyan);
+        --arc-border-pixel-bg: var(--arc-color-bg-panel);
+
+        box-shadow:
+            0 0 0 var(--arc-border-pixel-step2) var(--arc-border-color),
+            0 0 0 var(--arc-border-pixel-step6) var(--arc-border-pixel-bg),
+            0 0 0 var(--arc-border-pixel-step8) var(--arc-border-color);
+    }
+
+    .arc-border-pixel-inset {
+        --arc-border-color:             var(--arc-color-cyan);
+        --arc-border-pixel-bg:          var(--arc-color-bg-panel);
+        --arc-border-pixel-inset-hi:    rgb(255 255 255 / 14%);
+        --arc-border-pixel-inset-lo:    rgb(0 0 0 / 45%);
+
+        box-shadow:
+            inset var(--arc-border-pixel-step) var(--arc-border-pixel-step) 0 var(--arc-border-pixel-inset-hi),
+            inset calc(-1 * var(--arc-border-pixel-step)) calc(-1 * var(--arc-border-pixel-step)) 0 var(--arc-border-pixel-inset-lo),
+            0 0 0 var(--arc-border-pixel-step) var(--arc-border-color),
+            0 0 0 var(--arc-border-pixel-step3) var(--arc-border-pixel-bg),
+            0 0 0 var(--arc-border-pixel-step4) var(--arc-border-color);
+    }
+
+    /* Angoli rinforzati (tacche diagonali stile cabinato) */
+    .arc-border-pixel-chamfer {
+        --arc-border-color:    var(--arc-color-cyan);
+        --arc-border-pixel-bg: var(--arc-color-bg-panel);
+        --arc-p: var(--arc-border-pixel-step);
+        --arc-p2: var(--arc-border-pixel-step2);
+        --arc-p4: var(--arc-border-pixel-step4);
+
+        box-shadow:
+            0 0 0 var(--arc-p) var(--arc-border-color),
+            0 0 0 var(--arc-border-pixel-step3) var(--arc-border-pixel-bg),
+            0 0 0 var(--arc-p4) var(--arc-border-color),
+            calc(-1 * var(--arc-p2)) calc(-1 * var(--arc-p2)) 0 0 var(--arc-border-color),
+            var(--arc-p2) calc(-1 * var(--arc-p2)) 0 0 var(--arc-border-color),
+            calc(-1 * var(--arc-p2)) var(--arc-p2) 0 0 var(--arc-border-color),
+            var(--arc-p2) var(--arc-p2) 0 0 var(--arc-border-color),
+            calc(-1 * var(--arc-p4)) calc(-1 * var(--arc-p4)) 0 0 var(--arc-border-color),
+            var(--arc-p4) calc(-1 * var(--arc-p4)) 0 0 var(--arc-border-color),
+            calc(-1 * var(--arc-p4)) var(--arc-p4) 0 0 var(--arc-border-color),
+            var(--arc-p4) var(--arc-p4) 0 0 var(--arc-border-color);
+    }
+
+    /* Glow: combinare con una delle varianti sopra (stesso elenco + alone) */
+    .arc-border-pixel.arc-border-pixel-glow {
+        box-shadow:
+            0 0 0 var(--arc-border-pixel-step) var(--arc-border-color),
+            0 0 0 var(--arc-border-pixel-step3) var(--arc-border-pixel-bg),
+            0 0 0 var(--arc-border-pixel-step4) var(--arc-border-color),
+            0 0 10px 2px rgb(0 245 255 / 28%),
+            0 0 22px 4px rgb(0 245 255 / 12%);
+    }
+
+    .arc-border-pixel-thick.arc-border-pixel-glow {
+        box-shadow:
+            0 0 0 var(--arc-border-pixel-step2) var(--arc-border-color),
+            0 0 0 var(--arc-border-pixel-step6) var(--arc-border-pixel-bg),
+            0 0 0 var(--arc-border-pixel-step8) var(--arc-border-color),
+            0 0 14px 3px rgb(0 245 255 / 30%),
+            0 0 28px 6px rgb(0 245 255 / 14%);
+    }
+
+    .arc-border-pixel-inset.arc-border-pixel-glow {
+        box-shadow:
+            inset var(--arc-border-pixel-step) var(--arc-border-pixel-step) 0 var(--arc-border-pixel-inset-hi, rgb(255 255 255 / 14%)),
+            inset calc(-1 * var(--arc-border-pixel-step)) calc(-1 * var(--arc-border-pixel-step)) 0 var(--arc-border-pixel-inset-lo, rgb(0 0 0 / 45%)),
+            0 0 0 var(--arc-border-pixel-step) var(--arc-border-color),
+            0 0 0 var(--arc-border-pixel-step3) var(--arc-border-pixel-bg),
+            0 0 0 var(--arc-border-pixel-step4) var(--arc-border-color),
+            0 0 12px 2px rgb(0 245 255 / 26%),
+            0 0 24px 4px rgb(0 245 255 / 10%);
+    }
+
+    .arc-border-pixel-chamfer.arc-border-pixel-glow {
+        --arc-p: var(--arc-border-pixel-step);
+        --arc-p2: var(--arc-border-pixel-step2);
+        --arc-p4: var(--arc-border-pixel-step4);
+
+        box-shadow:
+            0 0 0 var(--arc-p) var(--arc-border-color),
+            0 0 0 var(--arc-border-pixel-step3) var(--arc-border-pixel-bg),
+            0 0 0 var(--arc-p4) var(--arc-border-color),
+            calc(-1 * var(--arc-p2)) calc(-1 * var(--arc-p2)) 0 0 var(--arc-border-color),
+            var(--arc-p2) calc(-1 * var(--arc-p2)) 0 0 var(--arc-border-color),
+            calc(-1 * var(--arc-p2)) var(--arc-p2) 0 0 var(--arc-border-color),
+            var(--arc-p2) var(--arc-p2) 0 0 var(--arc-border-color),
+            calc(-1 * var(--arc-p4)) calc(-1 * var(--arc-p4)) 0 0 var(--arc-border-color),
+            var(--arc-p4) calc(-1 * var(--arc-p4)) 0 0 var(--arc-border-color),
+            calc(-1 * var(--arc-p4)) var(--arc-p4) 0 0 var(--arc-border-color),
+            var(--arc-p4) var(--arc-p4) 0 0 var(--arc-border-color),
+            0 0 10px 2px rgb(0 245 255 / 26%),
+            0 0 22px 4px rgb(0 245 255 / 10%);
+    }
+}

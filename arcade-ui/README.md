@@ -141,6 +141,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Accordion** | `.arc-accordion` | `arc-accordion-cyan` · `arc-accordion-red` · `arc-accordion-yellow` · `arc-accordion-green` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-accordion--default) |
 | **Glow** | `.arc-glow-{color}` · `.arc-box-glow-{color}` | cyan · red · yellow · green · purple | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glow--text) |
 | **Glitch** | `.arc-glitch` · `.arc-glitch-hover` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glitch--always-on) |
+| **Pixel border** | `.arc-border-pixel` · `.arc-border-pixel-thick` · `.arc-border-pixel-inset` · `.arc-border-pixel-chamfer` · `.arc-border-pixel-glow` | `--arc-border-color` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-pixel-border--showcase) |
 | **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
 | **Toggle** | `.arc-toggle` · `.arc-toggle-input` · `.arc-toggle-switch` · `.arc-toggle-label` | `arc-toggle-on` · `arc-toggle-off` · `arc-toggle-label-left` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-toggle--all-states) |
 | **Slider** | `.arc-slider` · `.arc-slider-wrapper` · `.arc-slider-label` · `.arc-slider-display` · `.arc-slider-ticks` | `arc-slider-danger` · `arc-slider-success` · `arc-slider-yellow` · `arc-slider-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-slider--volume-panel-demo) |
@@ -1023,6 +1024,34 @@ arcToast.dismissAll()
 - Multiple toasts stack automatically with `gap`; each has its own timer
 - Dismissable via `[X]` button or programmatically via the returned `id`
 - Accessible: `aria-live="polite"` on container, `role="status"` on each toast
+
+### Pixel border (8-bit)
+
+Utility in `@layer arcade-pixel-border`: bordo **doppio anello** e varianti **thick**, **inset**, **chamfer**, **glow** tramite `box-shadow` a strati. Colore da `--arc-border-color`; fascia interna da `--arc-border-pixel-bg`.
+
+| Classe | Effetto |
+|--------|---------|
+| `arc-border-pixel` | Doppio anello standard (step da `--arc-border-sm`) |
+| `arc-border-pixel-thick` | Anelli più spessi |
+| `arc-border-pixel-inset` | Rilievo incassato (highlight / ombra interna) |
+| `arc-border-pixel-chamfer` | Come standard + rinforzi angolo stile cabinato |
+| `arc-border-pixel-glow` | Alone neon — combinare **sullo stesso elemento** con una variante sopra |
+
+**Mixin via token:** su `:root` sono definiti `--arc-border-pixel-step` … `--arc-border-pixel-step8` per riprodurre gli stessi offset in un selettore custom.
+
+**Esempio**
+
+```html
+<div
+  class="arc-border-pixel arc-border-pixel-glow"
+  style="padding:var(--arc-space-4);background:var(--arc-color-bg-panel);--arc-border-color:var(--arc-color-yellow)">
+  HUD content
+</div>
+```
+
+**Con `.arc-panel`:** metti il telaio pixel sul wrapper; opzionale `border:none; box-shadow:none;` sul panel per un solo contorno.
+
+Storybook: [Effects / Pixel border — Showcase](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-pixel-border--showcase).
 
 ### Tooltip anatomy
 

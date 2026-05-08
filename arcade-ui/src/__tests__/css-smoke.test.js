@@ -286,6 +286,24 @@ describe('CSS smoke — tokens/animation-vars.css (generato da SD)', () => {
   it('reca il banner auto-generated', () => expect(css).toContain('auto-generated'))
 })
 
+describe('CSS smoke — pixel-border.css', () => {
+  const css = readCss('components', 'pixel-border.css')
+
+  it('definisce @layer arcade-pixel-border', () =>
+    expect(css).toContain('@layer arcade-pixel-border'))
+  it('definisce --arc-border-pixel-step', () =>
+    expect(css).toContain('--arc-border-pixel-step'))
+  it('definisce .arc-border-pixel', () => expect(css).toContain('.arc-border-pixel'))
+  it('definisce .arc-border-pixel-thick', () =>
+    expect(css).toContain('.arc-border-pixel-thick'))
+  it('definisce .arc-border-pixel-inset', () =>
+    expect(css).toContain('.arc-border-pixel-inset'))
+  it('definisce .arc-border-pixel-chamfer', () =>
+    expect(css).toContain('.arc-border-pixel-chamfer'))
+  it('definisce .arc-border-pixel-glow', () =>
+    expect(css).toContain('.arc-border-pixel-glow'))
+})
+
 // ─── Style Dictionary — tokens.flat.json ─────────────────────────────────────
 
 describe('Style Dictionary — tokens.flat.json', () => {
@@ -314,6 +332,8 @@ describe('Style Dictionary — tokens.flat.json', () => {
 
 describe('CSS smoke — arcade-ui.css contiene blocco deprecated', () => {
   const css = readCss('styles', 'arcade-ui.css')
+
+  it('importa pixel-border.css', () => expect(css).toContain('pixel-border.css'))
 
   it('contiene il blocco DEPRECATED con nota v2.0', () =>
     expect(css).toContain('REMOVED in v2.0'))
