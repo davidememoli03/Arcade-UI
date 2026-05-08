@@ -1,0 +1,30 @@
+/* src/themes/amber-crt.css
+   Tema Amber CRT — #FFB000 su marrone scuro (terminali ambra tipo VT100).
+
+   Attivazione: .arc-theme-amber-crt su <html>, <body> o wrapper.
+
+   Import npm:
+     @import '@davide03memoli/arcade-ui/themes/amber-crt';
+   ─────────────────────────────────────────────────────────── */
+
+.arc-theme-amber-crt {
+    --arc-color-bg: #140a00;
+    --arc-color-bg-alt: #1c0f06;
+    --arc-color-bg-panel: #261a0c;
+    --arc-color-cyan: #ffb000;
+    --arc-color-cyan-glow: #ffb00040;
+    --arc-color-red: #ff6b1a;
+    --arc-color-red-glow: #ff6b1a40;
+    --arc-color-yellow: #fc4;
+    --arc-color-yellow-glow: #ffcc4440;
+    --arc-color-green: #ffc24a;
+    --arc-color-green-glow: #ffc24a40;
+    --arc-color-purple: #ff9500;
+    --arc-color-purple-glow: #ff950040;
+    --arc-color-pink: #ffd699;
+    --arc-color-pink-glow: #ffd69940;
+    --arc-color-text: #ffb000;
+    --arc-color-text-muted: #8a5e14;
+    --arc-color-text-accent: #fd6;
+    --arc-color-disabled: #3d2a12;
+}

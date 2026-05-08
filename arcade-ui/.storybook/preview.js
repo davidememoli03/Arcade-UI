@@ -1,5 +1,9 @@
 // .storybook/preview.js
 import '../src/styles/arcade-ui.css';
+import '../src/themes/phosphor-green.css';
+import '../src/themes/amber-crt.css';
+import '../src/themes/magenta-wave.css';
+import '../src/themes/ice-blue.css';
 
 /** @type { import('@storybook/html').Preview } */
 const preview = {

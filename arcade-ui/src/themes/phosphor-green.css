@@ -1,0 +1,31 @@
+/* src/themes/phosphor-green.css
+   Tema Phosphor Green — #00FF41 su nero (monitor monocromatici anni '70–'80).
+
+   Attivazione: classe .arc-theme-phosphor su <html>, <body> o un wrapper comune,
+   dopo aver caricato arcade-ui.css (o i token colore base).
+
+   Import npm (post-build):
+     @import '@davide03memoli/arcade-ui/themes/phosphor-green';
+   ─────────────────────────────────────────────────────────── */
+
+.arc-theme-phosphor {
+    --arc-color-bg: #000;
+    --arc-color-bg-alt: #031005;
+    --arc-color-bg-panel: #061808;
+    --arc-color-cyan: #00ff41;
+    --arc-color-cyan-glow: #00ff4140;
+    --arc-color-red: #f46;
+    --arc-color-red-glow: #ff446640;
+    --arc-color-yellow: #c8ff00;
+    --arc-color-yellow-glow: #c8ff0040;
+    --arc-color-green: #5dff85;
+    --arc-color-green-glow: #5dff8540;
+    --arc-color-purple: #00e676;
+    --arc-color-purple-glow: #00e67640;
+    --arc-color-pink: #69ff9a;
+    --arc-color-pink-glow: #69ff9a40;
+    --arc-color-text: #00ff41;
+    --arc-color-text-muted: #1f7a35;
+    --arc-color-text-accent: #c8ff00;
+    --arc-color-disabled: #143d22;
+}

@@ -1096,6 +1096,40 @@ import '@davide03memoli/arcade-ui/tokens/typography'
 
 Storybook: [Tokens / Typography](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-typography--scale).
 
+### Color themes (CRT & arcade skins)
+
+Sovrascrivono le stesse custom property di `tokens/colors` (`--arc-color-*`). Il tema **default** resta il neon cyan/viola del design system; i file in `src/themes/` sono opzionali.
+
+| Nome | Classe | Accento UI (`--arc-color-cyan`) | Pannello (`--arc-color-bg-panel`) | Ispirazione |
+|------|--------|---------------------------------|-----------------------------------|-------------|
+| **Phosphor Green** | `.arc-theme-phosphor` | `#00FF41` | `#061808` | Fosforo verde su nero (anni '70–'80) |
+| **Amber CRT** | `.arc-theme-amber-crt` | `#FFB000` | `#261a0c` | Ambra su marrone (VT100) |
+| **Magenta Wave** | `.arc-theme-magenta-wave` | `#FF55FF` | `#1a0820` | Magenta/viola (arcade JP '90) |
+| **Ice Blue** | `.arc-theme-ice-blue` | `#9FD8FF` | `#0c1c2c` | Azzurro ghiaccio (neo-arcade) |
+
+**HTML (CDN)**
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/dist/arcade-ui.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/dist/themes/phosphor-green.css">
+```
+
+**npm / bundler** (dopo `npm run build` nel pacchetto, oppure da pacchetto pubblicato):
+
+```js
+import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
+import '@davide03memoli/arcade-ui/themes/phosphor-green'
+```
+
+**Attivazione:** aggiungi la classe su `<html>`, `<body>` o su un wrapper che racchiude l’UI:
+
+```js
+document.documentElement.classList.add('arc-theme-phosphor')
+// Rimuovi il tema: document.documentElement.classList.remove('arc-theme-phosphor')
+```
+
+Storybook: [Tokens / Themes — Live switcher](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-themes--live-switcher).
+
 ### Key tokens
 
 ```css
@@ -1224,6 +1258,10 @@ triggerGlitch(el, 600)          // burst for 600ms
 | Token: animation | `@davide03memoli/arcade-ui/tokens/animation` |
 | Token: spacing | `@davide03memoli/arcade-ui/tokens/spacing` |
 | Token: typography | `@davide03memoli/arcade-ui/tokens/typography` |
+| Theme: phosphor green | `@davide03memoli/arcade-ui/themes/phosphor-green` |
+| Theme: amber CRT | `@davide03memoli/arcade-ui/themes/amber-crt` |
+| Theme: magenta wave | `@davide03memoli/arcade-ui/themes/magenta-wave` |
+| Theme: ice blue | `@davide03memoli/arcade-ui/themes/ice-blue` |
 | Types | `dist/arcade-ui.d.ts` (auto-resolved) |
 
 CDN base URL: `https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/`

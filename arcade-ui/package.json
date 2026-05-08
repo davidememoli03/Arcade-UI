@@ -1,6 +1,6 @@
 {
   "name": "@davide03memoli/arcade-ui",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "UI component library inspired by 80s arcade games. Retro style, neon palette, pixel animations, built-in SFX — zero runtime dependencies.",
   "keywords": [
     "ui",
@@ -43,7 +43,11 @@
     "./tokens/animation": "./src/tokens/animation.css",
     "./tokens/spacing": "./src/tokens/spacing.css",
     "./tokens/typography": "./src/tokens/typography.css",
-    "./tokens/tokens.json": "./dist/tokens.json"
+    "./tokens/tokens.json": "./dist/tokens.json",
+    "./themes/phosphor-green": "./dist/themes/phosphor-green.css",
+    "./themes/amber-crt": "./dist/themes/amber-crt.css",
+    "./themes/magenta-wave": "./dist/themes/magenta-wave.css",
+    "./themes/ice-blue": "./dist/themes/ice-blue.css"
   },
   "files": [
     "dist",
@@ -62,7 +66,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build:tokens": "style-dictionary build --config style-dictionary.config.js",
-    "build": "npm run build:tokens && vite build && npm run minify:css && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts && cp src/tokens/tokens.flat.json dist/tokens.json",
+    "build": "npm run build:tokens && vite build && npm run minify:css && mkdir -p dist/themes && cp src/themes/*.css dist/themes/ && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts && cp src/tokens/tokens.flat.json dist/tokens.json",
     "build:watch": "vite build --watch",
     "minify:css": "postcss dist/arcade-ui.css --use cssnano -o dist/arcade-ui.min.css",
     "lint": "npm run lint:js && npm run lint:css",

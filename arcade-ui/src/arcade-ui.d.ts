@@ -1,5 +1,19 @@
 export declare const version: string
 
+// ─── Color themes (CSS only) ─────────────────────────────────────────────────
+//
+// Import side-effect stylesheets from published package, poi applica la classe sul documento:
+//   import '@davide03memoli/arcade-ui/themes/phosphor-green'
+//   document.documentElement.classList.add('arc-theme-phosphor')
+//
+// File → classe attesa:
+//   phosphor-green.css   → .arc-theme-phosphor
+//   amber-crt.css        → .arc-theme-amber-crt
+//   magenta-wave.css     → .arc-theme-magenta-wave
+//   ice-blue.css         → .arc-theme-ice-blue
+//
+// Nessun export JS: solo CSS. Sottopercorsi documentati in package.json "exports".
+
 // ─── Glitch ──────────────────────────────────────────────────────────────────
 
 export declare function initGlitch(root?: Document | Element): void

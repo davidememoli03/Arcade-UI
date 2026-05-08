@@ -15,11 +15,11 @@
   --arc-space-10: 80px;
   --arc-space-11: 88px;
   --arc-space-12: 96px;
-  --arc-bp-pocket: 480px; /* Smartphone / small screens */
-  --arc-bp-handheld: 1280px; /* Tablet / standard game monitor */
-  --arc-radius-none: 0px; /* Sharp pixel-art corners (default UI) */
-  --arc-radius-pixel: 4px; /* Minimal rounding */
-  --arc-border-sm: 2px; /* Thin border — inputs, secondary cards */
-  --arc-border-md: 4px; /* Standard border — panels, buttons */
-  --arc-border-lg: 6px; /* Emphasised border — active highlight */
+  --arc-bp-pocket: 480px; /** Smartphone / small screens */
+  --arc-bp-handheld: 1280px; /** Tablet / standard game monitor */
+  --arc-radius-none: 0px; /** Sharp pixel-art corners (default UI) */
+  --arc-radius-pixel: 4px; /** Minimal rounding */
+  --arc-border-sm: 2px; /** Thin border — inputs, secondary cards */
+  --arc-border-md: 4px; /** Standard border — panels, buttons */
+  --arc-border-lg: 6px; /** Emphasised border — active highlight */
 }

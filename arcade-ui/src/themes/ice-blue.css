@@ -1,0 +1,30 @@
+/* src/themes/ice-blue.css
+   Tema Ice Blue — bianco/azzurro ghiaccio (neo-arcade moderno).
+
+   Attivazione: .arc-theme-ice-blue su <html>, <body> o wrapper.
+
+   Import npm:
+     @import '@davide03memoli/arcade-ui/themes/ice-blue';
+   ─────────────────────────────────────────────────────────── */
+
+.arc-theme-ice-blue {
+    --arc-color-bg: #030810;
+    --arc-color-bg-alt: #081420;
+    --arc-color-bg-panel: #0c1c2c;
+    --arc-color-cyan: #9fd8ff;
+    --arc-color-cyan-glow: #9fd8ff40;
+    --arc-color-red: #ff7a9a;
+    --arc-color-red-glow: #ff7a9a40;
+    --arc-color-yellow: #ffe799;
+    --arc-color-yellow-glow: #ffe79940;
+    --arc-color-green: #88ffd4;
+    --arc-color-green-glow: #88ffd440;
+    --arc-color-purple: #c4b5ff;
+    --arc-color-purple-glow: #c4b5ff40;
+    --arc-color-pink: #ffb8e6;
+    --arc-color-pink-glow: #ffb8e640;
+    --arc-color-text: #eaf6ff;
+    --arc-color-text-muted: #5c7d94;
+    --arc-color-text-accent: #ffe799;
+    --arc-color-disabled: #2a3848;
+}

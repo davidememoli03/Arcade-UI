@@ -1,0 +1,30 @@
+/* src/themes/magenta-wave.css
+   Tema Magenta Wave — rosa/magenta #FF00FF + viola (arcade giapponesi anni '90).
+
+   Attivazione: .arc-theme-magenta-wave su <html>, <body> o wrapper.
+
+   Import npm:
+     @import '@davide03memoli/arcade-ui/themes/magenta-wave';
+   ─────────────────────────────────────────────────────────── */
+
+.arc-theme-magenta-wave {
+    --arc-color-bg: #0c000c;
+    --arc-color-bg-alt: #120016;
+    --arc-color-bg-panel: #1a0820;
+    --arc-color-cyan: #f5f;
+    --arc-color-cyan-glow: #ff55ff40;
+    --arc-color-red: #f08;
+    --arc-color-red-glow: #ff008840;
+    --arc-color-yellow: #fe0;
+    --arc-color-yellow-glow: #ffee0040;
+    --arc-color-green: #0fc;
+    --arc-color-green-glow: #00ffcc40;
+    --arc-color-purple: #c000ff;
+    --arc-color-purple-glow: #c000ff40;
+    --arc-color-pink: #f0f;
+    --arc-color-pink-glow: #ff00ff40;
+    --arc-color-text: #f7f;
+    --arc-color-text-muted: #84a;
+    --arc-color-text-accent: #fe0;
+    --arc-color-disabled: #402050;
+}
