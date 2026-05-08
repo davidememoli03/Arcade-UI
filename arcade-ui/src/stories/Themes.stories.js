@@ -1,7 +1,7 @@
 // src/stories/Themes.stories.js
 
 /** Classi tema (ordine per strip da documentElement / body) */
-export const THEME_CLASS_NAMES = [
+const THEME_CLASS_NAMES = [
   'arc-theme-phosphor',
   'arc-theme-amber-crt',
   'arc-theme-magenta-wave',
@@ -133,5 +133,3 @@ export const IceBlue = {
   name: 'Ice blue (full preview)',
   render: () => `<div class="arc-theme-ice-blue">${demoMarkup()}</div>`,
 }
-
-export { applyThemeClass, clearThemeClasses }
