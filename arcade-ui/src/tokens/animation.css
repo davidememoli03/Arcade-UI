@@ -3,6 +3,9 @@
    (src/tokens/animation-vars.css) e aggiunge i @keyframes globali che SD
    non può generare automaticamente.
 
+   Keyframe arcade aggiuntivi: arc-flicker, arc-blink-cursor, arc-insert-coin,
+   arc-scanline-sweep, arc-static-noise, arc-power-on, arc-power-off.
+
    Per modificare durate e easing aggiornare src/tokens/tokens.json
    e rieseguire `npm run build:tokens`.
    ─────────────────────────────────────────────────────────────────── */
@@ -64,5 +67,220 @@
 
     100% {
         transform: translateX(0);
+    }
+}
+
+/* CRT-ish flicker: opacity “random” via steps(1) e molte fermate */
+@keyframes arc-flicker {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    5% {
+        opacity: calc(1 - var(--arc-flicker-intensity, 0.45));
+    }
+
+    8% {
+        opacity: 1;
+    }
+
+    11% {
+        opacity: calc(1 - var(--arc-flicker-intensity, 0.45) * 0.65);
+    }
+
+    14% {
+        opacity: 1;
+    }
+
+    19% {
+        opacity: calc(1 - var(--arc-flicker-intensity, 0.45) * 0.85);
+    }
+
+    22% {
+        opacity: 1;
+    }
+
+    28% {
+        opacity: calc(1 - var(--arc-flicker-intensity, 0.45) * 0.4);
+    }
+
+    31% {
+        opacity: 1;
+    }
+
+    37% {
+        opacity: calc(1 - var(--arc-flicker-intensity, 0.45));
+    }
+
+    40% {
+        opacity: 1;
+    }
+
+    48% {
+        opacity: calc(1 - var(--arc-flicker-intensity, 0.45) * 0.55);
+    }
+
+    52% {
+        opacity: 1;
+    }
+
+    61% {
+        opacity: calc(1 - var(--arc-flicker-intensity, 0.45) * 0.9);
+    }
+
+    64% {
+        opacity: 1;
+    }
+
+    71% {
+        opacity: calc(1 - var(--arc-flicker-intensity, 0.45) * 0.35);
+    }
+
+    74% {
+        opacity: 1;
+    }
+
+    82% {
+        opacity: calc(1 - var(--arc-flicker-intensity, 0.45) * 0.7);
+    }
+
+    88% {
+        opacity: 1;
+    }
+
+    94% {
+        opacity: calc(1 - var(--arc-flicker-intensity, 0.45) * 0.5);
+    }
+}
+
+/* Cursore blocco terminale */
+@keyframes arc-blink-cursor {
+    0%,
+    45% {
+        opacity: 1;
+    }
+
+    50%,
+    95% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Lampeggio lento tipo “INSERT COIN” */
+@keyframes arc-insert-coin {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: var(--arc-insert-coin-dim, 0.32);
+    }
+}
+
+/* Scanline che scorre (usata sul pseudo-elemento) */
+@keyframes arc-scanline-sweep {
+    0% {
+        top: -6%;
+    }
+
+    100% {
+        top: 106%;
+    }
+}
+
+/* Grana / rumore: opacità e micromovimento */
+@keyframes arc-static-noise {
+    0% {
+        opacity: var(--arc-static-noise-opacity-min, 0.12);
+        transform: translate(0, 0);
+    }
+
+    20% {
+        opacity: var(--arc-static-noise-opacity-max, 0.22);
+        transform: translate(-1px, 0);
+    }
+
+    40% {
+        opacity: var(--arc-static-noise-opacity-min, 0.12);
+        transform: translate(1px, 1px);
+    }
+
+    60% {
+        opacity: var(--arc-static-noise-opacity-max, 0.22);
+        transform: translate(0, -1px);
+    }
+
+    80% {
+        opacity: calc(
+            (var(--arc-static-noise-opacity-min, 0.12) + var(--arc-static-noise-opacity-max, 0.22)) / 2
+        );
+        transform: translate(-1px, -1px);
+    }
+
+    100% {
+        opacity: var(--arc-static-noise-opacity-min, 0.12);
+        transform: translate(0, 0);
+    }
+}
+
+/* Accensione monitor */
+@keyframes arc-power-on {
+    0% {
+        opacity: 0;
+        transform: scaleY(0.04);
+        filter: brightness(2.8) blur(3px);
+    }
+
+    35% {
+        opacity: 1;
+        transform: scaleY(1);
+        filter: brightness(1.6) blur(0);
+    }
+
+    55% {
+        filter: brightness(1.35);
+    }
+
+    75% {
+        filter: brightness(1.08);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+        filter: brightness(1);
+    }
+}
+
+/* Spegnimento: compressione orizzontale */
+@keyframes arc-power-off {
+    0% {
+        opacity: 1;
+        transform: scaleX(1);
+        filter: brightness(1);
+    }
+
+    35% {
+        opacity: 1;
+        transform: scaleX(0.14);
+        filter: brightness(1.4);
+    }
+
+    55% {
+        opacity: 0.75;
+        transform: scaleX(0.06);
+        filter: brightness(0.6);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scaleX(0);
+        filter: brightness(0);
     }
 }

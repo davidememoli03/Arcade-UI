@@ -147,7 +147,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Slider** | `.arc-slider` · `.arc-slider-wrapper` · `.arc-slider-label` · `.arc-slider-display` · `.arc-slider-ticks` | `arc-slider-danger` · `arc-slider-success` · `arc-slider-yellow` · `arc-slider-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-slider--volume-panel-demo) |
 | **Table** | `.arc-table` · `.arc-table-wrapper` | `arc-table-cyan` · `arc-table-green` · `arc-table-yellow` · `arc-table-red` · `arc-table-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-table--leaderboard) |
 | **Toast** | `.arc-toast` · `.arc-toast-container` | `arc-toast-info` · `arc-toast-success` · `arc-toast-warning` · `arc-toast-error` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-toast--playground) |
-| **Animations** | `.arc-u-blink` · `.arc-u-pulse` · `.arc-u-glitch` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-animation--keyframes) |
+| **Animations** | `.arc-anim-flicker` · `.arc-anim-blink-cursor` · `.arc-anim-insert-coin` · `.arc-anim-scanline-move` · `.arc-anim-static-noise` · `.arc-anim-power-on` · `.arc-anim-power-off` · `.arc-u-blink` · `.arc-u-pulse` · `.arc-u-glitch` | `--arc-flicker-speed` · `--arc-flicker-intensity` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-animations--showcase) |
 
 ### Tabs anatomy
 
@@ -1024,6 +1024,39 @@ arcToast.dismissAll()
 - Multiple toasts stack automatically with `gap`; each has its own timer
 - Dismissable via `[X]` button or programmatically via the returned `id`
 - Accessible: `aria-live="polite"` on container, `role="status"` on each toast
+
+### Animazioni arcade (CRT / cabinato)
+
+Keyframe globali in `src/tokens/animation.css` (`arc-flicker`, `arc-blink-cursor`, …); classi utility in `@layer arcade-animations` (`src/components/animations.css`), importate da `arcade-ui.css`. Regolazione rapida dello **sfarfallio**: `--arc-flicker-speed` (durata ciclo) e `--arc-flicker-intensity` (quanto scende l’opacità, 0–1).
+
+| Classe | Descrizione | Anteprima |
+|--------|-------------|-----------|
+| `arc-anim-flicker` | Sfarfallio schermo CRT (opacità a step irregolari) | ![](./docs/animations/previews/arc-anim-flicker.gif) |
+| `arc-anim-blink-cursor` | Cursore a blocco stile terminale | ![](./docs/animations/previews/arc-anim-blink-cursor.gif) |
+| `arc-anim-insert-coin` | Lampeggio lento tipo messaggio attract | ![](./docs/animations/previews/arc-anim-insert-coin.gif) |
+| `arc-anim-scanline-move` | Fascia luminosa che scorre in loop (`::after`) | ![](./docs/animations/previews/arc-anim-scanline-move.gif) |
+| `arc-anim-static-noise` | Grana: filtro SVG `feTurbulence` + animazione su opacità / `steps` | ![](./docs/animations/previews/arc-anim-static-noise.gif) |
+| `arc-anim-power-on` | Accensione: espansione verticale + burst luminosità (una riproduzione; ripeti rimuovendo/riaggiungendo la classe) | ![](./docs/animations/previews/arc-anim-power-on.gif) |
+| `arc-anim-power-off` | Spegnimento: compressione orizzontale + fade | ![](./docs/animations/previews/arc-anim-power-off.gif) |
+
+**Variabili utili** (defaults su `:root` nel layer): `--arc-blink-cursor-speed`, `--arc-insert-coin-duration`, `--arc-insert-coin-dim`, `--arc-scanline-duration`, `--arc-scanline-opacity`, `--arc-static-noise-duration`, `--arc-static-noise-opacity-min` / `max`, `--arc-static-noise-filter`, `--arc-power-on-duration`, `--arc-power-off-duration`.
+
+**Esempio** — pannello con scanline e titolo attract:
+
+```html
+<div
+  class="arc-panel arc-panel-cyan arc-anim-scanline-move"
+  style="position:relative;overflow:hidden">
+  <h2 class="arc-text-h3 arc-anim-insert-coin arc-glow-yellow" style="margin:0;text-align:center;">
+    INSERT COIN
+  </h2>
+  <p class="arc-text-body" style="margin:1rem 0 0;">Credits: 0</p>
+</div>
+```
+
+**Lampeggio CRT** su un wrapper a schermo intero: `<div class="arc-anim-flicker arc-crt-screen">…</div>` (regola `--arc-flicker-speed` / `--arc-flicker-intensity` inline o su un antenato). Se serve anche la scanline animata, applica `.arc-anim-scanline-move` a un **figlio** interno: `.arc-crt-screen` usa già `::after` per altri effetti.
+
+Storybook: [Effects / Animations — All utilities](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-animations--showcase).
 
 ### Pixel border (8-bit)
 

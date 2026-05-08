@@ -1,0 +1,113 @@
+/* src/components/animations.css
+   Utility per animazioni “cabinet / CRT” basate sui @keyframes in tokens/animation.css.
+
+   Variabili principali:
+     --arc-flicker-speed, --arc-flicker-intensity
+     --arc-blink-cursor-speed
+     --arc-insert-coin-duration, --arc-insert-coin-dim
+     --arc-scanline-duration, --arc-scanline-opacity
+     --arc-static-noise-duration, --arc-static-noise-filter, opacità min/max
+     --arc-power-on-duration, --arc-power-off-duration
+
+   ─────────────────────────────────────────────────────────────────── */
+
+@layer arcade-animations {
+    :root {
+        --arc-flicker-speed: 0.72s;
+        --arc-flicker-intensity: 0.45;
+        --arc-blink-cursor-speed: 1.06s;
+        --arc-insert-coin-duration: 1.45s;
+        --arc-insert-coin-dim: 0.32;
+        --arc-scanline-duration: 4.8s;
+        --arc-scanline-opacity: 0.14;
+        --arc-static-noise-duration: 0.24s;
+        --arc-static-noise-opacity-min: 0.12;
+        --arc-static-noise-opacity-max: 0.22;
+        --arc-power-on-duration: 0.85s;
+        --arc-power-off-duration: 0.68s;
+
+        /* feTurbulence + griglia in scala di grigi; l’animazione CSS è su opacity/transform */
+        /* stylelint-disable-next-line max-line-length */
+        --arc-static-noise-filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n' x='-25%25' y='-25%25' width='150%25' height='150%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch' result='t'/%3E%3CfeColorMatrix in='t' type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.55' intercept='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3C/svg%3E%23n");
+    }
+
+    .arc-anim-flicker {
+        animation: arc-flicker var(--arc-flicker-speed) steps(1) infinite;
+    }
+
+    .arc-anim-blink-cursor {
+        animation: arc-blink-cursor var(--arc-blink-cursor-speed) var(--arc-ease-step) infinite;
+    }
+
+    .arc-anim-insert-coin {
+        animation: arc-insert-coin var(--arc-insert-coin-duration) ease-in-out infinite;
+    }
+
+    .arc-anim-scanline-move {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .arc-anim-scanline-move::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: clamp(4px, 1.8%, 14px);
+        pointer-events: none;
+        z-index: 3;
+        mix-blend-mode: soft-light;
+        background: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgb(255 255 255 / var(--arc-scanline-opacity)) 45%,
+            transparent 100%
+        );
+        animation: arc-scanline-sweep var(--arc-scanline-duration) linear infinite;
+    }
+
+    .arc-anim-static-noise {
+        position: relative;
+    }
+
+    .arc-anim-static-noise::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 2;
+        filter: var(--arc-static-noise-filter);
+        mix-blend-mode: overlay;
+        animation: arc-static-noise var(--arc-static-noise-duration) steps(2) infinite;
+    }
+
+    .arc-anim-power-on {
+        transform-origin: 50% 50%;
+        animation: arc-power-on var(--arc-power-on-duration) var(--arc-ease-pixel) 1 both;
+    }
+
+    .arc-anim-power-off {
+        transform-origin: 50% 50%;
+        animation: arc-power-off var(--arc-power-off-duration) var(--arc-ease-pixel) 1 both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .arc-anim-flicker,
+        .arc-anim-blink-cursor,
+        .arc-anim-insert-coin,
+        .arc-anim-power-on,
+        .arc-anim-power-off {
+            animation: none;
+        }
+
+        .arc-anim-scanline-move::after {
+            animation: none;
+            display: none;
+        }
+
+        .arc-anim-static-noise::after {
+            animation: none;
+            display: none;
+        }
+    }
+}

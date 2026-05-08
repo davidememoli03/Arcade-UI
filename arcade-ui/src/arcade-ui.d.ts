@@ -224,6 +224,24 @@ export declare const arcModal: {
 // le CSS custom property (--table-accent, --table-glow) sono ereditate
 // da tutte le celle figlie.
 
+// ─── Animazioni CRT / cabinato (.arc-anim-*) ─────────────────────────────────
+//
+// Keyframe: src/tokens/animation.css  ·  Utility: src/components/animations.css (@layer arcade-animations)
+//
+// Classi:
+//   arc-anim-flicker | arc-anim-blink-cursor | arc-anim-insert-coin |
+//   arc-anim-scanline-move | arc-anim-static-noise | arc-anim-power-on | arc-anim-power-off
+//
+// Variabili (defaults su :root nel layer):
+//   --arc-flicker-speed | --arc-flicker-intensity | --arc-blink-cursor-speed |
+//   --arc-insert-coin-duration | --arc-insert-coin-dim | --arc-scanline-duration |
+//   --arc-scanline-opacity | --arc-static-noise-duration | --arc-static-noise-opacity-min/max |
+//   --arc-static-noise-filter | --arc-power-on-duration | --arc-power-off-duration
+//
+// Glow / step utilities (separate file): .arc-u-blink · .arc-u-pulse · .arc-u-glitch in glow.css
+//
+// See README section "Animazioni arcade (CRT / cabinato)".
+
 // ─── Pixel border (8-bit utilities) ─────────────────────────────────────────
 //
 // CSS-only — @layer arcade-pixel-border in src/components/pixel-border.css

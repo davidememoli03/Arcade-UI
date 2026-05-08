@@ -274,6 +274,32 @@ describe('CSS smoke — tokens/animation.css (wrapper)', () => {
   it('mantiene @keyframes blink', () => expect(css).toContain('@keyframes blink'))
   it('mantiene @keyframes pulse-glow', () => expect(css).toContain('@keyframes pulse-glow'))
   it('mantiene @keyframes glitch', () => expect(css).toContain('@keyframes glitch'))
+  it('definisce @keyframes arc-flicker', () => expect(css).toContain('@keyframes arc-flicker'))
+  it('definisce @keyframes arc-blink-cursor', () =>
+    expect(css).toContain('@keyframes arc-blink-cursor'))
+  it('definisce @keyframes arc-insert-coin', () =>
+    expect(css).toContain('@keyframes arc-insert-coin'))
+  it('definisce @keyframes arc-scanline-sweep', () =>
+    expect(css).toContain('@keyframes arc-scanline-sweep'))
+  it('definisce @keyframes arc-static-noise', () =>
+    expect(css).toContain('@keyframes arc-static-noise'))
+  it('definisce @keyframes arc-power-on', () => expect(css).toContain('@keyframes arc-power-on'))
+  it('definisce @keyframes arc-power-off', () => expect(css).toContain('@keyframes arc-power-off'))
+})
+
+describe('CSS smoke — components/animations.css', () => {
+  const css = readCss('components', 'animations.css')
+
+  it('usa @layer arcade-animations', () => expect(css).toContain('@layer arcade-animations'))
+  it('definisce --arc-flicker-speed', () => expect(css).toContain('--arc-flicker-speed'))
+  it('definisce --arc-flicker-intensity', () => expect(css).toContain('--arc-flicker-intensity'))
+  it('definisce .arc-anim-flicker', () => expect(css).toContain('.arc-anim-flicker'))
+  it('definisce .arc-anim-blink-cursor', () => expect(css).toContain('.arc-anim-blink-cursor'))
+  it('definisce .arc-anim-insert-coin', () => expect(css).toContain('.arc-anim-insert-coin'))
+  it('definisce .arc-anim-scanline-move', () => expect(css).toContain('.arc-anim-scanline-move'))
+  it('definisce .arc-anim-static-noise', () => expect(css).toContain('.arc-anim-static-noise'))
+  it('definisce .arc-anim-power-on', () => expect(css).toContain('.arc-anim-power-on'))
+  it('definisce .arc-anim-power-off', () => expect(css).toContain('.arc-anim-power-off'))
 })
 
 describe('CSS smoke — tokens/animation-vars.css (generato da SD)', () => {
@@ -334,6 +360,7 @@ describe('CSS smoke — arcade-ui.css contiene blocco deprecated', () => {
   const css = readCss('styles', 'arcade-ui.css')
 
   it('importa pixel-border.css', () => expect(css).toContain('pixel-border.css'))
+  it('importa animations.css', () => expect(css).toContain('animations.css'))
 
   it('contiene il blocco DEPRECATED con nota v2.0', () =>
     expect(css).toContain('REMOVED in v2.0'))

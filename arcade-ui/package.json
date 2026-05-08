@@ -1,6 +1,6 @@
 {
   "name": "@davide03memoli/arcade-ui",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "UI component library inspired by 80s arcade games. Retro style, neon palette, pixel animations, built-in SFX — zero runtime dependencies.",
   "keywords": [
     "ui",
@@ -53,6 +53,7 @@
     "dist",
     "src/tokens",
     "public/fonts",
+    "docs/animations/previews",
     "LICENSE"
   ],
   "sideEffects": [
@@ -68,7 +69,7 @@
     "build:tokens": "style-dictionary build --config style-dictionary.config.js",
     "build": "npm run build:tokens && vite build && npm run minify:css && mkdir -p dist/themes && cp src/themes/*.css dist/themes/ && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts && cp src/tokens/tokens.flat.json dist/tokens.json",
     "build:watch": "vite build --watch",
-    "minify:css": "postcss dist/arcade-ui.css --use cssnano -o dist/arcade-ui.min.css",
+    "minify:css": "postcss dist/arcade-ui.css -o dist/arcade-ui.min.css",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint src",
     "lint:css": "stylelint src/**/*.css",
