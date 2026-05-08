@@ -144,6 +144,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
 | **Toggle** | `.arc-toggle` · `.arc-toggle-input` · `.arc-toggle-switch` · `.arc-toggle-label` | `arc-toggle-on` · `arc-toggle-off` · `arc-toggle-label-left` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-toggle--all-states) |
 | **Slider** | `.arc-slider` · `.arc-slider-wrapper` · `.arc-slider-label` · `.arc-slider-display` · `.arc-slider-ticks` | `arc-slider-danger` · `arc-slider-success` · `arc-slider-yellow` · `arc-slider-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-slider--volume-panel-demo) |
+| **Table** | `.arc-table` · `.arc-table-wrapper` | `arc-table-cyan` · `arc-table-green` · `arc-table-yellow` · `arc-table-red` · `arc-table-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-table--leaderboard) |
 | **Toast** | `.arc-toast` · `.arc-toast-container` | `arc-toast-info` · `arc-toast-success` · `arc-toast-warning` · `arc-toast-error` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-toast--playground) |
 | **Animations** | `.arc-u-blink` · `.arc-u-pulse` · `.arc-u-glitch` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-animation--keyframes) |
 
@@ -522,6 +523,89 @@ bar.setAttribute('aria-valuenow', '60')
 | `arc-progress-sm` | 12px |
 | *(default)* | 24px |
 | `arc-progress-lg` | 40px |
+
+### Table anatomy
+
+Tabella arcade ottimizzata per leaderboard e statistiche di gioco.
+Ispirata alle high-score table degli arcade classici. **CSS-only** — nessun JavaScript richiesto.
+
+```html
+<div class="arc-table-wrapper arc-table-cyan">
+  <table class="arc-table arc-table-leaderboard">
+    <caption>HIGH SCORES</caption>
+    <thead>
+      <tr>
+        <th class="arc-table-th arc-table-th-rank">#</th>
+        <th class="arc-table-th">PLAYER</th>
+        <th class="arc-table-th arc-table-th-num">SCORE</th>
+        <th class="arc-table-th arc-table-th-num">STAGE</th>
+        <th class="arc-table-th arc-table-th-num">TIME</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Rank #1 — first <tr> in <tbody> gets gold pulse automatically
+           when .arc-table-leaderboard is active. Add .arc-table-row-gold
+           to override manually on any row. -->
+      <tr class="arc-table-row">
+        <td class="arc-table-td arc-table-td-rank">
+          <span class="arc-table-rank-num">01</span>
+          <span class="arc-table-rank-icon" aria-hidden="true">🏆</span>
+        </td>
+        <td class="arc-table-td">ACE</td>
+        <td class="arc-table-td arc-table-td-num">999,999</td>
+        <td class="arc-table-td arc-table-td-num">8-4</td>
+        <td class="arc-table-td arc-table-td-num">14:22</td>
+      </tr>
+      <!-- more rows ... -->
+    </tbody>
+  </table>
+</div>
+```
+
+**Colour variants** — add to `.arc-table-wrapper` (custom properties are inherited by all cells):
+
+| Class | Accent colour |
+|-------|---------------|
+| `arc-table-cyan` | Neon cyan (default) |
+| `arc-table-green` | Neon green |
+| `arc-table-yellow` | Neon yellow |
+| `arc-table-red` | Neon red |
+| `arc-table-purple` | Neon purple |
+
+**Table modifiers** — add to `.arc-table`:
+
+| Class | Effect |
+|-------|--------|
+| `arc-table-leaderboard` | First `<tbody>` row gets gold glow + pulse animation; rank column styled |
+| `arc-table-compact` | Reduced row padding for higher density |
+
+**Row variants** — add to `<tr class="arc-table-row ...">`:
+
+| Class | Effect |
+|-------|--------|
+| `arc-table-row-gold` | Golden glow + pulse (explicit, for non-first rows) |
+| `arc-table-row-active` | Text rendered in accent colour |
+| `arc-table-row-muted` | Reduced opacity (outside ranking, locked) |
+
+**Cell helper classes:**
+
+| Class | Usage |
+|-------|-------|
+| `arc-table-th-rank` | `<th>` for rank column (centred, fixed width) |
+| `arc-table-th-num` | `<th>` for numeric columns (right-aligned) |
+| `arc-table-td-rank` | `<td>` rank cell (centred, holds rank-num + rank-icon) |
+| `arc-table-td-num` | `<td>` numeric cell (right-aligned, pixel font, accent colour) |
+| `arc-table-rank-num` | `<span>` zero-padded rank number inside rank cell |
+| `arc-table-rank-icon` | `<span aria-hidden="true">` trophy/medal emoji in rank cell |
+
+**Design details:**
+
+- Horizontal neon borders only — no vertical dividers
+- Header: full neon background + dark inverted text
+- Alternating rows: odd rows with faint scanline overlay, even rows flat dark
+- First leaderboard row: ambient gold pulse via `box-shadow` animation, no layout shift
+- Hover: `inset 4px 0 0` left neon border + background tint (CSS, no JS)
+- `<caption>` element styled in pixel font with accent glow
 
 ### Toast anatomy
 

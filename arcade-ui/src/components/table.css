@@ -1,0 +1,349 @@
+/* src/components/table.css
+   Componente arc-table: tabelle per leaderboard e statistiche arcade.
+   Ispirato alle high-score table degli arcade classici.
+
+   Struttura HTML:
+     <div class="arc-table-wrapper arc-table-cyan">
+       <table class="arc-table arc-table-leaderboard">
+         <caption>HIGH SCORES</caption>
+         <thead>
+           <tr>
+             <th class="arc-table-th arc-table-th-rank">#</th>
+             <th class="arc-table-th">PLAYER</th>
+             <th class="arc-table-th arc-table-th-num">SCORE</th>
+             <th class="arc-table-th arc-table-th-num">STAGE</th>
+           </tr>
+         </thead>
+         <tbody>
+           <tr class="arc-table-row">
+             <td class="arc-table-td arc-table-td-rank">
+               <span class="arc-table-rank-num">01</span>
+               <span class="arc-table-rank-icon" aria-hidden="true">🏆</span>
+             </td>
+             <td class="arc-table-td">ACE</td>
+             <td class="arc-table-td arc-table-td-num">999,999</td>
+             <td class="arc-table-td arc-table-td-num">8-4</td>
+           </tr>
+           <!-- more rows … -->
+         </tbody>
+       </table>
+     </div>
+
+   Varianti colore (su .arc-table-wrapper):
+     arc-table-cyan (default) | arc-table-green | arc-table-yellow |
+     arc-table-red | arc-table-purple
+
+   Modificatori (su .arc-table):
+     arc-table-leaderboard  Prima riga gold pulsante, rank column stilizzata
+     arc-table-compact      Padding ridotto per densità
+   ─────────────────────────────────────────────────────────── */
+
+/* ── Wrapper ──────────────────────────────────────────────────────────
+   Contenitore con overflow orizzontale per schermi piccoli.
+   Variante colore si applica qui e propaga --table-accent alle celle.
+──────────────────────────────────────────────────────────────────── */
+.arc-table-wrapper {
+    --table-accent:      var(--arc-color-cyan);
+    --table-glow:        var(--arc-color-cyan-glow);
+    --table-header-text: var(--arc-color-bg);
+
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    background: var(--arc-color-bg-panel);
+    border: var(--arc-border-md) solid var(--table-accent);
+    outline: var(--arc-border-sm) solid var(--table-accent);
+    outline-offset: -8px;
+    box-shadow:
+        inset 0 0 20px rgb(0 0 0 / 30%),
+        0 0 16px var(--table-glow),
+        0 0 32px var(--table-glow);
+    box-sizing: border-box;
+}
+
+/* ── Table base ───────────────────────────────────────────────────────
+   border-collapse: collapse — nessun bordo verticale ridondante.
+──────────────────────────────────────────────────────────────────── */
+.arc-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+/* ── Caption ──────────────────────────────────────────────────────────
+   Titolo opzionale sopra la tabella (tag <caption>).
+──────────────────────────────────────────────────────────────────── */
+.arc-table caption {
+    caption-side: top;
+    padding: var(--arc-space-2, 16px) var(--arc-space-2, 16px) var(--arc-space-1, 8px);
+    font-family: var(--arc-font-pixel, monospace);
+    font-size: 13px;
+    color: var(--table-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: left;
+    text-shadow: 0 0 8px var(--table-glow);
+}
+
+/* ── Header cells (th) ────────────────────────────────────────────────
+   Sfondo neon pieno + testo scuro: "inversione" cromatica arcade.
+──────────────────────────────────────────────────────────────────── */
+.arc-table-th {
+    padding: var(--arc-space-1, 8px) var(--arc-space-2, 16px);
+    background: var(--table-accent);
+    color: var(--table-header-text);
+    font-family: var(--arc-font-pixel, monospace);
+    font-size: 11px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: var(--arc-border-sm, 2px) solid var(--arc-color-bg);
+    user-select: none;
+}
+
+/* Rank header: centrato, larghezza fissa */
+.arc-table-th-rank {
+    width: 64px;
+    text-align: center;
+}
+
+/* Numeric header (score, level…): allineamento destra */
+.arc-table-th-num {
+    text-align: right;
+}
+
+/* ── Data rows ────────────────────────────────────────────────────────
+   Bordo inferiore neon sottile. No bordi verticali.
+   Alternanza sfondo: righe dispari con leggere scanlines.
+──────────────────────────────────────────────────────────────────── */
+.arc-table-row {
+    border-bottom: 1px solid rgb(0 245 255 / 14%);
+    transition:
+        background var(--arc-anim-fast, 150ms) var(--arc-ease-pixel, steps(4)),
+        box-shadow  var(--arc-anim-fast, 150ms) var(--arc-ease-pixel, steps(4));
+}
+
+.arc-table-row:last-child {
+    border-bottom: none;
+}
+
+.arc-table-row:nth-child(odd) {
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgb(0 0 0 / 0%)   0,
+            rgb(0 0 0 / 0%)   3px,
+            rgb(0 0 0 / 8%)   3px,
+            rgb(0 0 0 / 8%)   4px
+        ),
+        var(--arc-color-bg-alt, #0a0010);
+}
+
+.arc-table-row:nth-child(even) {
+    background: var(--arc-color-bg-panel, #110020);
+}
+
+/* Hover: bordo neon sinistro via inset box-shadow + tint leggero */
+.arc-table-row:hover {
+    background: rgb(0 245 255 / 5%);
+    box-shadow: inset var(--arc-border-md, 4px) 0 0 var(--table-accent);
+}
+
+/* ── Data cells (td) ──────────────────────────────────────────────── */
+.arc-table-td {
+    padding: 10px var(--arc-space-2, 16px);
+    font-family: var(--arc-font-terminal, monospace);
+    font-size: var(--arc-text-body-size, 14px);
+    line-height: 1.4;
+    color: var(--arc-color-text-muted, #077);
+    vertical-align: middle;
+}
+
+/* Numeric cell (score, level…) */
+.arc-table-td-num {
+    text-align: right;
+    font-family: var(--arc-font-pixel, monospace);
+    font-size: 11px;
+    color: var(--table-accent);
+    text-shadow: 0 0 6px var(--table-glow);
+    letter-spacing: 0.05em;
+}
+
+/* ── Rank cell ────────────────────────────────────────────────────── */
+.arc-table-td-rank {
+    text-align: center;
+    white-space: nowrap;
+    padding-left: var(--arc-space-1, 8px);
+    padding-right: var(--arc-space-1, 8px);
+}
+
+.arc-table-rank-num {
+    font-family: var(--arc-font-pixel, monospace);
+    font-size: 10px;
+    color: var(--arc-color-text-muted, #077);
+    letter-spacing: 0.05em;
+}
+
+.arc-table-rank-icon {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 13px;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+/* ── Row variant: gold ────────────────────────────────────────────────
+   Glow dorato con pulse continuo.
+   Viene applicato esplicitamente oppure dalla variante leaderboard
+   alla prima riga tramite :first-child (vedi più avanti).
+   Dichiarato PRIMA del blocco leaderboard per rispettare la specificità.
+──────────────────────────────────────────────────────────────────── */
+.arc-table-row-gold {
+    animation: arc-table-gold-pulse 1200ms ease-in-out infinite;
+}
+
+.arc-table-row-gold .arc-table-td {
+    color: var(--arc-color-yellow, #ffd700);
+}
+
+.arc-table-row-gold .arc-table-td-num {
+    color: var(--arc-color-yellow, #ffd700);
+    text-shadow:
+        0 0 10px var(--arc-color-yellow, #ffd700),
+        0 0 20px var(--arc-color-yellow-glow, #ffd70040);
+}
+
+.arc-table-row-gold .arc-table-rank-num {
+    color: var(--arc-color-yellow, #ffd700);
+    text-shadow: 0 0 8px var(--arc-color-yellow-glow, #ffd70040);
+}
+
+/* ── Row variant: active ──────────────────────────────────────────── */
+.arc-table-row-active .arc-table-td {
+    color: var(--table-accent);
+}
+
+/* ── Row variant: muted ───────────────────────────────────────────── */
+.arc-table-row-muted .arc-table-td,
+.arc-table-row-muted .arc-table-td-num {
+    opacity: 0.45;
+}
+
+/* ── Compact modifier ─────────────────────────────────────────────────
+   Dichiarato prima del blocco leaderboard per rispettare specificità.
+──────────────────────────────────────────────────────────────────── */
+.arc-table-compact .arc-table-td,
+.arc-table-compact .arc-table-th {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+/* ── Leaderboard modifier ─────────────────────────────────────────────
+   Prima riga body: glow dorato con animazione pulse continua.
+   Specificità più alta (tbody tr:first-child) → va DOPO i blocchi
+   arc-table-row-gold / arc-table-row-active / arc-table-compact
+   che definiscono le stesse proprietà sulle stesse celle.
+──────────────────────────────────────────────────────────────────── */
+@keyframes arc-table-gold-pulse {
+    0%,
+    100% {
+        box-shadow: inset 0 0 8px rgb(255 215 0 / 8%);
+    }
+
+    50% {
+        box-shadow: inset 0 0 24px rgb(255 215 0 / 18%), 0 0 12px rgb(255 215 0 / 12%);
+    }
+}
+
+.arc-table-leaderboard tbody tr:first-child {
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgb(0 0 0 / 0%)   0,
+            rgb(0 0 0 / 0%)   3px,
+            rgb(0 0 0 / 10%)  3px,
+            rgb(0 0 0 / 10%)  4px
+        ),
+        rgb(255 215 0 / 6%);
+    animation: arc-table-gold-pulse 1200ms ease-in-out infinite;
+    border-bottom: 1px solid rgb(255 215 0 / 40%);
+}
+
+.arc-table-leaderboard tbody tr:first-child .arc-table-td {
+    color: var(--arc-color-yellow, #ffd700);
+}
+
+.arc-table-leaderboard tbody tr:first-child .arc-table-td-num {
+    color: var(--arc-color-yellow, #ffd700);
+    text-shadow:
+        0 0 10px var(--arc-color-yellow, #ffd700),
+        0 0 20px var(--arc-color-yellow-glow, #ffd70040);
+}
+
+.arc-table-leaderboard tbody tr:first-child .arc-table-rank-num {
+    color: var(--arc-color-yellow, #ffd700);
+    text-shadow: 0 0 8px var(--arc-color-yellow-glow, #ffd70040);
+}
+
+/* Prima riga hover: mantiene il dorato */
+.arc-table-leaderboard tbody tr:first-child:hover {
+    background: rgb(255 215 0 / 10%);
+    box-shadow: inset var(--arc-border-md, 4px) 0 0 var(--arc-color-yellow, #ffd700);
+}
+
+/* ── Varianti colore ─────────────────────────────────────────────────
+   Applicare a .arc-table-wrapper; le custom property sono ereditate.
+──────────────────────────────────────────────────────────────────── */
+.arc-table-cyan {
+    --table-accent:      var(--arc-color-cyan, #00f5ff);
+    --table-glow:        var(--arc-color-cyan-glow, #00f5ff40);
+    --table-header-text: var(--arc-color-bg, #000);
+}
+
+.arc-table-green {
+    --table-accent:      var(--arc-color-green, #39ff14);
+    --table-glow:        var(--arc-color-green-glow, #39ff1440);
+    --table-header-text: var(--arc-color-bg, #000);
+}
+
+.arc-table-yellow {
+    --table-accent:      var(--arc-color-yellow, #ffd700);
+    --table-glow:        var(--arc-color-yellow-glow, #ffd70040);
+    --table-header-text: var(--arc-color-bg, #000);
+}
+
+.arc-table-red {
+    --table-accent:      var(--arc-color-red, #ff2d55);
+    --table-glow:        var(--arc-color-red-glow, #ff2d5540);
+    --table-header-text: var(--arc-color-bg, #000);
+}
+
+.arc-table-purple {
+    --table-accent:      var(--arc-color-purple, #bf00ff);
+    --table-glow:        var(--arc-color-purple-glow, #bf00ff40);
+    --table-header-text: var(--arc-color-bg, #000);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+@media (width <= 480px) {
+    .arc-table-th,
+    .arc-table-td {
+        padding-left: var(--arc-space-1, 8px);
+        padding-right: var(--arc-space-1, 8px);
+    }
+
+    .arc-table-th {
+        font-size: 9px;
+    }
+
+    .arc-table-td {
+        font-size: 13px;
+    }
+
+    .arc-table-td-num {
+        font-size: 10px;
+    }
+}

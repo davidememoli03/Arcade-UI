@@ -165,6 +165,51 @@ export declare const arcModal: {
 //
 // See arcade-ui/README.md for full HTML structure.
 
+// ─── Table (arc-table) ────────────────────────────────────────────────────────
+//
+// CSS-only component — no JS exports needed.
+// Ottimizzato per leaderboard e statistiche di gioco.
+//
+// Struttura HTML:
+//   <div class="arc-table-wrapper arc-table-cyan">
+//     <table class="arc-table arc-table-leaderboard">
+//       <caption>HIGH SCORES</caption>
+//       <thead>
+//         <tr>
+//           <th class="arc-table-th arc-table-th-rank">#</th>
+//           <th class="arc-table-th">PLAYER</th>
+//           <th class="arc-table-th arc-table-th-num">SCORE</th>
+//         </tr>
+//       </thead>
+//       <tbody>
+//         <tr class="arc-table-row">
+//           <td class="arc-table-td arc-table-td-rank">
+//             <span class="arc-table-rank-num">01</span>
+//             <span class="arc-table-rank-icon" aria-hidden="true">🏆</span>
+//           </td>
+//           <td class="arc-table-td">ACE</td>
+//           <td class="arc-table-td arc-table-td-num">999,999</td>
+//         </tr>
+//       </tbody>
+//     </table>
+//   </div>
+//
+// Varianti colore (su .arc-table-wrapper):
+//   arc-table-cyan | arc-table-green | arc-table-yellow | arc-table-red | arc-table-purple
+//
+// Modificatori (su .arc-table):
+//   arc-table-leaderboard   Prima riga gold pulsante, rank column stilizzata
+//   arc-table-compact       Padding ridotto per densità
+//
+// Varianti riga:
+//   arc-table-row-gold    Riga dorata con glow pulsante (rank manuale)
+//   arc-table-row-active  Testo accent color
+//   arc-table-row-muted   Opacità ridotta (fuori classifica)
+//
+// Note: le classi variante colore si applicano a .arc-table-wrapper;
+// le CSS custom property (--table-accent, --table-glow) sono ereditate
+// da tutte le celle figlie.
+
 // ─── Toast / Notification (arc-toast) ────────────────────────────────────────
 //
 // Notifiche arcade-style che imitano i messaggi di sistema ("PLAYER 1 READY",
