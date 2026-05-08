@@ -165,6 +165,53 @@ export declare const arcModal: {
 //
 // See arcade-ui/README.md for full HTML structure.
 
+// ─── Toast / Notification (arc-toast) ────────────────────────────────────────
+//
+// Notifiche arcade-style che imitano i messaggi di sistema ("PLAYER 1 READY",
+// "GAME OVER", "NEW HIGH SCORE"). I container sono creati automaticamente.
+//
+// Tipi:     'info' (cyan) | 'success' (green) | 'warning' (yellow) | 'error' (red)
+// Posizioni: 'bottom-right' (default) | 'bottom-left' | 'bottom-center' |
+//            'top-right'              | 'top-left'    | 'top-center'
+//
+// Uso base:
+//   arcToast.show({ message: 'PLAYER 1 READY' })
+//   arcToast.show({ message: 'NEW HIGH SCORE', type: 'success', duration: 5000 })
+//   arcToast.show({ message: 'GAME OVER', type: 'error', duration: 0 }) // persistente
+//
+//   const id = arcToast.show({ message: 'SAVING...', duration: 0 })
+//   arcToast.dismiss(id)   // chiusura programmatica
+//   arcToast.dismissAll()  // chiude tutti i toast visibili
+
+export declare const arcToast: {
+  /**
+   * Mostra una notifica arcade-style.
+   *
+   * @param options.message   - Testo da visualizzare
+   * @param options.type      - Tipo: 'info' | 'success' | 'warning' | 'error' (default: 'info')
+   * @param options.duration  - Durata in ms prima dell'auto-dismiss; 0 = persistente (default: 3000)
+   * @param options.position  - Posizione sullo schermo (default: 'bottom-right')
+   * @returns id del toast, usabile con arcToast.dismiss(id)
+   */
+  show(options: {
+    message:   string
+    type?:     'info' | 'success' | 'warning' | 'error'
+    duration?: number
+    position?: 'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center'
+  }): number
+
+  /**
+   * Chiude programmaticamente un toast per id.
+   * @param id - id restituito da arcToast.show()
+   */
+  dismiss(id: number): void
+
+  /**
+   * Chiude tutti i toast visibili.
+   */
+  dismissAll(): void
+}
+
 // ─── Button sounds ────────────────────────────────────────────────────────────
 
 /**

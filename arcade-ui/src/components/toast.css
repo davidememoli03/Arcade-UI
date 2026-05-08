@@ -1,0 +1,348 @@
+/* src/components/toast.css
+   Componente arc-toast: notifiche di sistema in stile arcade.
+   Ispirato ai messaggi "PLAYER 1 READY", "GAME OVER", "NEW HIGH SCORE".
+
+   Struttura HTML (gestita automaticamente da arcToast.show()):
+     <div class="arc-toast-container arc-toast-bottom-right"
+          aria-live="polite" aria-atomic="false"></div>
+
+   Singolo toast (iniettato da arcToast.js):
+     <div class="arc-toast arc-toast-info" role="status" aria-live="assertive">
+       <span class="arc-toast-icon" aria-hidden="true">[ i ]</span>
+       <span class="arc-toast-message">PLAYER 1 READY</span>
+       <button class="arc-toast-close" aria-label="Dismiss">[X]</button>
+       <div class="arc-toast-progress" aria-hidden="true">
+         <div class="arc-toast-progress-bar"
+              style="--arc-toast-duration: 3000ms"></div>
+       </div>
+     </div>
+
+   Posizioni container:
+     arc-toast-top-right (default) | arc-toast-top-left |
+     arc-toast-bottom-right        | arc-toast-bottom-left |
+     arc-toast-top-center          | arc-toast-bottom-center
+
+   Tipi toast:
+     arc-toast-info (cyan) | arc-toast-success (green) |
+     arc-toast-warning (yellow) | arc-toast-error (red)
+   ─────────────────────────────────────────────────────────── */
+
+/* ── Container ────────────────────────────────────────────────────────
+   Posizione fissa fuori dal flusso del documento.
+   Gestisce lo stack di toast con flex + gap.
+   pointer-events: none sul container, ripristinato sui toast figli.
+──────────────────────────────────────────────────────────────────── */
+.arc-toast-container {
+    position: fixed;
+    z-index: 9000;
+    display: flex;
+    flex-direction: column;
+    gap: var(--arc-space-2, 8px);
+    max-width: 420px;
+    width: calc(100% - 48px);
+    pointer-events: none;
+}
+
+/* ── Posizione: bottom-right (default) ───────────────────────────── */
+.arc-toast-bottom-right {
+    bottom: 24px;
+    right: 24px;
+    align-items: flex-end;
+}
+
+/* ── Posizione: bottom-left ──────────────────────────────────────── */
+.arc-toast-bottom-left {
+    bottom: 24px;
+    left: 24px;
+    align-items: flex-start;
+}
+
+/* ── Posizione: bottom-center ────────────────────────────────────── */
+.arc-toast-bottom-center {
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+}
+
+/* ── Posizione: top-right ────────────────────────────────────────── */
+.arc-toast-top-right {
+    top: 24px;
+    right: 24px;
+    align-items: flex-end;
+}
+
+/* ── Posizione: top-left ─────────────────────────────────────────── */
+.arc-toast-top-left {
+    top: 24px;
+    left: 24px;
+    align-items: flex-start;
+}
+
+/* ── Posizione: top-center ───────────────────────────────────────── */
+.arc-toast-top-center {
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+}
+
+/* ── Toast base ───────────────────────────────────────────────────────
+   --toast-accent / --toast-glow: default cyan, sovrascritta dal tipo.
+   Bordo neon sinistro come indicatore visivo del tipo.
+   Background semitrasparente con pattern scanlines leggere.
+──────────────────────────────────────────────────────────────────── */
+.arc-toast {
+    --toast-accent:      var(--arc-color-cyan);
+    --toast-glow:        var(--arc-color-cyan-glow);
+
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr auto;
+    align-items: center;
+    gap: 0 var(--arc-space-2, 8px);
+    width: 100%;
+    padding: var(--arc-space-3, 12px) var(--arc-space-3, 12px) var(--arc-space-3, 12px) var(--arc-space-2, 8px);
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgb(0 0 0 / 0%)   0,
+            rgb(0 0 0 / 0%)   3px,
+            rgb(0 0 0 / 12%)  3px,
+            rgb(0 0 0 / 12%)  4px
+        ),
+        var(--arc-color-bg-panel, #110020);
+    border: 1px solid var(--toast-accent);
+    border-left: 4px solid var(--toast-accent);
+    outline: 1px solid var(--toast-accent);
+    outline-offset: -6px;
+    box-shadow:
+        inset 0 0 12px rgb(0 0 0 / 40%),
+        0 0 12px var(--toast-glow),
+        0 0 24px rgb(0 0 0 / 60%);
+    pointer-events: all;
+    box-sizing: border-box;
+    overflow: hidden;
+    animation: arc-toast-enter var(--arc-anim-normal, 300ms) var(--arc-ease-pixel, steps(4)) both;
+}
+
+/* ── Enter animation ─────────────────────────────────────────────────
+   Slide-in dal basso con glow flash iniziale.
+──────────────────────────────────────────────────────────────────── */
+@keyframes arc-toast-enter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        box-shadow:
+            inset 0 0 12px rgb(0 0 0 / 40%),
+            0 0 32px var(--toast-accent),
+            0 0 64px var(--toast-glow),
+            0 0 24px rgb(0 0 0 / 60%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        box-shadow:
+            inset 0 0 12px rgb(0 0 0 / 40%),
+            0 0 12px var(--toast-glow),
+            0 0 24px rgb(0 0 0 / 60%);
+    }
+}
+
+/* ── Exit animation ──────────────────────────────────────────────────
+   Slide-out verso destra con fade.
+──────────────────────────────────────────────────────────────────── */
+@keyframes arc-toast-exit {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+        max-height: 120px;
+        margin-bottom: 0;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(32px);
+        max-height: 0;
+        margin-bottom: calc(-1 * var(--arc-space-2, 8px));
+    }
+}
+
+.arc-toast-exiting {
+    animation: arc-toast-exit var(--arc-anim-normal, 300ms) var(--arc-ease-pixel, steps(4)) forwards;
+    pointer-events: none;
+}
+
+/* ── Icona pixel-art ─────────────────────────────────────────────────
+   Monospace brackets per l'estetica arcade.
+   Grid area: prima colonna, riga 1.
+──────────────────────────────────────────────────────────────────── */
+.arc-toast-icon {
+    grid-column: 1;
+    grid-row: 1;
+    font-family: var(--arc-font-pixel, monospace);
+    font-size: 11px;
+    line-height: 1;
+    color: var(--toast-accent);
+    text-shadow: 0 0 8px var(--toast-accent);
+    white-space: nowrap;
+    user-select: none;
+    align-self: center;
+}
+
+/* ── Messaggio ────────────────────────────────────────────────────────
+   Grid area: seconda colonna, riga 1.
+   Font terminal per leggibilità, uppercase per effetto arcade.
+──────────────────────────────────────────────────────────────────── */
+.arc-toast-message {
+    grid-column: 2;
+    grid-row: 1;
+    font-family: var(--arc-font-terminal, monospace);
+    font-size: var(--arc-text-body-size, 14px);
+    line-height: var(--arc-text-body-lh, 1.5);
+    color: var(--arc-color-text, #00f5ff);
+    overflow-wrap: break-word;
+}
+
+/* ── Bottone chiusura [X] ─────────────────────────────────────────────
+   Grid area: terza colonna, riga 1.
+──────────────────────────────────────────────────────────────────── */
+.arc-toast-close {
+    grid-column: 3;
+    grid-row: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin-left: var(--arc-space-1, 4px);
+    background: transparent;
+    color: var(--toast-accent);
+    border: 1px solid var(--toast-accent);
+    border-radius: 0;
+    font-family: var(--arc-font-pixel, monospace);
+    font-size: 9px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        color var(--arc-anim-fast, 150ms) var(--arc-ease-pixel, steps(4)),
+        border-color var(--arc-anim-fast, 150ms) var(--arc-ease-pixel, steps(4)),
+        box-shadow var(--arc-anim-fast, 150ms) var(--arc-ease-pixel, steps(4));
+    align-self: center;
+}
+
+.arc-toast-close:hover {
+    color: var(--arc-color-red, #ff2d55);
+    border-color: var(--arc-color-red, #ff2d55);
+    box-shadow:
+        0 0 6px var(--arc-color-red, #ff2d55),
+        0 0 12px var(--arc-color-red-glow, #ff2d5540);
+}
+
+.arc-toast-close:focus-visible {
+    outline: 2px solid var(--toast-accent);
+    outline-offset: 2px;
+}
+
+/* ── Progress bar ─────────────────────────────────────────────────────
+   Grid area: intera riga 2 (span 3 colonne).
+   Si restringe da 100% a 0% in --arc-toast-duration ms.
+──────────────────────────────────────────────────────────────────── */
+.arc-toast-progress {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    height: 3px;
+    width: 100%;
+    margin-top: var(--arc-space-2, 8px);
+    background: rgb(255 255 255 / 8%);
+    overflow: hidden;
+}
+
+.arc-toast-progress-bar {
+    height: 100%;
+    width: 100%;
+    background:
+        repeating-linear-gradient(
+            to right,
+            transparent      0,
+            transparent      6px,
+            rgb(0 0 0 / 40%) 6px,
+            rgb(0 0 0 / 40%) 8px
+        ),
+        var(--toast-accent);
+    box-shadow: 0 0 6px var(--toast-accent);
+    transform-origin: left center;
+    animation: arc-toast-progress linear var(--arc-toast-duration, 3000ms) forwards;
+}
+
+@keyframes arc-toast-progress {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* ── Tipo: info (cyan — default) ─────────────────────────────────── */
+.arc-toast-info {
+    --toast-accent: var(--arc-color-cyan, #00f5ff);
+    --toast-glow:   var(--arc-color-cyan-glow, #00f5ff40);
+}
+
+/* ── Tipo: success (green) ────────────────────────────────────────── */
+.arc-toast-success {
+    --toast-accent: var(--arc-color-green, #39ff14);
+    --toast-glow:   var(--arc-color-green-glow, #39ff1440);
+}
+
+/* ── Tipo: warning (yellow) ───────────────────────────────────────── */
+.arc-toast-warning {
+    --toast-accent: var(--arc-color-yellow, #ffd700);
+    --toast-glow:   var(--arc-color-yellow-glow, #ffd70040);
+}
+
+/* ── Tipo: error (red) ────────────────────────────────────────────── */
+.arc-toast-error {
+    --toast-accent: var(--arc-color-red, #ff2d55);
+    --toast-glow:   var(--arc-color-red-glow, #ff2d5540);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── */
+@media (width <= 480px) {
+    .arc-toast-container {
+        width: calc(100% - 32px);
+        max-width: none;
+    }
+
+    .arc-toast-bottom-right,
+    .arc-toast-bottom-left {
+        right: 16px;
+        left: 16px;
+        bottom: 16px;
+    }
+
+    .arc-toast-top-right,
+    .arc-toast-top-left {
+        right: 16px;
+        left: 16px;
+        top: 16px;
+    }
+
+    .arc-toast-bottom-center,
+    .arc-toast-top-center {
+        left: 16px;
+        right: 16px;
+        transform: none;
+    }
+
+    .arc-toast-message {
+        font-size: 13px;
+    }
+}

@@ -8,5 +8,6 @@ export { bindButtonSounds } from './components/button.js'
 export { arcModal } from './components/modal.js'
 export { arcTabs, bindTabs } from './components/tabs.js'
 export { updateSlider, bindSliders } from './components/slider.js'
+export { arcToast } from './components/toast.js'
 
 export const version = pkg.version
