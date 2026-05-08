@@ -142,6 +142,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Glow** | `.arc-glow-{color}` · `.arc-box-glow-{color}` | cyan · red · yellow · green · purple | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glow--text) |
 | **Glitch** | `.arc-glitch` · `.arc-glitch-hover` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glitch--always-on) |
 | **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
+| **Toggle** | `.arc-toggle` · `.arc-toggle__input` · `.arc-toggle__switch` · `.arc-toggle__label` | `arc-toggle--on` · `arc-toggle--off` · `arc-toggle--label-left` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-toggle--all-states) |
 | **Animations** | `.arc-u-blink` · `.arc-u-pulse` · `.arc-u-glitch` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-animation--keyframes) |
 
 ### Tabs anatomy
@@ -276,6 +277,56 @@ L'elemento `.arc-card-avatar` accetta testo (emoji, unicode), o un `<img>` inter
   </div>
 </div>
 ```
+
+### Toggle anatomy
+
+LED switch che imita i pulsanti fisici dei cabinati arcade. CSS-only tramite `<input type="checkbox">` — zero JavaScript.
+
+```html
+<!-- OFF (default) -->
+<label class="arc-toggle">
+  <input type="checkbox" class="arc-toggle__input">
+  <span class="arc-toggle__switch" aria-hidden="true"></span>
+  <span class="arc-toggle__label">SOUND FX</span>
+</label>
+
+<!-- ON: attributo checked nativo -->
+<label class="arc-toggle">
+  <input type="checkbox" class="arc-toggle__input" checked>
+  <span class="arc-toggle__switch" aria-hidden="true"></span>
+  <span class="arc-toggle__label">MUSIC</span>
+</label>
+
+<!-- Disabled -->
+<label class="arc-toggle">
+  <input type="checkbox" class="arc-toggle__input" disabled>
+  <span class="arc-toggle__switch" aria-hidden="true"></span>
+  <span class="arc-toggle__label">LOCKED</span>
+</label>
+
+<!-- Label a sinistra -->
+<label class="arc-toggle arc-toggle--label-left">
+  <input type="checkbox" class="arc-toggle__input" checked>
+  <span class="arc-toggle__switch" aria-hidden="true"></span>
+  <span class="arc-toggle__label">SCREEN FX</span>
+</label>
+```
+
+**Modificatori**
+
+| Classe | Descrizione |
+|---|---|
+| `arc-toggle--on` | Forza stato ON visivo (utile in HTML statico o con JS) |
+| `arc-toggle--off` | Forza stato OFF visivo (override su `--on` e su `checked`) |
+| `arc-toggle--label-left` | Sposta il testo a sinistra dello switch |
+
+**Design**
+
+- LED spento: rosso scuro (`#3d0005`) — nessun glow
+- LED acceso: cyan brillante (`--arc-color-cyan`) — flash istantaneo + glow espanso
+- Animazione ON: lampo bianco accecante → settle neon cyan (300 ms, steps pixel)
+- Animazione OFF: transizione a passi verso il rosso scuro
+- Stato disabled: desaturato (`filter: saturate(0.15)`), `cursor: not-allowed`
 
 ### Input anatomy
 

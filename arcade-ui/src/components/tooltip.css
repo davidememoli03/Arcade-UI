@@ -30,12 +30,16 @@
    content: attr(data-tooltip) legge il testo dall'attributo.
    z-index 9000 assicura visibilità sopra modal e overlay.
    Inizialmente invisibile (opacity:0); appare on :hover / :focus-visible.
+
+   Gap dal host: arrow-offset(2px) + arrow-box(10px) = 12px.
+   Il bordo inferiore del tooltip si allinea all'estremità piatta
+   dell'arrow, evitando che il box inglobi la freccia.
 ──────────────────────────────────────────────────────────────────── */
 [data-tooltip]::after {
     content: attr(data-tooltip);
     position: absolute;
     z-index: 9000;
-    bottom: calc(100% + 10px);
+    bottom: calc(100% + 12px);
     left: 50%;
     transform: translateX(-50%) translateY(6px);
     padding: 6px 10px;
@@ -59,12 +63,16 @@
 
 /* ── Arrow (::before) — posizione default: TOP ───────────────────────
    Triangolo CSS via border trick: solo border-top-color visibile.
+   border: 5px → box 10px × 10px. Posizionato con bottom: calc(100% + 2px):
+     - bottom box edge: +2px  sopra il host
+     - tip (centro box): +7px sopra il host
+     - flat edge (top):  +12px = bottom del tooltip ✓
 ──────────────────────────────────────────────────────────────────── */
 [data-tooltip]::before {
     content: '';
     position: absolute;
     z-index: 9001;
-    bottom: calc(100% + 4px);
+    bottom: calc(100% + 2px);
     left: 50%;
     transform: translateX(-50%);
     border: 5px solid transparent;
@@ -91,13 +99,13 @@
 ──────────────────────────────────────────────────────────────────── */
 .arc-tooltip-bottom[data-tooltip]::after {
     bottom: auto;
-    top: calc(100% + 10px);
+    top: calc(100% + 12px);
     transform: translateX(-50%) translateY(-6px);
 }
 
 .arc-tooltip-bottom[data-tooltip]::before {
     bottom: auto;
-    top: calc(100% + 4px);
+    top: calc(100% + 2px);
     border-top-color: transparent;
     border-bottom-color: var(--arc-color-cyan);
 }
@@ -110,12 +118,12 @@
 /* ── Variante: left ──────────────────────────────────────────────────
 ──────────────────────────────────────────────────────────────────── */
 .arc-tooltip-left[data-tooltip]::after {
-    inset: 50% calc(100% + 10px) auto auto;
+    inset: 50% calc(100% + 12px) auto auto;
     transform: translateY(-50%) translateX(-6px);
 }
 
 .arc-tooltip-left[data-tooltip]::before {
-    inset: 50% calc(100% + 4px) auto auto;
+    inset: 50% calc(100% + 2px) auto auto;
     transform: translateY(-50%);
     border-top-color: transparent;
     border-left-color: var(--arc-color-cyan);
@@ -131,14 +139,14 @@
 .arc-tooltip-right[data-tooltip]::after {
     bottom: auto;
     top: 50%;
-    left: calc(100% + 10px);
+    left: calc(100% + 12px);
     transform: translateY(-50%) translateX(6px);
 }
 
 .arc-tooltip-right[data-tooltip]::before {
     bottom: auto;
     top: 50%;
-    left: calc(100% + 4px);
+    left: calc(100% + 2px);
     transform: translateY(-50%);
     border-top-color: transparent;
     border-right-color: var(--arc-color-cyan);
