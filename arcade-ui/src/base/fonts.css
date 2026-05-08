@@ -1,0 +1,35 @@
+/* src/base/fonts.css
+   Self-hosted latin woff2 (optional supplement to Google Fonts).
+
+   Files live in public/fonts/ and are served at /fonts/*.woff2 from your app root.
+   Storybook: staticDirs includes ../public so previews resolve correctly.
+
+   If these URLs 404, the matching @font-face is skipped and the Google Fonts
+   stylesheet imported in typography.css still provides the same families.
+
+   License: SIL Open Font License — same as Google Fonts distribution.
+   ─────────────────────────────────────────────────────────────────── */
+
+@font-face {
+    font-family: 'Press Start 2P';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/press-start-2p-latin.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/vt323-latin.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Share Tech Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/share-tech-mono-latin.woff2') format('woff2');
+}

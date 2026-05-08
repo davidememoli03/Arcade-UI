@@ -3,23 +3,23 @@
  */
 
 :root {
-  --arc-color-bg: #000; /** Main screen background, absolute black */
-  --arc-color-bg-alt: #0a0010; /** Alternate surface (hover, striping) */
-  --arc-color-bg-panel: #110020; /** Card / panel / dialog surface */
-  --arc-color-cyan: #00f5ff; /** Primary neon — default border and text */
-  --arc-color-cyan-glow: #00f5ff40; /** Cyan at 25% opacity for glow shadows */
-  --arc-color-red: #ff2d55; /** Danger, life lost, error */
-  --arc-color-red-glow: #ff2d5540; /** Red at 25% opacity */
-  --arc-color-yellow: #ffd700; /** Coins, warnings, highlights */
-  --arc-color-yellow-glow: #ffd70040; /** Yellow at 25% opacity */
-  --arc-color-green: #39ff14; /** Victory, success, health */
-  --arc-color-green-glow: #39ff1440; /** Green at 25% opacity */
-  --arc-color-purple: #bf00ff; /** Magic, special power-ups */
-  --arc-color-purple-glow: #bf00ff40; /** Purple at 25% opacity */
-  --arc-color-pink: #ff69b4; /** Bonus, extra life, charm */
-  --arc-color-pink-glow: #ff69b440; /** Pink at 25% opacity */
-  --arc-color-text: #00f5ff; /** Primary text colour (mirrors cyan) */
-  --arc-color-text-muted: #077; /** Secondary / placeholder text */
-  --arc-color-text-accent: #ffd700; /** Inline highlight (mirrors yellow) */
-  --arc-color-disabled: #345; /** Disabled controls */
+  --arc-color-bg: #000; /* Main screen background, absolute black */
+  --arc-color-bg-alt: #0a0010; /* Alternate surface (hover, striping) */
+  --arc-color-bg-panel: #110020; /* Card / panel / dialog surface */
+  --arc-color-cyan: #00f5ff; /* Primary neon — default border and text */
+  --arc-color-cyan-glow: #00f5ff40; /* Cyan at 25% opacity for glow shadows */
+  --arc-color-red: #ff2d55; /* Danger, life lost, error */
+  --arc-color-red-glow: #ff2d5540; /* Red at 25% opacity */
+  --arc-color-yellow: #ffd700; /* Coins, warnings, highlights */
+  --arc-color-yellow-glow: #ffd70040; /* Yellow at 25% opacity */
+  --arc-color-green: #39ff14; /* Victory, success, health */
+  --arc-color-green-glow: #39ff1440; /* Green at 25% opacity */
+  --arc-color-purple: #bf00ff; /* Magic, special power-ups */
+  --arc-color-purple-glow: #bf00ff40; /* Purple at 25% opacity */
+  --arc-color-pink: #ff69b4; /* Bonus, extra life, charm */
+  --arc-color-pink-glow: #ff69b440; /* Pink at 25% opacity */
+  --arc-color-text: #00f5ff; /* Primary text colour (mirrors cyan) */
+  --arc-color-text-muted: #077; /* Secondary / placeholder text */
+  --arc-color-text-accent: #ffd700; /* Inline highlight (mirrors yellow) */
+  --arc-color-disabled: #345; /* Disabled controls */
 }

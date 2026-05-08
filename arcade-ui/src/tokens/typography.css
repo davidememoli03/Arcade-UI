@@ -1,10 +1,62 @@
 /* src/tokens/typography.css
-   Thin wrapper: carica i font da Google Fonts e importa le custom properties
-   generate da Style Dictionary (src/tokens/typography-vars.css).
+   Design system typography: self-hosted woff2 (optional) + Google Fonts CDN +
+   custom properties from Style Dictionary (src/tokens/typography-vars.css).
 
-   Per modificare i valori tipografici aggiornare src/tokens/tokens.json
+   Per modificare scale o stack aggiornare src/tokens/tokens.json
    e rieseguire `npm run build:tokens`.
+
+   Ordine caricamento: @font-face locali prima del CSS Google così, se i file
+   in /fonts/ sono serviti correttamente, il browser preferisce gli asset self-hosted.
    ─────────────────────────────────────────────────────────────────── */
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen&display=swap');
+@import url('../base/fonts.css');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Share+Tech+Mono&display=swap');
 @import url('./typography-vars.css');
+
+/* ── Utility classes — typographic scale ──────────────────────────────
+   Ogni livello usa font-size, line-height e font-family dai token.
+   Usare insieme a colori neon da --arc-color-* o classi .arc-glow-*.
+──────────────────────────────────────────────────────────────────── */
+
+.arc-text-display {
+    font-family: var(--arc-text-display-font);
+    font-size: var(--arc-text-display-size);
+    line-height: var(--arc-text-display-lh);
+}
+
+.arc-text-h1 {
+    font-family: var(--arc-text-h1-font);
+    font-size: var(--arc-text-h1-size);
+    line-height: var(--arc-text-h1-lh);
+}
+
+.arc-text-h2 {
+    font-family: var(--arc-text-h2-font);
+    font-size: var(--arc-text-h2-size);
+    line-height: var(--arc-text-h2-lh);
+}
+
+.arc-text-h3 {
+    font-family: var(--arc-text-h3-font);
+    font-size: var(--arc-text-h3-size);
+    line-height: var(--arc-text-h3-lh);
+}
+
+.arc-text-body {
+    font-family: var(--arc-text-body-font);
+    font-size: var(--arc-text-body-size);
+    line-height: var(--arc-text-body-lh);
+}
+
+.arc-text-caption {
+    font-family: var(--arc-text-caption-font);
+    font-size: var(--arc-text-caption-size);
+    line-height: var(--arc-text-caption-lh);
+}
+
+/* Monospace / raw data — usa --arc-font-mono (Share Tech Mono) */
+.arc-text-mono {
+    font-family: var(--arc-font-mono);
+    font-size: var(--arc-text-caption-size);
+    line-height: var(--arc-text-caption-lh);
+}

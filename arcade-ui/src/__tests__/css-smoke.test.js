@@ -210,6 +210,14 @@ describe('CSS smoke — crt.css', () => {
   it('definisce .arc-crt-global', () => expect(css).toContain('.arc-crt-global'))
 })
 
+describe('CSS smoke — tokens/typography.css · utility classes', () => {
+  const css = readCss('tokens', 'typography.css')
+
+  it('definisce .arc-text-display', () => expect(css).toContain('.arc-text-display'))
+  it('definisce .arc-text-body', () => expect(css).toContain('.arc-text-body'))
+  it('definisce .arc-text-mono', () => expect(css).toContain('.arc-text-mono'))
+})
+
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
 describe('CSS smoke — tokens/colors.css', () => {
@@ -232,14 +240,19 @@ describe('CSS smoke — tokens/typography.css (wrapper)', () => {
     expect(css).toContain('@import url(\'./typography-vars.css\')'))
   it('importa Google Fonts', () =>
     expect(css).toContain('fonts.googleapis.com'))
+  it('importa fonts.css self-hosted', () =>
+    expect(css).toContain('@import url(\'../base/fonts.css\')'))
 })
 
 describe('CSS smoke — tokens/typography-vars.css (generato da SD)', () => {
   const css = readCss('tokens', 'typography-vars.css')
 
+  it('definisce --arc-font-display', () => expect(css).toContain('--arc-font-display'))
+  it('definisce --arc-font-body', () => expect(css).toContain('--arc-font-body'))
   it('definisce --arc-font-pixel', () => expect(css).toContain('--arc-font-pixel'))
   it('definisce --arc-font-terminal', () => expect(css).toContain('--arc-font-terminal'))
   it('definisce --arc-font-mono', () => expect(css).toContain('--arc-font-mono'))
+  it('definisce --arc-text-display-font', () => expect(css).toContain('--arc-text-display-font'))
   it('definisce --arc-text-h1-size', () => expect(css).toContain('--arc-text-h1-size'))
   it('definisce --arc-text-body-size', () => expect(css).toContain('--arc-text-body-size'))
   it('reca il banner auto-generated', () => expect(css).toContain('auto-generated'))
@@ -284,7 +297,11 @@ describe('Style Dictionary — tokens.flat.json', () => {
   it('contiene arc-color-cyan', () => expect(flat).toHaveProperty('arc-color-cyan'))
   it('contiene arc-space-1', () => expect(flat).toHaveProperty('arc-space-1'))
   it('contiene arc-anim-fast', () => expect(flat).toHaveProperty('arc-anim-fast'))
+  it('contiene arc-font-body', () => expect(flat).toHaveProperty('arc-font-body'))
+  it('contiene arc-font-display', () => expect(flat).toHaveProperty('arc-font-display'))
   it('contiene arc-font-pixel', () => expect(flat).toHaveProperty('arc-font-pixel'))
+  it('arc-font-mono usa Share Tech Mono', () =>
+    expect(flat['arc-font-mono']).toContain('Share Tech Mono'))
   it('il valore di arc-color-cyan è #00f5ff', () =>
     expect(flat['arc-color-cyan']).toBe('#00f5ff'))
   it('il valore di arc-space-1 è 8px', () =>

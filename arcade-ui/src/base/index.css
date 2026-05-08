@@ -22,7 +22,7 @@
 body {
     background-color: var(--arc-color-bg);
     color: var(--arc-color-text);
-    font-family: var(--arc-font-terminal);
+    font-family: var(--arc-font-body);
     font-size: var(--arc-text-body-size);
     line-height: var(--arc-text-body-lh);
     min-height: 100dvh;

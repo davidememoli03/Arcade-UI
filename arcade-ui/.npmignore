@@ -11,7 +11,9 @@ src/
 .github/
 docs/
 tests/
-public/
+# Static assets — keep only packaged font files (woff2)
+public/sfx/
+public/*.svg
 
 # File di configurazione
 vite.config.js

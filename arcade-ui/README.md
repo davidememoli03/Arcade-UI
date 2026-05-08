@@ -67,7 +67,7 @@ A complete working page — copy, save as `index.html`, open in browser:
   <!-- Fonts (optional, recommended) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
 
   <!-- Arcade UI -->
@@ -1066,6 +1066,36 @@ import '@davide03memoli/arcade-ui/tokens/spacing'
 import '@davide03memoli/arcade-ui/tokens/typography'
 ```
 
+### Typography & fonts
+
+La libreria definisce tre famiglie ufficiali (Google Fonts + opzione **self-hosted** in `public/fonts/`, vedi sotto).
+
+| Font | Variabile CSS | Anteprima (testo) | Use case |
+|------|----------------|-------------------|----------|
+| **Press Start 2P** | `--arc-font-display` · alias `--arc-font-pixel` | `GAME OVER · 1UP` | Titoli hero, HUD, punteggi, label primarie |
+| **VT323** | `--arc-font-body` · alias `--arc-font-terminal` | `Insert coin — credits: 03` | Corpo testo, dialoghi, copy secondario stile terminale |
+| **Share Tech Mono** | `--arc-font-mono` | `PC=802A · SCORE=009420` | Codice, dump di dati, valori tecnici monospace |
+
+Import del bundle tipografico (include `@font-face` locali *se* servi `/fonts/*.woff2` dalla root del sito, più stylesheet Google come fallback):
+
+```js
+import '@davide03memoli/arcade-ui/tokens/typography'
+```
+
+**Self-hosted:** copia la cartella `public/fonts/` dal pacchetto npm (woff2 latin) nella static root dell’app come `/fonts/`. File e licenza OFL: [`public/fonts/README.md`](./public/fonts/README.md).
+
+**Utility scale** — combinano `font-family`, `font-size` e `line-height` dai token:
+
+| Classe | Livello |
+|--------|---------|
+| `.arc-text-display` | Hero / game over |
+| `.arc-text-h1` … `.arc-text-h3` | Titoli sezione |
+| `.arc-text-body` | Testo corrente |
+| `.arc-text-caption` | Note, placeholder |
+| `.arc-text-mono` | Blocchi dati (usa `--arc-font-mono`) |
+
+Storybook: [Tokens / Typography](https://davidememoli03.github.io/Arcade-UI/?path=/story/tokens-typography--scale).
+
 ### Key tokens
 
 ```css
@@ -1081,10 +1111,16 @@ import '@davide03memoli/arcade-ui/tokens/typography'
 --arc-color-green         /* #39ff14 — success */
 --arc-color-purple        /* #bf00ff — power-up */
 
-/* Typography */
---arc-font-pixel          /* Press Start 2P */
---arc-font-terminal       /* VT323 */
---arc-font-mono           /* Silkscreen */
+/* Typography — famiglie */
+--arc-font-display        /* Press Start 2P — titoli / score */
+--arc-font-body           /* VT323 — corpo / terminale */
+--arc-font-mono           /* Share Tech Mono — codice / dati */
+--arc-font-pixel          /* alias di --arc-font-display */
+--arc-font-terminal       /* alias di --arc-font-body */
+/* Scala (esempi) */
+--arc-text-display-size
+--arc-text-body-size
+/* … ogni livello ha -size, -lh, -font (es. --arc-text-h1-font) */
 
 /* Spacing (8px grid) */
 --arc-space-1  /*  8px */   --arc-space-2  /* 16px */

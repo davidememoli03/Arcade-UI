@@ -1,6 +1,6 @@
 {
   "name": "@davide03memoli/arcade-ui",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "UI component library inspired by 80s arcade games. Retro style, neon palette, pixel animations, built-in SFX — zero runtime dependencies.",
   "keywords": [
     "ui",
@@ -48,6 +48,7 @@
   "files": [
     "dist",
     "src/tokens",
+    "public/fonts",
     "LICENSE"
   ],
   "sideEffects": [
@@ -55,6 +56,9 @@
   ],
   "private": false,
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build:tokens": "style-dictionary build --config style-dictionary.config.js",
@@ -90,7 +94,7 @@
     "postcss": "^8.5.14",
     "postcss-cli": "^11.0.1",
     "storybook": "^10.3.6",
-    "style-dictionary": "^5.4.0",
+    "style-dictionary": "^4.3.3",
     "stylelint": "^17.10.0",
     "stylelint-config-standard": "^40.0.0",
     "vite": "^8.0.10",
