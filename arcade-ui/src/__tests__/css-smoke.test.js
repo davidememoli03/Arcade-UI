@@ -260,6 +260,22 @@ describe('CSS smoke — crt.css', () => {
   it('definisce utility fosforo', () => expect(css).toContain('.arc-crt-phosphor'))
 })
 
+describe('CSS smoke — sprite.css', () => {
+  const css = readCss('components', 'sprite.css')
+
+  it('definisce .arc-sprite', () => expect(css).toContain('.arc-sprite'))
+  it('definisce keyframe strip', () => expect(css).toContain('@keyframes arc-sprite-strip'))
+  it('definisce token sprite', () => {
+    expect(css).toContain('--arc-sprite-sheet')
+    expect(css).toContain('--arc-sprite-frames')
+    expect(css).toContain('--arc-sprite-fps')
+  })
+  it('definisce modificatori', () => {
+    expect(css).toContain('.arc-sprite-grid')
+    expect(css).toContain('.arc-sprite-paused')
+  })
+})
+
 describe('CSS smoke — tokens/typography.css · utility classes', () => {
   const css = readCss('tokens', 'typography.css')
 

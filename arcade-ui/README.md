@@ -133,6 +133,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Card** | `.arc-card` | `arc-card-cyan` · `arc-card-red` · `arc-card-yellow` · `arc-card-green` · `arc-card-purple` · `arc-card-glow` · `arc-card-selected` · `arc-card-locked` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-card--character-select-screen) |
 | **Avatar** | `.arc-avatar` · `.arc-avatar-inner` · `.arc-avatar-placeholder` · `.arc-avatar-status` | `arc-avatar-sm` / `arc-avatar-lg` / `arc-avatar-xl` · `arc-avatar-frame-neon` / `gold` / `silver` / `bronze` · `arc-avatar-status-online` / `offline` · `arc-avatar-active` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-avatar--character-select-grid) |
 | **Display 7-seg** | `.arc-display` · `.arc-display-body` · `.arc-display-digit` · `.arc-display-sep` | `arc-display-score` · `arc-display-timer` · `arc-display-red` / `green` / `amber` / `cyan` · JS: `setArcDisplayValue`, `arcCountdown` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-display--score-counter) |
+| **Sprite** | `.arc-sprite` | `arc-sprite-bg-dark` · `arc-sprite-bg-panel` · `arc-sprite-paused` · `arc-sprite-pixelated` · `arc-sprite-loop-once` · `arc-sprite-grid` · `arc-sprite-gif` · JS `arcSprite` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-sprite--sprite-sheet-strip) |
 | **Panel** | `.arc-panel` | `arc-panel-cyan` · `arc-panel-red` · `arc-panel-yellow` · `arc-panel-green` · `arc-panel-purple` · `arc-panel-glass` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-panel--default) |
 | **Input** | `.arc-input` · `.arc-label` | `.arc-textarea` · `.arc-select` · `.arc-input-hint` · `.arc-input-hint-error` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-input--default) |
 | **Dropdown** | `.arc-dropdown` | `arc-dropdown-cyan` · `arc-dropdown-green` · `arc-dropdown-red` · `arc-dropdown-yellow` · `arc-dropdown-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-dropdown--default) |
@@ -355,6 +356,99 @@ ctrl.stop()
 Al cambio cifra: flash breve sui soli segmenti mutati (`prefers-reduced-motion` lo disattiva).
 
 Storybook: [Components / Display](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-display--score-counter).
+
+### Sprite sheet pixel-art (`.arc-sprite`)
+
+Animazioni **CSS** (`@keyframes` + `steps()`) per fogli PNG esportati da **[Piskel](https://www.piskelapp.com/)** (o tool equivalenti). Formato consigliato: **strip orizzontale** (una riga di frame, stessa dimensione per ogni cella). Alternativa: **GIF** con markup `.arc-sprite-gif` (meno controllo su FPS / frame).
+
+**Export da Piskel**
+
+1. *Sprite sheet* — `Export` → *PNG* → **Spritesheet** (orizzontale o griglia regolare). Imposta *Scale* = 1× per pixel puri.
+2. *GIF* — utile per prototipi; niente `steps()`, l’animazione è quella del file.
+
+**Striscia orizzontale (1 riga)**
+
+```html
+<div
+  class="arc-sprite arc-sprite-pixelated"
+  role="img"
+  aria-label="Eroe cammina"
+  style="
+    --arc-sprite-sheet: url('/sprites/hero-walk.png');
+    --arc-sprite-frames: 4;
+    --arc-sprite-width: 32px;
+    --arc-sprite-height: 32px;
+    --arc-sprite-fps: 8;
+  "></div>
+```
+
+**Scala intera** (nitidezza cabinato): `--arc-sprite-scale: 4` (consigliato intero). Classe **`.arc-sprite-pixelated`** imposta `image-rendering: pixelated` / `crisp-edges`.
+
+**Griglia multi-riga** — imposta `--arc-sprite-rows` (e un numero di frame multiplo: `frames = colonne × righe`). Aggiungi **`.arc-sprite-grid`** per disattivare l’animazione lineare in X e usa **`arcSprite.init(el)`** per il ciclo frame-by-frame.
+
+```html
+<div
+  class="arc-sprite arc-sprite-grid arc-sprite-pixelated"
+  style="
+    --arc-sprite-sheet: url('/sprites/explosion.png');
+    --arc-sprite-frames: 8;
+    --arc-sprite-rows: 2;
+    --arc-sprite-width: 16px;
+    --arc-sprite-height: 16px;
+    --arc-sprite-fps: 12;
+  "></div>
+```
+
+```js
+import { arcSprite } from '@davide03memoli/arcade-ui'
+
+const sprite = arcSprite.init(document.querySelector('.arc-sprite'))
+sprite.play()
+sprite.pause()
+sprite.setFps(12)
+sprite.setFrame(2)
+```
+
+Su strip orizzontale, **`setFrame`** applica `.arc-sprite-paused` (l’animazione CSS non segue il frame “virtuale”); chiama **`play()`** per riprendere.
+
+**GIF**
+
+```html
+<div class="arc-sprite arc-sprite-gif arc-sprite-pixelated" style="--arc-sprite-width: 32px; --arc-sprite-height: 32px; --arc-sprite-scale: 2;">
+  <img class="arc-sprite-img" src="/sprites/idle.gif" width="32" height="32" alt="" decoding="async" />
+</div>
+```
+
+**Custom properties**
+
+| Proprietà | Default | Descrizione |
+|-----------|---------|-------------|
+| `--arc-sprite-sheet` | — | `url(...)` del foglio PNG |
+| `--arc-sprite-frames` | `1` | Numero totale di frame |
+| `--arc-sprite-width` | `32px` | Larghezza di un frame nel PNG |
+| `--arc-sprite-height` | `32px` | Altezza di un frame nel PNG |
+| `--arc-sprite-fps` | `8` | Frames per secondo (strip) o timer griglia |
+| `--arc-sprite-scale` | `1` | Scala moltiplicativa (idealmente intera) |
+| `--arc-sprite-rows` | `1` | Righe nel foglio; con `> 1` usa `.arc-sprite-grid` + init JS |
+| `--arc-sprite-cols` | `frames ÷ rows` | Calcolato automaticamente; sovrascrivi solo se il foglio è irregolare |
+| `--arc-sprite-bg` | `transparent` | Colore di sfondo sotto lo sprite |
+| `--arc-sprite-direction` | `normal` | `normal` · `reverse` · `alternate` (solo strip CSS) |
+
+**Classi modificatore**
+
+| Classe | Descrizione |
+|--------|-------------|
+| `arc-sprite-bg-dark` | Sfondo `#0a0a0a` |
+| `arc-sprite-bg-panel` | Sfondo pannello + bordo neon |
+| `arc-sprite-paused` | Congela l’animazione CSS (strip) |
+| `arc-sprite-pixelated` | Scala nitida |
+| `arc-sprite-loop-once` | Una sola ripetizione (`animation-iteration-count: 1`, strip) |
+| `arc-sprite-grid` | Griglia: niente keyframe 1D; avanzamento via JS |
+| `arc-sprite-gif` | Contenitore per `<img class="arc-sprite-img">` |
+
+`prefers-reduced-motion: reduce` disattiva l’animazione CSS sullo sprite sheet (primo frame fermo).
+
+Storybook: [Components / Sprite](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-sprite--sprite-sheet-strip).
 
 ### Panel anatomy
 

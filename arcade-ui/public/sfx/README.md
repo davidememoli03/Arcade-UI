@@ -90,3 +90,12 @@ audio.register('powerup', 'https://cdn.example.com/sfx/powerup.mp3')
 > **Note:** This `public/sfx/` folder exists only as documentation.
 > Its contents are excluded from the npm package and are **not** copied to `dist/`
 > during build. Place your audio files in your own application's assets, not here.
+
+### Sample sprite sheets (Storybook / dev)
+
+PNG di esempio per le story Sprite (non inclusi nel tarball npm):
+
+| File | Uso |
+|------|-----|
+| `sample-sprite-strip.png` | 4 frame × 16×16 px in una riga |
+| `sample-sprite-grid.png` | Griglia 4×2 (8 frame) 16×16 px |

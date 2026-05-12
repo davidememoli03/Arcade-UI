@@ -10,5 +10,6 @@ export { arcTabs, bindTabs } from './components/tabs.js'
 export { updateSlider, bindSliders } from './components/slider.js'
 export { arcToast } from './components/toast.js'
 export { setArcDisplayValue, arcCountdown, bindArcDisplays } from './components/display.js'
+export { arcSprite, arcSpriteInit } from './components/sprite.js'
 
 export const version = pkg.version

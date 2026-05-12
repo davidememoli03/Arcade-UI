@@ -333,6 +333,23 @@ export declare function arcCountdown(
 
 export declare function bindArcDisplays(root?: ParentNode): void
 
+// ─── Sprite sheet (pixel-art / Piskel) ───────────────────────────────────────
+//
+// CSS: .arc-sprite + custom properties (vedi README). Griglia multi-riga: .arc-sprite-grid + init().
+
+export interface ArcSpriteController {
+  play(): ArcSpriteController
+  pause(): ArcSpriteController
+  setFps(fps: number): ArcSpriteController
+  setFrame(index: number): ArcSpriteController
+}
+
+export declare function arcSpriteInit(selectorOrEl: string | HTMLElement): ArcSpriteController | null
+
+export declare const arcSprite: {
+  init: typeof arcSpriteInit
+}
+
 // ─── Button sounds ────────────────────────────────────────────────────────────
 
 /**

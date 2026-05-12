@@ -1,0 +1,118 @@
+/* src/components/sprite.css
+   Sprite sheet pixel-art (es. export Piskel PNG): animazione CSS con steps()
+   per strip orizzontale. Griglie multi-riga: classe .arc-sprite-grid + arcSprite.init().
+   Modificatori: arc-sprite-bg-dark, arc-sprite-bg-panel, arc-sprite-paused, arc-sprite-pixelated,
+   arc-sprite-loop-once, arc-sprite-grid, arc-sprite-gif, figlio .arc-sprite-img per GIF.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Strip orizzontale: da 0 a ultimo frame (cols − 1) × larghezza scalata */
+@keyframes arc-sprite-strip {
+    from {
+        background-position-x: 0;
+        background-position-y: 0;
+    }
+
+    to {
+        background-position-x: calc(
+            -1 * (var(--arc-sprite-cols) - 1) * var(--arc-sprite-width) * var(--arc-sprite-scale, 1)
+        );
+        background-position-y: 0;
+    }
+}
+
+.arc-sprite {
+    --arc-sprite-frames:    1;
+    --arc-sprite-width:     32px;
+    --arc-sprite-height:    32px;
+    --arc-sprite-fps:       8;
+    --arc-sprite-scale:     1;
+    --arc-sprite-rows:      1;
+    --arc-sprite-bg:        transparent;
+    --arc-sprite-direction: normal;
+
+    /* Colonne foglio (uniform grid): frames ÷ righe; sovrascrivi solo se il foglio è irregolare */
+    --arc-sprite-cols:      calc(var(--arc-sprite-frames) / var(--arc-sprite-rows, 1));
+
+    box-sizing: border-box;
+    display: inline-block;
+    width: calc(var(--arc-sprite-width) * var(--arc-sprite-scale));
+    height: calc(var(--arc-sprite-height) * var(--arc-sprite-scale));
+    background-color: var(--arc-sprite-bg);
+    background-image: var(--arc-sprite-sheet, none);
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    flex-shrink: 0;
+    vertical-align: middle;
+
+    /* Foglio: cols×larghezza × rows×altezza, scalato come il box */
+    background-size:
+        calc(var(--arc-sprite-cols) * var(--arc-sprite-width) * var(--arc-sprite-scale, 1))
+        calc(var(--arc-sprite-rows, 1) * var(--arc-sprite-height) * var(--arc-sprite-scale, 1));
+}
+
+/* Solo strip 1 riga: con più righe usa .arc-sprite-grid + arcSprite.init() */
+.arc-sprite:not(.arc-sprite-grid, .arc-sprite-gif) {
+    animation-name: arc-sprite-strip;
+    animation-duration: calc(var(--arc-sprite-frames) / var(--arc-sprite-fps, 8) * 1s);
+    animation-timing-function: steps(var(--arc-sprite-frames), end);
+    animation-iteration-count: infinite;
+    animation-direction: var(--arc-sprite-direction, normal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .arc-sprite:not(.arc-sprite-gif) {
+        animation: none;
+    }
+}
+
+.arc-sprite-paused {
+    animation-play-state: paused;
+}
+
+.arc-sprite-loop-once:not(.arc-sprite-grid) {
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.arc-sprite-pixelated {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.arc-sprite-bg-dark {
+    --arc-sprite-bg: #0a0a0a;
+}
+
+.arc-sprite-bg-panel {
+    --arc-sprite-bg: var(--arc-color-bg-panel);
+
+    border: var(--arc-border-md) solid var(--arc-color-cyan);
+    box-shadow:
+        inset 0 0 10px rgb(0 245 255 / 8%),
+        0 0 14px var(--arc-color-cyan-glow);
+}
+
+/* Griglia multi-riga: niente keyframe lineare; arcSprite.init() o setFrame manuale */
+.arc-sprite-grid {
+    animation: none;
+}
+
+/* GIF animata come fallback (nessuno sprite sheet CSS) */
+.arc-sprite-gif {
+    animation: none;
+    width: auto;
+    height: auto;
+    background-image: none;
+    line-height: 0;
+}
+
+.arc-sprite-gif .arc-sprite-img {
+    display: block;
+    width: calc(var(--arc-sprite-width) * var(--arc-sprite-scale));
+    height: calc(var(--arc-sprite-height) * var(--arc-sprite-scale));
+}
+
+.arc-sprite-gif.arc-sprite-pixelated .arc-sprite-img {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
