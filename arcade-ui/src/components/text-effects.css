@@ -1,0 +1,108 @@
+/* src/components/text-effects.css
+   Effetti tipografici neon avanzati (solo testo). Complementari a .arc-glow-*.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --arc-text-neon-color: var(--arc-color-cyan);
+    --arc-text-gradient-start: var(--arc-color-cyan);
+    --arc-text-gradient-end: var(--arc-color-purple);
+    --arc-text-outline-color: var(--arc-color-cyan);
+    --arc-text-outline-width: 2px;
+    --arc-text-outline-fill: var(--arc-color-bg);
+    --arc-text-long-shadow-color: rgb(21 8 40);
+    --arc-text-long-fill: var(--arc-color-cyan);
+    --arc-text-chroma-blue: rgb(64 160 255 / 85%);
+    --arc-text-glitch-r: var(--arc-color-red);
+    --arc-text-glitch-g: var(--arc-color-green);
+    --arc-text-glitch-b: var(--arc-color-cyan);
+    --arc-text-glitch-shift: 2px;
+    --arc-text-pixel-shadow-color: rgb(0 0 0 / 92%);
+    --arc-text-pixel-shadow-mid: rgb(40 0 80 / 88%);
+}
+
+/* ── Neon intenso (multi-layer text-shadow) ───────────────────────────────── */
+
+.arc-text-neon {
+    color: var(--arc-text-neon-color);
+    text-shadow:
+        0 0 4px var(--arc-text-neon-color),
+        0 0 10px color-mix(in srgb, var(--arc-text-neon-color) 80%, transparent),
+        0 0 22px color-mix(in srgb, var(--arc-text-neon-color) 55%, transparent),
+        0 0 38px color-mix(in srgb, var(--arc-text-neon-color) 35%, transparent),
+        0 0 56px color-mix(in srgb, var(--arc-text-neon-color) 22%, transparent);
+}
+
+/* ── Riempimento gradient (cyan → magenta di default) ───────────────────── */
+
+.arc-text-gradient {
+    display: inline-block;
+    background-image: linear-gradient(
+        100deg,
+        var(--arc-text-gradient-start),
+        var(--arc-text-gradient-end)
+    );
+    background-size: 100% 100%;
+    background-clip: text;
+    color: transparent;
+}
+
+/* ── Outline neon (stroke + paint-order) ─────────────────────────────────── */
+
+.arc-text-outline {
+    color: var(--arc-text-outline-fill);
+    -webkit-text-stroke: var(--arc-text-outline-width) var(--arc-text-outline-color);
+    paint-order: stroke fill;
+    text-shadow: 0 0 14px color-mix(in srgb, var(--arc-text-outline-color) 40%, transparent);
+}
+
+/* ── Glitch solo testo: RGB shift via text-shadow (no pseudo / data-text) ─ */
+
+.arc-text-glitch {
+    color: var(--arc-color-text);
+    text-shadow:
+        calc(var(--arc-text-glitch-shift) * -1) 0 0 var(--arc-text-glitch-r),
+        var(--arc-text-glitch-shift) 0 0 var(--arc-text-glitch-b),
+        calc(var(--arc-text-glitch-shift) * 0.5) calc(var(--arc-text-glitch-shift) * 0.5) 0 var(--arc-text-glitch-g),
+        0 0 12px var(--arc-color-cyan-glow);
+}
+
+/* ── Long shadow 3D retro ───────────────────────────────────────────────── */
+
+.arc-text-shadow-long {
+    color: var(--arc-text-long-fill);
+    text-shadow:
+        1px 1px 0 var(--arc-text-long-shadow-color),
+        2px 2px 0 var(--arc-text-long-shadow-color),
+        3px 3px 0 var(--arc-text-long-shadow-color),
+        4px 4px 0 var(--arc-text-long-shadow-color),
+        5px 5px 0 var(--arc-text-long-shadow-color),
+        6px 6px 0 var(--arc-text-long-shadow-color),
+        7px 7px 0 var(--arc-text-long-shadow-color),
+        8px 8px 0 var(--arc-text-long-shadow-color),
+        9px 9px 0 var(--arc-text-long-shadow-color),
+        10px 10px 0 var(--arc-text-long-shadow-color),
+        11px 11px 0 var(--arc-text-long-shadow-color),
+        12px 12px 0 var(--arc-text-long-shadow-color),
+        13px 13px 0 var(--arc-text-long-shadow-color),
+        14px 14px 0 var(--arc-text-long-shadow-color);
+}
+
+/* ── Aberrazione cromatica leggera ──────────────────────────────────────── */
+
+.arc-text-chroma {
+    color: var(--arc-color-text);
+    text-shadow:
+        -2px 0 0 var(--arc-text-chroma-red),
+        2px 0 1px var(--arc-text-chroma-blue);
+}
+
+/* ── Ombra pixel-art (step 2px) ──────────────────────────────────────────── */
+
+.arc-text-pixel-shadow {
+    text-shadow:
+        2px 2px 0 var(--arc-text-pixel-shadow-color),
+        4px 4px 0 var(--arc-text-pixel-shadow-color),
+        6px 6px 0 var(--arc-text-pixel-shadow-mid),
+        8px 8px 0 var(--arc-text-pixel-shadow-mid),
+        10px 10px 0 var(--arc-text-pixel-shadow-mid);
+}

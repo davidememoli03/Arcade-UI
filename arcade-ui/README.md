@@ -140,6 +140,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Badge** | `.arc-badge` | `arc-badge-cyan` · `arc-badge-red` · `arc-badge-yellow` · `arc-badge-green` · `arc-badge-purple` · `arc-badge-outline` · `arc-badge-pulse` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-badge--default) |
 | **Accordion** | `.arc-accordion` | `arc-accordion-cyan` · `arc-accordion-red` · `arc-accordion-yellow` · `arc-accordion-green` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-accordion--default) |
 | **Glow** | `.arc-glow-{color}` · `.arc-box-glow-{color}` | cyan · red · yellow · green · purple | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glow--text) |
+| **Text effects** | `.arc-text-neon` · `.arc-text-gradient` · `.arc-text-outline` · `.arc-text-glitch` · `.arc-text-shadow-long` · `.arc-text-chroma` · `.arc-text-pixel-shadow` | `--arc-text-neon-color` · `--arc-text-gradient-start` / `end` · outline / long / chroma / glitch / pixel tokens | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-text-effects--showcase) |
 | **Glitch** | `.arc-glitch` · `.arc-glitch-hover` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glitch--always-on) |
 | **Pixel border** | `.arc-border-pixel` · `.arc-border-pixel-thick` · `.arc-border-pixel-inset` · `.arc-border-pixel-chamfer` · `.arc-border-pixel-glow` | `--arc-border-color` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-pixel-border--showcase) |
 | **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
@@ -1083,6 +1084,29 @@ Utility solo **`background-*`**: niente `::before` / `::after`, così restano **
 ```
 
 Storybook: [Effects / Background patterns](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-background-patterns--all-patterns).
+
+### Effetti tipografici (`.arc-text-*`)
+
+Stili in `src/components/text-effects.css`, importati dopo `glow.css`. Non richiedono `data-text` (tranne l’effetto `.arc-u-glitch` / `.arc-glitch` che usano pseudo-elementi). `.arc-text-gradient` usa `background-clip: text` — usa `display: inline-block` sul contenitore per linee singole o controlla la larghezza.
+
+| Classe | Descrizione |
+|--------|-------------|
+| `.arc-text-neon` | `text-shadow` multi-strato ad alto glow (`--arc-text-neon-color`) |
+| `.arc-text-gradient` | Riempimento a gradiente (`--arc-text-gradient-start`, `--arc-text-gradient-end`) |
+| `.arc-text-outline` | Bordo con `-webkit-text-stroke` + `paint-order: stroke fill` (`--arc-text-outline-color`, `--arc-text-outline-fill`, `--arc-text-outline-width`) |
+| `.arc-text-glitch` | Shift RGB statico via `text-shadow` (senza `::before`/`::after`) |
+| `.arc-text-shadow-long` | Long shadow a scalini (anni ’80): `--arc-text-long-fill`, `--arc-text-long-shadow-color` |
+| `.arc-text-chroma` | Aberrazione leggera rosso/blu (`--arc-text-chroma-red`, `--arc-text-chroma-blue`) |
+| `.arc-text-pixel-shadow` | Ombra a blocchi da 2px (`--arc-text-pixel-shadow-color`, `--arc-text-pixel-shadow-mid`) |
+
+**Esempio**
+
+```html
+<h1 class="arc-text-neon arc-text-h1" style="font-family: var(--arc-font-pixel);">HIGH SCORE</h1>
+<p class="arc-text-gradient">CONTINUE?</p>
+```
+
+Storybook: [Effects / Text Effects](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-text-effects--showcase).
 
 ### Pixel border (8-bit)
 
