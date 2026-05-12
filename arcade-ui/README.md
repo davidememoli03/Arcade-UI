@@ -131,6 +131,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Button** | `.arc-btn` | `arc-btn-primary` · `arc-btn-ghost` · `arc-btn-danger` · `arc-btn-sm` · `arc-btn-lg` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-button--primary) |
 | **Tabs** | `.arc-tabs` · `.arc-tab-list` · `.arc-tab` · `.arc-tab-panel` | `arc-tabs-cyan` · `arc-tabs-magenta` · `arc-tabs-yellow` · `arc-tabs-green` · `arc-tabs-red` · `arc-tabs-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-tabs--multi-panel-demo) |
 | **Card** | `.arc-card` | `arc-card-cyan` · `arc-card-red` · `arc-card-yellow` · `arc-card-green` · `arc-card-purple` · `arc-card-glow` · `arc-card-selected` · `arc-card-locked` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-card--character-select-screen) |
+| **Avatar** | `.arc-avatar` · `.arc-avatar-inner` · `.arc-avatar-placeholder` · `.arc-avatar-status` | `arc-avatar-sm` / `arc-avatar-lg` / `arc-avatar-xl` · `arc-avatar-frame-neon` / `gold` / `silver` / `bronze` · `arc-avatar-status-online` / `offline` · `arc-avatar-active` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-avatar--character-select-grid) |
 | **Panel** | `.arc-panel` | `arc-panel-cyan` · `arc-panel-red` · `arc-panel-yellow` · `arc-panel-green` · `arc-panel-purple` · `arc-panel-glass` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-panel--default) |
 | **Input** | `.arc-input` · `.arc-label` | `.arc-textarea` · `.arc-select` · `.arc-input-hint` · `.arc-input-hint-error` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-input--default) |
 | **Dropdown** | `.arc-dropdown` | `arc-dropdown-cyan` · `arc-dropdown-green` · `arc-dropdown-red` · `arc-dropdown-yellow` · `arc-dropdown-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-dropdown--default) |
@@ -271,6 +272,42 @@ L'elemento `.arc-card-avatar` accetta testo (emoji, unicode), o un `<img>` inter
 | `arc-card-locked` | Opacità ridotta, saturazione desaturata, overlay con 🔒 |
 
 > **Nota:** `arc-card-selected` e `arc-card-locked` usano entrambi lo pseudo-elemento `::after`. Non combinarli sullo stesso elemento.
+
+### Avatar anatomy
+
+Cornice **doppio anello** stile 8-bit attorno a un’area quadrata (`--arc-avatar-s`: 32 / 64 default / 128 / 256 px). Indicatore LED in basso a destra; `.arc-avatar-active` (o `.arc-avatar-selected`) attiva il **glow pulsante** sulla cornice (`prefers-reduced-motion` fissa l’alone).
+
+```html
+<div class="arc-avatar arc-avatar-lg arc-avatar-frame-gold arc-avatar-active">
+  <span class="arc-avatar-status arc-avatar-status-online" aria-label="Online" title="Online"></span>
+  <div class="arc-avatar-inner">
+    <img src="portrait.png" width="128" height="128" alt="Player" />
+  </div>
+</div>
+```
+
+**Placeholder iniziali** — stesso contenitore, senza `img`:
+
+```html
+<div class="arc-avatar arc-avatar-sm">
+  <div class="arc-avatar-inner">
+    <span class="arc-avatar-placeholder">DM</span>
+  </div>
+</div>
+```
+
+| Modificatore | Effetto |
+|---|---|
+| `arc-avatar-sm` | Lato interno 32px |
+| *(nessuno)* | 64px |
+| `arc-avatar-lg` | 128px |
+| `arc-avatar-xl` | 256px |
+| `arc-avatar-frame-neon` | Cyan cabinato (default se omesso, equivale a `.arc-avatar` solo) |
+| `arc-avatar-frame-gold` / `silver` / `bronze` | Cornici rank |
+| `arc-avatar-status-online` / `offline` | LED su `.arc-avatar-status` |
+| `arc-avatar-active` | Pulse glow selezione |
+
+Storybook: [Components / Avatar — Character select grid](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-avatar--character-select-grid).
 
 ### Panel anatomy
 

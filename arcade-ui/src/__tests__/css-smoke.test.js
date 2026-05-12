@@ -182,6 +182,29 @@ describe('CSS smoke — card.css', () => {
   it('blocca il hover su --locked', () => expect(css).toContain('.arc-card:hover:not(.arc-card-locked)'))
 })
 
+describe('CSS smoke — avatar.css', () => {
+  const css = readCss('components', 'avatar.css')
+
+  it('definisce .arc-avatar', () => expect(css).toContain('.arc-avatar'))
+  it('definisce .arc-avatar-inner', () => expect(css).toContain('.arc-avatar-inner'))
+  it('definisce .arc-avatar-placeholder', () => expect(css).toContain('.arc-avatar-placeholder'))
+  it('definisce .arc-avatar-sm', () => expect(css).toContain('.arc-avatar-sm'))
+  it('definisce .arc-avatar-lg', () => expect(css).toContain('.arc-avatar-lg'))
+  it('definisce .arc-avatar-xl', () => expect(css).toContain('.arc-avatar-xl'))
+  it('definisce frame neon', () => expect(css).toContain('.arc-avatar-frame-neon'))
+  it('definisce frame gold', () => expect(css).toContain('.arc-avatar-frame-gold'))
+  it('definisce frame silver', () => expect(css).toContain('.arc-avatar-frame-silver'))
+  it('definisce frame bronzo', () => expect(css).toContain('.arc-avatar-frame-bronze'))
+  it('definisce LED online/offline', () => {
+    expect(css).toContain('.arc-avatar-status-online')
+    expect(css).toContain('.arc-avatar-status-offline')
+  })
+  it('definisce selezione attiva', () => {
+    expect(css).toContain('.arc-avatar-active')
+    expect(css).toContain('.arc-avatar-selected')
+  })
+})
+
 describe('CSS smoke — accordion.css', () => {
   const css = readCss('components', 'accordion.css')
 

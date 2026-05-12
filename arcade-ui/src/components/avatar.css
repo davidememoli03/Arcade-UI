@@ -1,0 +1,164 @@
+/* src/components/avatar.css
+   Avatar profilo con cornice 8‑bit, LED stato, glow su selezione.
+   Struttura: .arc-avatar > [.arc-avatar-status] + .arc-avatar-inner > img | .arc-avatar-placeholder
+   Usa un contenitore block (.arc-avatar-inner come div) così width/height e box-shadow cornice sono coerenti; non impostare overflow:hidden sull’inner (ritaglia il box-shadow).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --arc-avatar-s: 64px;
+    --arc-avatar-pulse-duration: 1.2s;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+
+.arc-avatar {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 0;
+}
+
+.arc-avatar-inner {
+    display: block;
+    position: relative;
+    z-index: 0;
+    width: var(--arc-avatar-s);
+    height: var(--arc-avatar-s);
+    background: var(--arc-avatar-inner-bg, var(--arc-color-bg-alt));
+    box-shadow: 0 0 0 var(--arc-avatar-ring-a-w, 2px) var(--arc-avatar-ring-a),
+        0 0 0 var(--arc-avatar-ring-b-w, 6px) var(--arc-avatar-ring-bg),
+        0 0 0 var(--arc-avatar-ring-c-w, 8px) var(--arc-avatar-ring-c);
+    box-sizing: border-box;
+}
+
+.arc-avatar-inner img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.arc-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-family: var(--arc-font-pixel);
+    font-size: clamp(0.45rem, calc(var(--arc-avatar-s) * 0.28), 4rem);
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--arc-avatar-placeholder-color, var(--arc-color-text-muted));
+}
+
+/* Dimensioni (lato interno cornice) ───────────────────────────────────────── */
+
+.arc-avatar-sm {
+    --arc-avatar-s: 32px;
+}
+
+.arc-avatar-lg {
+    --arc-avatar-s: 128px;
+}
+
+.arc-avatar-xl {
+    --arc-avatar-s: 256px;
+}
+
+/* Frame: neon (default) ───────────────────────────────────────────────────── */
+
+.arc-avatar,
+.arc-avatar-frame-neon {
+    --arc-avatar-ring-a: var(--arc-color-cyan);
+    --arc-avatar-ring-bg: var(--arc-color-bg-panel);
+    --arc-avatar-ring-c: var(--arc-color-cyan);
+    --arc-avatar-glow-start: rgb(0 245 255 / 22%);
+    --arc-avatar-glow-end: rgb(0 245 255 / 55%);
+}
+
+.arc-avatar-frame-gold {
+    --arc-avatar-ring-a: #ffd700;
+    --arc-avatar-ring-bg: #3d3208;
+    --arc-avatar-ring-c: #ffec80;
+    --arc-avatar-glow-start: rgb(255 215 0 / 28%);
+    --arc-avatar-glow-end: rgb(255 236 128 / 65%);
+}
+
+.arc-avatar-frame-silver {
+    --arc-avatar-ring-a: #cfd8dc;
+    --arc-avatar-ring-bg: #263238;
+    --arc-avatar-ring-c: #eceff1;
+    --arc-avatar-glow-start: rgb(236 239 241 / 22%);
+    --arc-avatar-glow-end: rgb(207 216 220 / 55%);
+}
+
+.arc-avatar-frame-bronze {
+    --arc-avatar-ring-a: #cd7f32;
+    --arc-avatar-ring-bg: #2d1810;
+    --arc-avatar-ring-c: #e8a25a;
+    --arc-avatar-glow-start: rgb(205 127 50 / 25%);
+    --arc-avatar-glow-end: rgb(232 162 90 / 55%);
+}
+
+/* LED stato (basso‑destra) ───────────────────────────────────────────────── */
+
+.arc-avatar-status {
+    position: absolute;
+    z-index: 2;
+    right: max(2px, calc(var(--arc-avatar-s) * 0.02));
+    bottom: max(2px, calc(var(--arc-avatar-s) * 0.02));
+    width: clamp(8px, calc(var(--arc-avatar-s) * 0.2), 48px);
+    aspect-ratio: 1;
+    border: clamp(1px, calc(var(--arc-avatar-s) * 0.03), 3px) solid var(--arc-color-bg-panel);
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+.arc-avatar-status-online {
+    background: var(--arc-color-green);
+    box-shadow: inset 0 0 0 1px rgb(200 255 200 / 40%), 0 0 8px var(--arc-color-green-glow);
+}
+
+.arc-avatar-status-offline {
+    background: var(--arc-color-disabled);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%);
+}
+
+/* Selezione / attivo: glow pulsante sulla cornice ─────────────────────────── */
+
+@keyframes arc-avatar-active-glow {
+    from {
+        box-shadow:
+            0 0 0 var(--arc-avatar-ring-a-w, 2px) var(--arc-avatar-ring-a),
+            0 0 0 var(--arc-avatar-ring-b-w, 6px) var(--arc-avatar-ring-bg),
+            0 0 0 var(--arc-avatar-ring-c-w, 8px) var(--arc-avatar-ring-c),
+            0 0 12px 1px var(--arc-avatar-glow-start);
+    }
+
+    to {
+        box-shadow:
+            0 0 0 var(--arc-avatar-ring-a-w, 2px) var(--arc-avatar-ring-a),
+            0 0 0 var(--arc-avatar-ring-b-w, 6px) var(--arc-avatar-ring-bg),
+            0 0 0 var(--arc-avatar-ring-c-w, 8px) var(--arc-avatar-ring-c),
+            0 0 28px 4px var(--arc-avatar-glow-end);
+    }
+}
+
+.arc-avatar-active .arc-avatar-inner,
+.arc-avatar-selected .arc-avatar-inner {
+    animation: arc-avatar-active-glow var(--arc-avatar-pulse-duration) ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .arc-avatar-active .arc-avatar-inner,
+    .arc-avatar-selected .arc-avatar-inner {
+        animation: none;
+        box-shadow:
+            0 0 0 var(--arc-avatar-ring-a-w, 2px) var(--arc-avatar-ring-a),
+            0 0 0 var(--arc-avatar-ring-b-w, 6px) var(--arc-avatar-ring-bg),
+            0 0 0 var(--arc-avatar-ring-c-w, 8px) var(--arc-avatar-ring-c),
+            0 0 20px 2px var(--arc-avatar-glow-end);
+    }
+}
