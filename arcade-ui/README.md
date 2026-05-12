@@ -145,7 +145,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Text effects** | `.arc-text-neon` · `.arc-text-gradient` · `.arc-text-outline` · `.arc-text-glitch` · `.arc-text-shadow-long` · `.arc-text-chroma` · `.arc-text-pixel-shadow` | `--arc-text-neon-color` · `--arc-text-gradient-start` / `end` · outline / long / chroma / glitch / pixel tokens | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-text-effects--showcase) |
 | **Glitch** | `.arc-glitch` · `.arc-glitch-hover` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glitch--always-on) |
 | **Pixel border** | `.arc-border-pixel` · `.arc-border-pixel-thick` · `.arc-border-pixel-inset` · `.arc-border-pixel-chamfer` · `.arc-border-pixel-glow` | `--arc-border-color` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-pixel-border--showcase) |
-| **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
+| **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` · token curvatura / vignetta / flicker / aberrazione / fosforo | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) · [Playground](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--playground) |
 | **Background patterns** | `.arc-bg-grid` · `.arc-bg-dots` · `.arc-bg-scanlines` · `.arc-bg-noise` · `.arc-bg-circuit` · `.arc-bg-stars` | `--arc-bg-opacity` · `--arc-bg-grid-cell` · `--arc-bg-dots-gap` · `--arc-bg-scanline-period` · `--arc-bg-stars-speed` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-background-patterns--all-patterns) |
 | **Toggle** | `.arc-toggle` · `.arc-toggle-input` · `.arc-toggle-switch` · `.arc-toggle-label` | `arc-toggle-on` · `arc-toggle-off` · `arc-toggle-label-left` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-toggle--all-states) |
 | **Slider** | `.arc-slider` · `.arc-slider-wrapper` · `.arc-slider-label` · `.arc-slider-display` · `.arc-slider-ticks` | `arc-slider-danger` · `arc-slider-success` · `arc-slider-yellow` · `arc-slider-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-slider--volume-panel-demo) |
@@ -1143,6 +1143,23 @@ Keyframe globali in `src/tokens/animation.css` (`arc-flicker`, `arc-blink-cursor
 **Lampeggio CRT** su un wrapper a schermo intero: `<div class="arc-anim-flicker arc-crt-screen">…</div>` (regola `--arc-flicker-speed` / `--arc-flicker-intensity` inline o su un antenato). Se serve anche la scanline animata, applica `.arc-anim-scanline-move` a un **figlio** interno: `.arc-crt-screen` usa già `::after` per altri effetti.
 
 Storybook: [Effects / Animations — All utilities](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-animations--showcase).
+
+### Effetto CRT (realismo cabinato)
+
+Oltre a scanline e vignetta, `src/components/crt.css` simula **curvatura** ( `border-radius` proporzionale), **sfumatura angoli** (vignetta moltiplicata da `--arc-crt-vignette`), **aberrazione RGB** sui bordi (gradienti sovrapposti su `::before`), **flicker** scanline (`--arc-crt-flicker` da `0` a ~`0.1`), e **fosforo** opzionale sulla classe `.arc-crt-phosphor` applicata ai contenuti dinamici (alone + leggerissimo blur).
+
+| Variabile | Default (indicativo) | Ruolo |
+|-----------|----------------------|--------|
+| `--arc-crt-curvature` | `0.1` | `0` schermo piatto; ↑ angoli arrotondati tipo tube |
+| `--arc-crt-vignette` | `1` | Moltiplica l’opacità della vignetta; `0` la spegne |
+| `--arc-crt-flicker` | `0.03` | Ampiezza flicker sui `::after` scanline; `0` nessun calo opacità nei keyframe |
+| `--arc-crt-aberration` | `0.14` | Intensità frange ciano/rosso ai lati; `0` off |
+| `--arc-crt-phosphor` | `0` | Solo con `.arc-crt-phosphor`: aumenta (es. `0.45`) per alone / blur leggeri |
+| *esistenti* | — | `--arc-crt-vignette-start`, `--arc-crt-vignette-opacity`, `--arc-crt-line-size`, `--arc-crt-scanline-opacity`, `--arc-crt-flicker-speed` |
+
+**Performance:** gli overlay usano `contain: strict` sui pseudo-elementi e `will-change` mirato (`opacity` / `transform`). Su viewport **≤480px** gli overlay restano disabilitati come prima.
+
+**Playground:** [Effects / CRT — Playground](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--playground) (slider live).
 
 ### Pattern di sfondo (`.arc-bg-*`)
 

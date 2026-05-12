@@ -1,49 +1,165 @@
 /* src/components/crt.css
-   Effetto CRT (Cathode Ray Tube): scanlines, vignetta e animazione accensione.
-   ─────────────────────────────────────────────────────────────────────────── */
+   Effetto CRT: scanlines, vignetta, aberrazione, curvatura, flicker, fosforo (utility).
+   Tutti i moltiplicatori 0–1 (o range documentati) disattivano l’effetto senza classi extra.
 
-/* ── Token CRT ──────────────────────────────────────────────────────────── */
+   Custom property principali:
+     --arc-crt-curvature    0 = piatto, ~0.08–0.18 schermo tipo “tube”
+     --arc-crt-vignette     moltiplicatore intensità vignetta (0 = off)
+     --arc-crt-flicker      influenza la frequenza (periodo --arc-crt-flicker-period); keyframe senza var()
+     --arc-crt-aberration   aberrazione cromatica ai bordi (0 = off)
+     --arc-crt-phosphor     trail fosforo su .arc-crt-phosphor (0 = off)
+     --arc-crt-content-pad  padding interna (default 2px) per non tagliare text-shadow col overflow
+   ─────────────────────────────────────────────────────────────────────────── */
 
 :root {
     --arc-crt-line-size:        4px;
     --arc-crt-scanline-opacity: 0.12;
     --arc-crt-vignette-start:   62%;
     --arc-crt-vignette-opacity: 0.75;
-    --arc-crt-flicker-speed:    8s;
+    --arc-crt-flicker-speed:    1.9s;
     --arc-crt-boot-duration:    var(--arc-anim-slow);
+
+    /* Realismo aggiuntivo (default leggeri) */
+    --arc-crt-curvature:    0.1;
+    --arc-crt-vignette:     1;
+
+    /* Più alto = flicker più frequente (periodo più corto) */
+    --arc-crt-flicker:      0.06;
+    --arc-crt-aberration:   0.14;
+    --arc-crt-phosphor:     0;
 }
 
 /* ── Keyframes ────────────────────────────────────────────────────────────── */
 
-/* Instabilità fosforica: variazioni di opacità sparse e rare */
+/* Vignetta + aberrazione: layer quasi a tutto schermo — qui il flicker si vede davvero.
+   Solo valori numerici (niente var() nei @keyframes sui pseudo: rischio keyframe ignorati). */
+@keyframes crt-bezel-flicker {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    3% {
+        opacity: 0.66;
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    12% {
+        opacity: 0.74;
+    }
+
+    14% {
+        opacity: 1;
+    }
+
+    28% {
+        opacity: 0.58;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    46% {
+        opacity: 0.7;
+    }
+
+    48% {
+        opacity: 1;
+    }
+
+    63% {
+        opacity: 0.63;
+    }
+
+    65% {
+        opacity: 1;
+    }
+
+    81% {
+        opacity: 0.72;
+    }
+
+    83% {
+        opacity: 1;
+    }
+
+    93% {
+        opacity: 0.61;
+    }
+
+    95% {
+        opacity: 1;
+    }
+}
+
+/* Scanline layer: stesso vincolo (solo numeri). Dip profondi perché il pattern è sottile. */
 @keyframes scanline-flicker {
     0%,
     100% {
         opacity: 1;
     }
 
-    5% {
-        opacity: 0.97;
+    4% {
+        opacity: 0.38;
     }
 
-    10% {
+    6% {
         opacity: 1;
     }
 
-    80% {
+    15% {
+        opacity: 0.52;
+    }
+
+    17% {
         opacity: 1;
     }
 
-    85% {
-        opacity: 0.98;
+    31% {
+        opacity: 0.44;
     }
 
-    90% {
+    33% {
+        opacity: 1;
+    }
+
+    44% {
+        opacity: 0.32;
+    }
+
+    46% {
+        opacity: 1;
+    }
+
+    61% {
+        opacity: 0.5;
+    }
+
+    63% {
+        opacity: 1;
+    }
+
+    77% {
+        opacity: 0.42;
+    }
+
+    79% {
+        opacity: 1;
+    }
+
+    91% {
+        opacity: 0.36;
+    }
+
+    93% {
         opacity: 1;
     }
 }
 
-/* Accensione CRT: scaleY da quasi-zero a 1 con flash di luminosità */
 @keyframes crt-power-on {
     0% {
         transform: scaleY(0.004);
@@ -71,7 +187,7 @@
     }
 }
 
-/* ── Shared: contenuto dei pseudo-elementi ──────────────────────────────── */
+/* ── Shared: pseudo-elementi overlay ───────────────────────────────────── */
 
 .arc-crt-global::before,
 .arc-crt-global::after,
@@ -82,26 +198,43 @@
     pointer-events: none;
 }
 
-/* ── .arc-crt-global — intera pagina (applicato a body) ────────────────── */
+/* ── .arc-crt-global (body / fullscreen) ───────────────────────────────── */
 
 .arc-crt-global {
+    --arc-crt-flicker-period: clamp(0.65s, calc(4.2s - var(--arc-crt-flicker, 0.06) * 28s), 12.5s);
+
     position: relative;
+    border-radius: calc(2.2vmin * var(--arc-crt-curvature, 0.1));
 }
 
-/* Vignetta ai bordi */
+/* Vignetta + aberrazione bordi (strati combinati) */
 .arc-crt-global::before {
     position: fixed;
-    background: radial-gradient(
-        ellipse at center,
-        transparent var(--arc-crt-vignette-start),
-        rgb(0 0 0 / var(--arc-crt-vignette-opacity)) 100%
-    );
     z-index: 9997;
+    contain: paint;
+    background:
+        linear-gradient(
+            90deg,
+            rgb(255 50 80 / calc(var(--arc-crt-aberration, 0.14) * 52%)) 0%,
+            transparent min(14%, 52px),
+            transparent max(86%, calc(100% - 52px)),
+            rgb(0 220 255 / calc(var(--arc-crt-aberration, 0.14) * 52%)) 100%
+        ),
+        radial-gradient(
+            ellipse at center,
+            transparent var(--arc-crt-vignette-start),
+            rgb(0 0 0 / calc(var(--arc-crt-vignette-opacity) * var(--arc-crt-vignette, 1))) 100%
+        );
+    will-change: opacity;
+    opacity: 1;
+    animation: crt-bezel-flicker var(--arc-crt-flicker-period) linear infinite;
 }
 
 /* Scanlines */
 .arc-crt-global::after {
     position: fixed;
+    z-index: 9998;
+    contain: paint;
     background: repeating-linear-gradient(
         to bottom,
         transparent                                              0,
@@ -111,32 +244,76 @@
     );
     background-size: 100% var(--arc-crt-line-size);
     will-change: opacity;
-    animation: scanline-flicker var(--arc-crt-flicker-speed) steps(1) infinite;
-    z-index: 9998;
+    opacity: 1;
+    animation: scanline-flicker var(--arc-crt-flicker-period) linear infinite;
+    animation-delay: calc(var(--arc-crt-flicker-period) * -0.17);
 }
 
-/* ── .arc-crt-screen — singolo elemento ─────────────────────────────────── */
+/* ── .arc-crt-screen (singolo elemento) ─────────────────────────────────── */
 
 .arc-crt-screen {
+    --arc-crt-flicker-period: clamp(0.65s, calc(4.2s - var(--arc-crt-flicker, 0.06) * 28s), 12.5s);
+
+    box-sizing: border-box;
     position: relative;
     overflow: hidden;
     isolation: isolate;
+    contain: paint;
+    border-radius: calc(12% * var(--arc-crt-curvature, 0.1));
+
+    /* Spazio per text-shadow / fosforo: overflow:hidden li tagliava ai bordi. */
+    padding: var(--arc-crt-content-pad, 2px);
 }
 
-/* Vignetta ai bordi */
+/* Contenuto sotto gli overlay CRT (z-index 10 / 11). */
+.arc-crt-screen > * {
+    position: relative;
+    z-index: 0;
+}
+
+/* Stesso nodo di .arc-panel: gli angoli panel usano ::before/::after 18×18 —
+   senza reset vignetta/scanline restano invisibili (area microscopica). */
+.arc-crt-screen.arc-panel::before,
+.arc-crt-screen.arc-panel::after {
+    inset: 0;
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    border: none;
+    border-radius: 0;
+    top: unset;
+    right: unset;
+    bottom: unset;
+    left: unset;
+}
+
 .arc-crt-screen::before {
     position: absolute;
-    background: radial-gradient(
-        ellipse at center,
-        transparent var(--arc-crt-vignette-start),
-        rgb(0 0 0 / var(--arc-crt-vignette-opacity)) 100%
-    );
-    z-index: 1;
+    z-index: 10;
+    contain: paint;
+    background:
+        linear-gradient(
+            90deg,
+            rgb(255 50 80 / calc(var(--arc-crt-aberration, 0.14) * 52%)) 0%,
+            transparent min(14%, 48px),
+            transparent max(86%, calc(100% - 48px)),
+            rgb(0 220 255 / calc(var(--arc-crt-aberration, 0.14) * 52%)) 100%
+        ),
+        radial-gradient(
+            ellipse at center,
+            transparent var(--arc-crt-vignette-start),
+            rgb(0 0 0 / calc(var(--arc-crt-vignette-opacity) * var(--arc-crt-vignette, 1))) 100%
+        );
+    will-change: opacity;
+    opacity: 1;
+    animation: crt-bezel-flicker var(--arc-crt-flicker-period) linear infinite;
 }
 
-/* Scanlines */
 .arc-crt-screen::after {
     position: absolute;
+    z-index: 11;
+    contain: paint;
     background: repeating-linear-gradient(
         to bottom,
         transparent                                              0,
@@ -146,38 +323,69 @@
     );
     background-size: 100% var(--arc-crt-line-size);
     will-change: opacity;
-    animation: scanline-flicker var(--arc-crt-flicker-speed) steps(1) infinite;
-    z-index: 2;
+    opacity: 1;
+    animation: scanline-flicker var(--arc-crt-flicker-period) linear infinite;
+    animation-delay: calc(var(--arc-crt-flicker-period) * -0.17);
 }
 
-/* ── .arc-crt-boot — animazione accensione CRT ───────────────────────────── */
+/* Fosforo: applica ai figli in movimento (testo / HUD) */
+.arc-crt-phosphor {
+    text-shadow:
+        calc(var(--arc-crt-phosphor, 0) * 2px) 0 calc(var(--arc-crt-phosphor, 0) * 9px) rgb(255 70 90 / calc(var(--arc-crt-phosphor, 0) * 62%)),
+        calc(var(--arc-crt-phosphor, 0) * -2px) 0 calc(var(--arc-crt-phosphor, 0) * 9px) rgb(70 220 255 / calc(var(--arc-crt-phosphor, 0) * 58%)),
+        0 0 calc(var(--arc-crt-phosphor, 0) * 14px) rgb(0 255 200 / calc(var(--arc-crt-phosphor, 0) * 35%));
+    transition: text-shadow 0.12s linear, filter 0.12s linear;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .arc-crt-phosphor {
+        filter: blur(calc(var(--arc-crt-phosphor, 0) * 0.55px));
+    }
+}
+
+/* ── .arc-crt-boot ───────────────────────────────────────────────────────── */
 
 .arc-crt-boot {
     animation: crt-power-on var(--arc-crt-boot-duration) var(--arc-ease-arcade) both;
     transform-origin: center center;
 }
 
-/* ── Riduzione movimento ─────────────────────────────────────────────────── */
+/* ── prefers-reduced-motion ─────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
+    .arc-crt-global::before,
     .arc-crt-global::after,
+    .arc-crt-screen::before,
     .arc-crt-screen::after {
         animation: none;
+        animation-delay: 0s;
+        opacity: 1;
     }
 
     .arc-crt-boot {
         animation: none;
     }
+
+    .arc-crt-phosphor {
+        filter: none;
+        transition: none;
+    }
 }
 
-/* ── Mobile: disabilitato sotto 480px ───────────────────────────────────── */
+/* ── Mobile: solo overlay fullscreen spegnuto (performance). .arc-crt-screen resta attivo (Storybook responsive, telefoni). */
 
 @media (width <= 479px) {
     .arc-crt-global::before,
-    .arc-crt-global::after,
-    .arc-crt-screen::before,
-    .arc-crt-screen::after {
+    .arc-crt-global::after {
         display: none;
+    }
+
+    .arc-crt-global {
+        border-radius: 0;
+    }
+
+    .arc-crt-screen {
+        border-radius: 0;
     }
 
     .arc-crt-boot {

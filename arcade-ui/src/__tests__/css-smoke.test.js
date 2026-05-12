@@ -250,6 +250,14 @@ describe('CSS smoke — crt.css', () => {
 
   it('definisce .arc-crt-screen', () => expect(css).toContain('.arc-crt-screen'))
   it('definisce .arc-crt-global', () => expect(css).toContain('.arc-crt-global'))
+  it('definisce token realismo CRT', () => {
+    expect(css).toContain('--arc-crt-curvature')
+    expect(css).toContain('--arc-crt-vignette')
+    expect(css).toContain('--arc-crt-flicker')
+    expect(css).toContain('--arc-crt-aberration')
+    expect(css).toContain('--arc-crt-phosphor')
+  })
+  it('definisce utility fosforo', () => expect(css).toContain('.arc-crt-phosphor'))
 })
 
 describe('CSS smoke — tokens/typography.css · utility classes', () => {

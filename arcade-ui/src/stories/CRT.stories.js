@@ -117,3 +117,66 @@ export const Tokens = {
     </div>
   `,
 }
+
+export const Playground = {
+  name: 'Playground (slider)',
+  render: () => {
+    const wrap = document.createElement('div')
+    wrap.style.cssText = 'padding:2rem;max-width:520px;display:flex;flex-direction:column;gap:1rem;'
+
+    const host = document.createElement('div')
+    host.className = 'arc-crt-screen'
+    host.style.cssText =
+      'min-height:200px;max-width:520px;--arc-crt-curvature:0.16;--arc-crt-vignette:1;--arc-crt-flicker:0.06;--arc-crt-aberration:0.2;--arc-crt-phosphor:0.45;'
+
+    const panel = document.createElement('div')
+    panel.className = 'arc-panel arc-panel-cyan'
+    panel.innerHTML = `
+      <div class="arc-panel-header">CRT LAB</div>
+        <div class="arc-panel-body" style="font-family:var(--arc-font-terminal);line-height:1.7;">
+        <div class="arc-crt-phosphor">&gt; MUOVI GLI SLIDER SOTTO (fosforo su questa riga)</div>
+        <div class="arc-crt-phosphor">&gt; Seconda riga con fosforo per vedere l’alone</div>
+        <div>&gt; CRT sul wrapper esterno — angoli panel intatti</div>
+        <div>&gt; Flicker + scanline = <code>::after</code></div>
+        <div>&gt; Vignetta + aberrazione = <code>::before</code></div>
+      </div>
+    `
+
+    host.appendChild(panel)
+
+    wrap.appendChild(host)
+
+    function row(label, key, min, max, step, value) {
+      const r = document.createElement('div')
+      r.style.cssText = 'display:flex;flex-direction:column;gap:4px;'
+      const lb = document.createElement('label')
+      lb.style.cssText = 'font-family:var(--arc-font-mono);font-size:.68rem;color:var(--arc-color-text-muted);'
+      const range = document.createElement('input')
+      range.type = 'range'
+      range.min = String(min)
+      range.max = String(max)
+      range.step = String(step)
+      range.value = String(value)
+      range.style.cssText = 'width:100%;accent-color:var(--arc-color-cyan);'
+      const updateLabel = () => {
+        lb.textContent = `${label}: ${range.value}`
+      }
+      updateLabel()
+      range.addEventListener('input', () => {
+        host.style.setProperty(key, range.value)
+        updateLabel()
+      })
+      r.appendChild(lb)
+      r.appendChild(range)
+      wrap.appendChild(r)
+    }
+
+    row('Curvature (--arc-crt-curvature)', '--arc-crt-curvature', 0, 0.28, 0.01, 0.16)
+    row('Vignetta (--arc-crt-vignette)', '--arc-crt-vignette', 0, 1, 0.05, 1)
+    row('Flicker (--arc-crt-flicker)', '--arc-crt-flicker', 0, 0.12, 0.005, 0.06)
+    row('Aberrazione (--arc-crt-aberration)', '--arc-crt-aberration', 0, 0.4, 0.02, 0.2)
+    row('Fosforo (--arc-crt-phosphor)', '--arc-crt-phosphor', 0, 1, 0.05, 0.45)
+
+    return wrap
+  },
+}
