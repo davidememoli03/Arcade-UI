@@ -183,14 +183,14 @@
     }
 }
 
-/* Scanline che scorre (usata sul pseudo-elemento) */
+/* Scanline che scorre (pseudo assoluto: % su top è relativa all’altezza del contenitore) */
 @keyframes arc-scanline-sweep {
     0% {
-        top: -6%;
+        top: -8%;
     }
 
     100% {
-        top: 106%;
+        top: 108%;
     }
 }
 
