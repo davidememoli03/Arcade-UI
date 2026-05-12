@@ -9,5 +9,6 @@ export { arcModal } from './components/modal.js'
 export { arcTabs, bindTabs } from './components/tabs.js'
 export { updateSlider, bindSliders } from './components/slider.js'
 export { arcToast } from './components/toast.js'
+export { setArcDisplayValue, arcCountdown, bindArcDisplays } from './components/display.js'
 
 export const version = pkg.version

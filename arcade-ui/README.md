@@ -132,6 +132,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Tabs** | `.arc-tabs` · `.arc-tab-list` · `.arc-tab` · `.arc-tab-panel` | `arc-tabs-cyan` · `arc-tabs-magenta` · `arc-tabs-yellow` · `arc-tabs-green` · `arc-tabs-red` · `arc-tabs-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-tabs--multi-panel-demo) |
 | **Card** | `.arc-card` | `arc-card-cyan` · `arc-card-red` · `arc-card-yellow` · `arc-card-green` · `arc-card-purple` · `arc-card-glow` · `arc-card-selected` · `arc-card-locked` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-card--character-select-screen) |
 | **Avatar** | `.arc-avatar` · `.arc-avatar-inner` · `.arc-avatar-placeholder` · `.arc-avatar-status` | `arc-avatar-sm` / `arc-avatar-lg` / `arc-avatar-xl` · `arc-avatar-frame-neon` / `gold` / `silver` / `bronze` · `arc-avatar-status-online` / `offline` · `arc-avatar-active` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-avatar--character-select-grid) |
+| **Display 7-seg** | `.arc-display` · `.arc-display-body` · `.arc-display-digit` · `.arc-display-sep` | `arc-display-score` · `arc-display-timer` · `arc-display-red` / `green` / `amber` / `cyan` · JS: `setArcDisplayValue`, `arcCountdown` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-display--score-counter) |
 | **Panel** | `.arc-panel` | `arc-panel-cyan` · `arc-panel-red` · `arc-panel-yellow` · `arc-panel-green` · `arc-panel-purple` · `arc-panel-glass` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-panel--default) |
 | **Input** | `.arc-input` · `.arc-label` | `.arc-textarea` · `.arc-select` · `.arc-input-hint` · `.arc-input-hint-error` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-input--default) |
 | **Dropdown** | `.arc-dropdown` | `arc-dropdown-cyan` · `arc-dropdown-green` · `arc-dropdown-red` · `arc-dropdown-yellow` · `arc-dropdown-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-dropdown--default) |
@@ -308,6 +309,52 @@ Cornice **doppio anello** stile 8-bit attorno a un’area quadrata (`--arc-avata
 | `arc-avatar-active` | Pulse glow selezione |
 
 Storybook: [Components / Avatar — Character select grid](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-avatar--character-select-grid).
+
+### Display a 7 segmenti (`.arc-display`)
+
+Numeri e timer stile cabinato: glifi **DSEG7 Classic** ([SIL OFL](https://github.com/keshikan/DSEG)), caricati da jsDelivr nel CSS del pacchetto. **Fallback:** monospace (senza font non sono veri 7 segmenti).  
+**Alternativa CSS puro:** nessun set di segmenti generico senza centinaia di regole per cifra; per un look fedele il font open source è la scelta pratica; in assenza di rete puoi **self-host** i file da [`@fontsource/dseg7-classic`](https://www.npmjs.com/package/@fontsource/dseg7-classic) e aggiornare l’`@font-face` in `display.css`.
+
+**HTML minimo**
+
+```html
+<div
+  class="arc-display arc-display-score arc-display-amber"
+  role="status"
+  aria-live="polite">
+  <!-- opzionale: body vuoto, verrà creato da JS -->
+</div>
+```
+
+**Da JavaScript**
+
+```js
+import { setArcDisplayValue, arcCountdown } from '@davide03memoli/arcade-ui'
+
+setArcDisplayValue(element, 125400, { pad: 6 }) // HIGH SCORE a sei cifre
+
+const ctrl = arcCountdown(timerElement, {
+  seconds: 90,
+  onTick: (r) => { /* … */ },
+  onEnd: () => { /* … */ },
+})
+ctrl.stop()
+```
+
+**Varianti**
+
+| Classe | Ruolo |
+|--------|--------|
+| `arc-display-score` | Corpo più grande (punteggi / crediti) |
+| `arc-display-timer` | Taglia timer + lampeggio `:` (disabilita con `arc-display-sep-solid` sulla stessa root) |
+| `arc-display-red` | LED rosso (default se ometti il colore) |
+| `arc-display-green` · `arc-display-amber` · `arc-display-cyan` | Altre tinte |
+
+**Data attributes** (init automatica su `DOMContentLoaded`): `data-arc-display`, valore in `data-arc-display-value`, padding opzionale `data-arc-display-pad`.
+
+Al cambio cifra: flash breve sui soli segmenti mutati (`prefers-reduced-motion` lo disattiva).
+
+Storybook: [Components / Display](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-display--score-counter).
 
 ### Panel anatomy
 

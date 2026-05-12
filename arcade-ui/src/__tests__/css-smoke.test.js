@@ -205,6 +205,25 @@ describe('CSS smoke — avatar.css', () => {
   })
 })
 
+describe('CSS smoke — display.css', () => {
+  const css = readCss('components', 'display.css')
+
+  it('definisce .arc-display', () => expect(css).toContain('.arc-display'))
+  it('definisce .arc-display-body', () => expect(css).toContain('.arc-display-body'))
+  it('definisce .arc-display-digit', () => expect(css).toContain('.arc-display-digit'))
+  it('definisce varianti score e timer', () => {
+    expect(css).toContain('.arc-display-score')
+    expect(css).toContain('.arc-display-timer')
+  })
+  it('definisce palette LED', () => {
+    expect(css).toContain('.arc-display-red')
+    expect(css).toContain('.arc-display-green')
+    expect(css).toContain('.arc-display-amber')
+    expect(css).toContain('.arc-display-cyan')
+  })
+  it('carica DSEG7 Classic', () => expect(css).toContain('DSEG7 Classic'))
+})
+
 describe('CSS smoke — accordion.css', () => {
   const css = readCss('components', 'accordion.css')
 

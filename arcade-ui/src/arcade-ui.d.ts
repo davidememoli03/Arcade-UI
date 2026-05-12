@@ -303,6 +303,36 @@ export declare const arcToast: {
   dismissAll(): void
 }
 
+// ─── Display 7 segmenti ───────────────────────────────────────────────────
+
+export declare function setArcDisplayValue(
+  container: HTMLElement,
+  value: string | number,
+  options?: {
+    pad?: number
+    flash?: boolean
+    reducedMotion?: boolean
+    ariaLabel?: string
+  },
+): void
+
+export declare function arcCountdown(
+  container: HTMLElement,
+  options: {
+    seconds: number
+    onTick?: (remaining: number) => void
+    onEnd?: () => void
+    display?: {
+      pad?: number
+      flash?: boolean
+      reducedMotion?: boolean
+      ariaLabel?: string
+    }
+  },
+): { stop: () => void; getRemaining: () => number }
+
+export declare function bindArcDisplays(root?: ParentNode): void
+
 // ─── Button sounds ────────────────────────────────────────────────────────────
 
 /**
