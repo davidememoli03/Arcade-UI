@@ -143,6 +143,7 @@ A complete working page — copy, save as `index.html`, open in browser:
 | **Glitch** | `.arc-glitch` · `.arc-glitch-hover` | — | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-glitch--always-on) |
 | **Pixel border** | `.arc-border-pixel` · `.arc-border-pixel-thick` · `.arc-border-pixel-inset` · `.arc-border-pixel-chamfer` · `.arc-border-pixel-glow` | `--arc-border-color` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-pixel-border--showcase) |
 | **CRT** | `.arc-crt-screen` · `.arc-crt-global` | `.arc-crt-boot` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-crt--screen) |
+| **Background patterns** | `.arc-bg-grid` · `.arc-bg-dots` · `.arc-bg-scanlines` · `.arc-bg-noise` · `.arc-bg-circuit` · `.arc-bg-stars` | `--arc-bg-opacity` · `--arc-bg-grid-cell` · `--arc-bg-dots-gap` · `--arc-bg-scanline-period` · `--arc-bg-stars-speed` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-background-patterns--all-patterns) |
 | **Toggle** | `.arc-toggle` · `.arc-toggle-input` · `.arc-toggle-switch` · `.arc-toggle-label` | `arc-toggle-on` · `arc-toggle-off` · `arc-toggle-label-left` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-toggle--all-states) |
 | **Slider** | `.arc-slider` · `.arc-slider-wrapper` · `.arc-slider-label` · `.arc-slider-display` · `.arc-slider-ticks` | `arc-slider-danger` · `arc-slider-success` · `arc-slider-yellow` · `arc-slider-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-slider--volume-panel-demo) |
 | **Table** | `.arc-table` · `.arc-table-wrapper` | `arc-table-cyan` · `arc-table-green` · `arc-table-yellow` · `arc-table-red` · `arc-table-purple` | [→ Demo](https://davidememoli03.github.io/Arcade-UI/?path=/story/components-table--leaderboard) |
@@ -1057,6 +1058,31 @@ Keyframe globali in `src/tokens/animation.css` (`arc-flicker`, `arc-blink-cursor
 **Lampeggio CRT** su un wrapper a schermo intero: `<div class="arc-anim-flicker arc-crt-screen">…</div>` (regola `--arc-flicker-speed` / `--arc-flicker-intensity` inline o su un antenato). Se serve anche la scanline animata, applica `.arc-anim-scanline-move` a un **figlio** interno: `.arc-crt-screen` usa già `::after` per altri effetti.
 
 Storybook: [Effects / Animations — All utilities](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-animations--showcase).
+
+### Pattern di sfondo (`.arc-bg-*`)
+
+Utility solo **`background-*`**: niente `::before` / `::after`, così restano **componibili** con `.arc-panel` (che riserva i pseudo-elementi agli angoli). Sono alternativi all’overlay CRT globale (`.arc-crt-global` / `.arc-crt-screen`), che aggiunge vignetta, scanline animate e stacking dedicato.
+
+| Classe | Descrizione |
+|--------|-------------|
+| `.arc-bg-grid` | Griglia sottile neon (top‑down arcade) |
+| `.arc-bg-dots` | Matrice punti stile LED |
+| `.arc-bg-scanlines` | Solo scanlines orizzontali (senza vignetta) |
+| `.arc-bg-noise` | Grana con tile SVG `feTurbulence`; forza con `cross-fade` e `--arc-bg-opacity` |
+| `.arc-bg-circuit` | Tracciato PCB stilizzato; usa `--panel-accent` sulle varianti `.arc-panel-*` |
+| `.arc-bg-stars` | Starfield: punti bianchi con drift CSS (`prefers-reduced-motion` disattiva il movimento) |
+
+**Intensità:** `--arc-bg-opacity` (scala 0–1 suggerita; ogni classe imposta un default). Opzionale: `--arc-bg-grid-cell`, `--arc-bg-dots-gap`, `--arc-bg-scanline-period`, `--arc-bg-stars-speed`.
+
+**Esempio**
+
+```html
+<div class="arc-panel arc-panel-cyan arc-bg-grid" style="--arc-bg-opacity: 0.2;">
+  …
+</div>
+```
+
+Storybook: [Effects / Background patterns](https://davidememoli03.github.io/Arcade-UI/?path=/story/effects-background-patterns--all-patterns).
 
 ### Pixel border (8-bit)
 

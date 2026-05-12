@@ -1,0 +1,212 @@
+/* src/components/backgrounds.css
+   Pattern di sfondo riutilizzabili (solo background-*), separati da .arc-crt-*.
+   Componibili con .arc-panel e altri componenti che usano ::before/::after.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    /*
+        Intensità pattern (0–1 consigliato). Ogni utility ha un default sulla classe;
+        sovrascrivi inline o su un antenato.
+    */
+    --arc-bg-opacity: 0.28;
+    --arc-bg-grid-cell: 22px;
+    --arc-bg-dots-gap: 14px;
+    --arc-bg-scanline-period: 4px;
+    --arc-bg-stars-speed: 85s;
+}
+
+/* ── Griglia neon (overhead arcade) ───────────────────────────────────────── */
+
+.arc-bg-grid {
+    --arc-bg-opacity: 0.32;
+
+    background-image:
+        linear-gradient(
+            color-mix(in srgb, var(--panel-accent, var(--arc-color-cyan)) calc(var(--arc-bg-opacity) * 100%), transparent) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            color-mix(in srgb, var(--panel-accent, var(--arc-color-cyan)) calc(var(--arc-bg-opacity) * 100%), transparent) 1px,
+            transparent 1px
+        );
+    background-size: var(--arc-bg-grid-cell) var(--arc-bg-grid-cell);
+    background-position: 0 0;
+}
+
+/* ── Matrice punti (LED) ─────────────────────────────────────────────────── */
+
+.arc-bg-dots {
+    --arc-bg-opacity: 0.45;
+
+    background-image: radial-gradient(
+        circle at center,
+        color-mix(in srgb, var(--panel-accent, var(--arc-color-cyan)) calc(var(--arc-bg-opacity) * 100%), transparent) 0 1.5px,
+        transparent 1.6px
+    );
+    background-size: var(--arc-bg-dots-gap) var(--arc-bg-dots-gap);
+    background-position: 0 0;
+}
+
+/* ── Scanlines orizzontali (solo pattern, senza vignetta / CRT globale) ───── */
+
+.arc-bg-scanlines {
+    --arc-bg-opacity: 0.14;
+
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent calc(var(--arc-bg-scanline-period) - 1px),
+        rgb(0 0 0 / var(--arc-bg-opacity)) calc(var(--arc-bg-scanline-period) - 1px),
+        rgb(0 0 0 / var(--arc-bg-opacity)) var(--arc-bg-scanline-period)
+    );
+    background-size: 100% var(--arc-bg-scanline-period);
+}
+
+/* ── Grana (feTurbulence in SVG come tile) ─────────────────────────────────── */
+
+.arc-bg-noise {
+    --arc-bg-opacity: 0.35;
+
+    background-image: cross-fade(
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128' preserveAspectRatio='none'%3E%3Cfilter id='n' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='white' filter='url(%23n)'/%3E%3C/svg%3E")
+            calc(var(--arc-bg-opacity) * 100%),
+        linear-gradient(var(--arc-color-bg-panel), var(--arc-color-bg-panel))
+    );
+    background-size: 96px 96px;
+}
+
+@supports not (background: cross-fade(50% red, blue)) {
+    .arc-bg-noise {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128' preserveAspectRatio='none'%3E%3Cfilter id='n' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='white' fill-opacity='0.35' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 96px 96px;
+    }
+}
+
+/* ── Circuito stampato stilizzato (gradienti, accent da --panel-accent) ───── */
+
+.arc-bg-circuit {
+    --arc-bg-opacity: 0.22;
+    --arc-circuit-fg: var(--panel-accent, var(--arc-color-cyan));
+    --arc-circuit-line: color-mix(
+        in srgb,
+        var(--arc-circuit-fg) calc(var(--arc-bg-opacity) * 100%),
+        transparent
+    );
+
+    background-image:
+        linear-gradient(90deg, transparent 0 31px, var(--arc-circuit-line) 31px 32px, transparent 32px 33px),
+        linear-gradient(0deg, transparent 0 31px, var(--arc-circuit-line) 31px 32px, transparent 32px 33px),
+        radial-gradient(
+            circle at 8px 8px,
+            color-mix(in srgb, var(--arc-circuit-fg) calc(var(--arc-bg-opacity) * 120%), transparent) 0 2px,
+            transparent 3px
+        ),
+        radial-gradient(
+            circle at 48px 40px,
+            color-mix(in srgb, var(--arc-circuit-fg) calc(var(--arc-bg-opacity) * 120%), transparent) 0 2px,
+            transparent 3px
+        ),
+        radial-gradient(
+            circle at 28px 28px,
+            color-mix(in srgb, var(--arc-circuit-fg) calc(var(--arc-bg-opacity) * 90%), transparent) 0 1.5px,
+            transparent 2px
+        ),
+        linear-gradient(
+            90deg,
+            transparent 0 44px,
+            var(--arc-circuit-line) 44px 45px,
+            transparent 45px 100%
+        ),
+        linear-gradient(0deg, transparent 0 20px, var(--arc-circuit-line) 20px 21px, transparent 21px 100%),
+        linear-gradient(
+            90deg,
+            transparent 0 20px,
+            var(--arc-circuit-line) 20px 21px,
+            transparent 21px 36px,
+            var(--arc-circuit-line) 36px 37px,
+            transparent 37px 100%
+        );
+    background-size:
+        64px 64px,
+        64px 64px,
+        64px 64px,
+        64px 64px,
+        64px 64px,
+        64px 64px,
+        64px 64px,
+        64px 64px;
+    background-position:
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0;
+    background-repeat: repeat;
+}
+
+/* ── Starfield (punti bianchi, drift lento) ────────────────────────────────── */
+
+@keyframes arc-bg-stars-drift {
+    from {
+        background-position:
+            0 0,
+            30% 70%,
+            80% 20%,
+            15% 40%,
+            60% 85%,
+            45% 12%,
+            92% 55%,
+            22% 88%,
+            75% 30%;
+    }
+
+    to {
+        background-position:
+            800px 600px,
+            calc(30% + 100px) calc(70% + 80px),
+            calc(80% - 120px) calc(20% + 140px),
+            calc(15% + 60px) calc(40% - 40px),
+            calc(60% - 80px) calc(85% + 100px),
+            calc(45% + 40px) calc(12% + 180px),
+            calc(92% - 60px) calc(55% - 90px),
+            calc(22% + 140px) calc(88% + 40px),
+            calc(75% - 100px) calc(30% + 120px);
+    }
+}
+
+.arc-bg-stars {
+    --arc-bg-opacity: 0.85;
+
+    background-image:
+        radial-gradient(1px 1px at 12% 18%, rgb(255 255 255 / var(--arc-bg-opacity)), transparent),
+        radial-gradient(1px 1px at 65% 72%, rgb(255 255 255 / var(--arc-bg-opacity)), transparent),
+        radial-gradient(1.5px 1.5px at 40% 33%, rgb(255 255 255 / var(--arc-bg-opacity)), transparent),
+        radial-gradient(1px 1px at 88% 14%, rgb(255 255 255 / var(--arc-bg-opacity)), transparent),
+        radial-gradient(1px 1px at 22% 81%, rgb(255 255 255 / var(--arc-bg-opacity)), transparent),
+        radial-gradient(1.5px 1.5px at 53% 56%, rgb(255 255 255 / var(--arc-bg-opacity)), transparent),
+        radial-gradient(1px 1px at 71% 39%, rgb(255 255 255 / var(--arc-bg-opacity)), transparent),
+        radial-gradient(1px 1px at 35% 63%, rgb(255 255 255 / var(--arc-bg-opacity)), transparent),
+        radial-gradient(2px 2px at 90% 91%, rgb(255 255 255 / calc(var(--arc-bg-opacity) * 0.95)), transparent);
+    background-size:
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%;
+    background-repeat: repeat;
+    animation: arc-bg-stars-drift var(--arc-bg-stars-speed) linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .arc-bg-stars {
+        animation: none;
+    }
+}
