@@ -1,0 +1,11 @@
+{
+  "name": "@davide03memoli/arcade-ui-angular",
+  "version": "4.5.0",
+  "private": true,
+  "peerDependencies": {
+    "@angular/common": ">=17.0.0",
+    "@angular/core": ">=17.0.0",
+    "@davide03memoli/arcade-ui": ">=4.0.0",
+    "rxjs": ">=7.8.0"
+  }
+}

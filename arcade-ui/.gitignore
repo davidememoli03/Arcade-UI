@@ -26,4 +26,3 @@ dist-ssr
 .env
 .github_token
 ./arcade-ui/package-lock.json
-package.json
