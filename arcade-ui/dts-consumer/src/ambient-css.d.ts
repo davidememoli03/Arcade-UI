@@ -1,0 +1,11 @@
+/* Side-effect CSS entry points declared in package.json "exports" — DOM frameworks typically shim *.css the same way. */
+declare module '@davide03memoli/arcade-ui/dist/arcade-ui.css'
+declare module '@davide03memoli/arcade-ui/dist/arcade-ui.min.css'
+declare module '@davide03memoli/arcade-ui/themes/phosphor-green'
+declare module '@davide03memoli/arcade-ui/themes/amber-crt'
+declare module '@davide03memoli/arcade-ui/themes/magenta-wave'
+declare module '@davide03memoli/arcade-ui/themes/ice-blue'
+declare module '@davide03memoli/arcade-ui/tokens/colors'
+declare module '@davide03memoli/arcade-ui/tokens/animation'
+declare module '@davide03memoli/arcade-ui/tokens/spacing'
+declare module '@davide03memoli/arcade-ui/tokens/typography'

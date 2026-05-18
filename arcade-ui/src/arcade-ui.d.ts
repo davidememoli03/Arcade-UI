@@ -137,6 +137,21 @@ export declare const arcModal: {
   bindModalTriggers(root?: Document | Element): void
 }
 
+// ─── Tabs (arc-tabs, JS-driven) ─────────────────────────────────────────────
+
+export declare function arcTabs(container: Element): {
+  activate: (index: number) => void
+}
+
+export declare function bindTabs(root?: Document | Element): Map<Element, { activate: (index: number) => void }>
+
+// ─── Slider (range fill via --arc-slider-value) ─────────────────────────────
+
+export declare function updateSlider(input: HTMLInputElement): void
+
+/** Returns a cleanup function that removes listeners added by bindSliders. */
+export declare function bindSliders(root?: Document | Element): () => void
+
 // ─── Tooltip ────────────────────────────────────────────────────────────────
 //
 // CSS-only component — no JS exports needed.

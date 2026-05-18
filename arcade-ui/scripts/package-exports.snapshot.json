@@ -1,0 +1,15 @@
+[
+  ".",
+  "./dist/arcade-ui.css",
+  "./dist/arcade-ui.min.css",
+  "./js",
+  "./themes/amber-crt",
+  "./themes/ice-blue",
+  "./themes/magenta-wave",
+  "./themes/phosphor-green",
+  "./tokens/animation",
+  "./tokens/colors",
+  "./tokens/spacing",
+  "./tokens/tokens.json",
+  "./tokens/typography"
+]
