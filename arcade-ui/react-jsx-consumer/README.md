@@ -1,8 +1,16 @@
 # React JSX smoke (`jsx: "react-jsx"`)
 
-Used only by `npm run smoke:react-jsx` (packed tarball + TypeScript).
+Used by `npm run smoke:react-jsx` (packed tarball + TypeScript).
 
-- **`src/App.tsx`** — positive compile: imports `@davide03memoli/arcade-ui/react` and mixes native Arcade attributes with thin wrappers from `wrappers.tsx`.
-- **`src/negative/bad-intensity.tsx`** — **must fail** `tsc`: invalid `data-arc-glitch-intensity` is rejected once augmentation runs. Delete the `import '@davide03memoli/arcade-ui/react'` line and the same literal **silently passes**, illustrating why the entry exists.
+Verifies **React 18 and React 19** with matching `@types/react`, strict options, and real package resolution.
 
-See the root README section **TypeScript + React (JSX)** for when to prefer augmentation vs wrappers.
+| Path | Role |
+|------|------|
+| `src/vite-env.d.ts` | Ambient `*.css` / theme imports (Vite-style) |
+| `src/main.tsx` | Bootstrap: side-effect CSS + `initGlitch(document)` + theme class |
+| `src/useArcadeAudio.ts` | Typed singleton hook |
+| `src/GlitchSurface.tsx` | `useEffect` + ref scoped `initGlitch` |
+| `src/App.tsx` | Positive fixture composing the above |
+| `src/negative/bad-intensity.tsx` | Must fail `tsc` when augmentation is loaded |
+
+See README § **TypeScript + React (JSX)** for the official snippets.

@@ -14,6 +14,6 @@
     "skipLibCheck": false,
     "types": []
   },
-  "include": ["src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["src/negative"]
 }

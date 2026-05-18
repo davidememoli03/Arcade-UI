@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Strict JSX smoke: install packed tarball + React types, compile positive samples,
- * then assert a deliberately invalid Arcade literal fails (proves augmentation is loaded).
+ * Strict JSX smoke: packed tarball + React 18 & 19 (+ matching @types), `jsx: react-jsx`,
+ * plus a negative fixture proving Arcade JSX augmentation narrows literals.
  */
 import { execFileSync } from 'node:child_process'
 import { cpSync, mkdtempSync, readdirSync, rmSync, unlinkSync, writeFileSync } from 'node:fs'
@@ -13,6 +13,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
 const CONSUMER_SRC = path.join(ROOT, 'react-jsx-consumer')
 
+const REACT_MATRIX = [
+  { label: 'React 18', react: '^18.3.1', types: '^18.3.12' },
+  { label: 'React 19', react: '^19.0.0', types: '^19.0.0' },
+]
+
 function rmOldTarballs() {
   for (const name of readdirSync(ROOT)) {
     if (name.startsWith('davide03memoli-arcade-ui-') && name.endsWith('.tgz')) {
@@ -21,22 +26,7 @@ function rmOldTarballs() {
   }
 }
 
-function main() {
-  rmOldTarballs()
-  execFileSync('npm', ['pack', '--pack-destination', ROOT], {
-    cwd: ROOT,
-    stdio: 'inherit',
-  })
-
-  const packed = readdirSync(ROOT).filter(
-    (n) => n.startsWith('davide03memoli-arcade-ui-') && n.endsWith('.tgz'),
-  )
-  if (packed.length !== 1) {
-    console.error('❌ Expected exactly one npm pack tarball, got:', packed)
-    process.exit(1)
-  }
-
-  const tarballAbs = path.join(ROOT, packed[0])
+function runSuite(label, tarballAbs, reactRange, typesRange) {
   const dir = mkdtempSync(path.join(tmpdir(), 'arcade-ui-react-jsx-'))
 
   try {
@@ -49,10 +39,10 @@ function main() {
           type: 'module',
           dependencies: {
             '@davide03memoli/arcade-ui': `file:${tarballAbs}`,
-            react: '^19.0.0',
+            react: reactRange,
           },
           devDependencies: {
-            '@types/react': '^19.0.0',
+            '@types/react': typesRange,
             typescript: '5.8.3',
           },
         },
@@ -90,14 +80,40 @@ function main() {
 
     if (!negativeOk) {
       console.error(
-        '❌ Expected negative JSX fixture to fail (invalid data-arc-glitch-intensity). Augmentation may be broken.',
+        `❌ [${label}] Expected negative JSX fixture to fail (invalid data-arc-glitch-intensity).`,
       )
       process.exit(1)
     }
 
-    console.log('✅ React JSX smoke (react-jsx + augmentation regression) passed.')
+    console.log(`✅ [${label}] React JSX smoke passed.`)
   } finally {
     rmSync(dir, { recursive: true, force: true })
+  }
+}
+
+function main() {
+  rmOldTarballs()
+  execFileSync('npm', ['pack', '--pack-destination', ROOT], {
+    cwd: ROOT,
+    stdio: 'inherit',
+  })
+
+  const packed = readdirSync(ROOT).filter(
+    (n) => n.startsWith('davide03memoli-arcade-ui-') && n.endsWith('.tgz'),
+  )
+  if (packed.length !== 1) {
+    console.error('❌ Expected exactly one npm pack tarball, got:', packed)
+    process.exit(1)
+  }
+
+  const tarballAbs = path.join(ROOT, packed[0])
+
+  try {
+    for (const row of REACT_MATRIX) {
+      runSuite(row.label, tarballAbs, row.react, row.types)
+    }
+    console.log('✅ React JSX smoke (React 18 + 19, react-jsx + augmentation regression) passed.')
+  } finally {
     unlinkSync(tarballAbs)
   }
 }

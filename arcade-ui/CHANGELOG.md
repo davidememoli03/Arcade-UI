@@ -13,7 +13,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/en/1.1.0
 - `package.json` `"exports"` entries for `"."` and `"./js"` now expose a `"types"` condition so strict `NodeNext` / bundler resolution finds `dist/arcade-ui.d.ts`.
 - **`@davide03memoli/arcade-ui/react`**: `dist/arcade-ui-react.d.ts` augments `react`’s `HTMLAttributes` with documented Arcade `data-*` hooks (notably narrowed `data-arc-glitch-intensity`), plus empty JS/CJS shims for bundlers.
 - Optional peers `react` and `@types/react` (for JSX augmentation consumers).
-- `npm run smoke:react-jsx` + `react-jsx-consumer/` exercise `jsx: react-jsx`, thin wrappers, and a negative fixture for `data-arc-glitch-intensity`.
+- `npm run smoke:react-jsx` + `react-jsx-consumer/` exercise `jsx: react-jsx`, thin wrappers, bootstrap/CSS/`initGlitch`/`AudioManager` patterns, and a negative fixture for `data-arc-glitch-intensity`; **React 18 and React 19** are both typechecked against the tarball.
 
 ### Changed
 

@@ -1592,6 +1592,97 @@ import '@davide03memoli/arcade-ui/react'
 
 Peer hints (optional): `react` + `@types/react` ≥ 18 (declared as optional peers in `package.json`).
 
+### CSS, themes, and JS API (`main.tsx`)
+
+Import styles as **side effects** once at bootstrap (order matters: tokens → components):
+
+```tsx
+// src/main.tsx
+import '@davide03memoli/arcade-ui/react'
+import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
+import '@davide03memoli/arcade-ui/themes/phosphor-green' // or amber-crt / magenta-wave / ice-blue
+
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+
+import { initGlitch } from '@davide03memoli/arcade-ui'
+import { App } from './App'
+
+document.documentElement.classList.add('arc-theme-phosphor')
+
+initGlitch(document)
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+```
+
+With `"moduleResolution": "NodeNext"`, relative imports typically need explicit `.js` extensions (`./App.js`). Bundler-first templates often omit them — follow whatever your `tsconfig` already enforces.
+
+If TypeScript reports **“Cannot find module '…css'”**, add ambient modules (Vite usually ships `vite-env.d.ts`; CRA can use `src/react-app-env.d.ts` or any `*.d.ts` under `src/`):
+
+```ts
+// src/vite-env.d.ts — extend alongside existing triple-slash references if present
+declare module '@davide03memoli/arcade-ui/dist/arcade-ui.css'
+declare module '@davide03memoli/arcade-ui/dist/arcade-ui.min.css'
+declare module '@davide03memoli/arcade-ui/themes/phosphor-green'
+declare module '@davide03memoli/arcade-ui/themes/amber-crt'
+declare module '@davide03memoli/arcade-ui/themes/magenta-wave'
+declare module '@davide03memoli/arcade-ui/themes/ice-blue'
+```
+
+Theme class ↔ CSS file mapping is documented in `arcade-ui.d.ts` header comments.
+
+### `initGlitch` inside a component (`useEffect`)
+
+When initialization must follow a **mounted DOM subtree** (portal boundaries, lazy islands), scope `initGlitch` to a **container ref**:
+
+```tsx
+import { initGlitch } from '@davide03memoli/arcade-ui'
+import { useEffect, useRef, type ReactNode } from 'react'
+
+export function GlitchSurface({ children }: { children: ReactNode }) {
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root) return
+    initGlitch(root)
+  }, [])
+
+  return <div ref={rootRef}>{children}</div>
+}
+```
+
+`initGlitch` only fills missing `data-text` attributes (`src/effects/glitch.js`), so **re-running it on the same nodes is a no-op**. React **Strict Mode** double-mounts in development and runs effects twice; duplicate calls remain safe. Prefer **`initGlitch(document)` once in `main.tsx`** (outside `useEffect`) when you want global setup without reasoning about effect scheduling.
+
+### Typed hook for `AudioManager`
+
+```tsx
+import { AudioManager } from '@davide03memoli/arcade-ui'
+import { useMemo } from 'react'
+
+export function useArcadeAudio(): AudioManager {
+  return useMemo(() => AudioManager.getInstance(), [])
+}
+```
+
+Usage:
+
+```tsx
+const audio = useArcadeAudio()
+
+useEffect(() => {
+  audio.setVolume(0.7)
+}, [audio])
+```
+
+### CI-tested fixtures
+
+Working sources that compile under **`jsx: react-jsx`**, strict TS, and **`moduleResolution: NodeNext`** with **React 18 and React 19** live in [`react-jsx-consumer/`](./react-jsx-consumer/) (`npm run smoke:react-jsx`).
+
 ### Thin wrappers (alternative)
 
 When you prefer explicit props or shared defaults instead of repeating raw attributes, define small components that render `arc-btn`, modal triggers, etc. Reference implementations live in-repo under [`react-jsx-consumer/src/wrappers.tsx`](./react-jsx-consumer/src/wrappers.tsx).
