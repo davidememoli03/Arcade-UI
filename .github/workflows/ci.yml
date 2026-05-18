@@ -81,12 +81,13 @@ jobs:
           test -f dist/arcade-ui.css     || (echo "❌ arcade-ui.css mancante"     && exit 1)
           test -f dist/arcade-ui.min.css || (echo "❌ arcade-ui.min.css mancante" && exit 1)
           test -f dist/arcade-ui.d.ts    || (echo "❌ arcade-ui.d.ts mancante"    && exit 1)
+          test -f dist/arcade-ui-react.d.ts || (echo "❌ arcade-ui-react.d.ts mancante" && exit 1)
+          test -f dist/arcade-ui-react.js || (echo "❌ arcade-ui-react.js mancante" && exit 1)
+          test -f dist/arcade-ui-react.cjs || (echo "❌ arcade-ui-react.cjs mancante" && exit 1)
           echo "✅ tutti i file dist/ presenti"
 
-      - name: Verifica exports vs file pubblicati + smoke DTS (npm pack / strict tsc)
-        run: |
-          npm run verify:exports
-          npm run smoke:dts
+      - name: Verifica exports + smoke consumer (DTS + React JSX)
+        run: npm run verify:consumers
 
       - name: Upload dist artifact
         uses: actions/upload-artifact@v4
@@ -116,10 +117,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Verifica exports + smoke DTS
-        run: |
-          npm run verify:exports
-          npm run smoke:dts
+      - name: Verifica exports + smoke consumer (DTS + React JSX)
+        run: npm run verify:consumers
 
       - name: Verifica versione non già pubblicata
         run: |

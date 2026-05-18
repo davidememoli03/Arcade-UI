@@ -3,6 +3,7 @@
   "./dist/arcade-ui.css",
   "./dist/arcade-ui.min.css",
   "./js",
+  "./react",
   "./themes/amber-crt",
   "./themes/ice-blue",
   "./themes/magenta-wave",

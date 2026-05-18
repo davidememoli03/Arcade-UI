@@ -1559,6 +1559,7 @@ triggerGlitch(el, 600)          // burst for 600ms
 |--------|-------------|
 | ESM | `@davide03memoli/arcade-ui` |
 | CJS | `require('@davide03memoli/arcade-ui')` |
+| React JSX augmentation | `@davide03memoli/arcade-ui/react` (see § TypeScript + React) |
 | CSS (full) | `@davide03memoli/arcade-ui/dist/arcade-ui.css` |
 | CSS (minified) | `@davide03memoli/arcade-ui/dist/arcade-ui.min.css` |
 | Token: colors | `@davide03memoli/arcade-ui/tokens/colors` |
@@ -1572,6 +1573,37 @@ triggerGlitch(el, 600)          // burst for 600ms
 | Types | `dist/arcade-ui.d.ts` (auto-resolved) |
 
 CDN base URL: `https://cdn.jsdelivr.net/npm/@davide03memoli/arcade-ui@1/`
+
+---
+
+## ⚛️ TypeScript + React (JSX)
+
+Arcade markup uses documented **`data-*` hooks** (`data-tooltip`, `data-arc-modal-open`, `data-arc-slider`, `data-arc-glitch-intensity`, …). React’s stock DOM typings usually accept unknown `data-*` attributes as strings, so JSX often compiles without extra wiring — but **typos on curated unions are not caught**.
+
+### Module augmentation
+
+The optional entry **`@davide03memoli/arcade-ui/react`** merges typed props (with JSDoc) onto `react`’s `HTMLAttributes`, and **narrows** values such as `data-arc-glitch-intensity` to `'low' | 'medium' | 'high'`.
+
+Load it once (bootstrap / layout):
+
+```ts
+import '@davide03memoli/arcade-ui/react'
+```
+
+Peer hints (optional): `react` + `@types/react` ≥ 18 (declared as optional peers in `package.json`).
+
+### Thin wrappers (alternative)
+
+When you prefer explicit props or shared defaults instead of repeating raw attributes, define small components that render `arc-btn`, modal triggers, etc. Reference implementations live in-repo under [`react-jsx-consumer/src/wrappers.tsx`](./react-jsx-consumer/src/wrappers.tsx).
+
+| Approach | Prefer when |
+|----------|-------------|
+| **Augmentation** | Lots of native elements + Arcade attributes; you want IDE hints and **literal checking** on documented unions |
+| **Wrappers** | You want stable props APIs (`variant`, `modalId`) and one place for default classes |
+
+### Minimal regression template
+
+[`react-jsx-consumer/src/negative/bad-intensity.tsx`](./react-jsx-consumer/src/negative/bad-intensity.tsx) contains an invalid `data-arc-glitch-intensity`. With the augmentation import present, **`tsc` must fail**; remove that import and TypeScript falls back to permissive strings — the typo slips through. CI exercises both paths via `npm run smoke:react-jsx`.
 
 ---
 
@@ -1594,7 +1626,7 @@ Requires: CSS Custom Properties · CSS Grid · Web Audio API
 1. Fork the repository
 2. Create a branch: `git checkout -b feat/my-feature`
 3. Make changes inside `arcade-ui/src/`
-4. Run the checks: `npm run lint && npm test && npm run build`
+4. Run the checks: `npm run lint && npm test && npm run build && npm run verify:consumers`
 5. Open a pull request against `main`
 
 The CI pipeline (lint → test → build → publish) runs automatically on every PR.

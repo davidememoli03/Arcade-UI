@@ -110,7 +110,7 @@ git checkout -b feat/button-xl-size
 # ... make changes ...
 
 # Check everything passes before committing
-npm run lint && npm test && npm run build
+npm run lint && npm test && npm run build && npm run verify:consumers
 
 # Commit (follow convention below)
 git commit -m "feat(button): add arc-btn-xl size variant"
@@ -333,10 +333,10 @@ describe('arc-tooltip — DOM structure', () => {
 Run this before every commit:
 
 ```bash
-npm run lint && npm test && npm run build
+npm run lint && npm test && npm run build && npm run verify:consumers
 ```
 
-All three must be green. The CI pipeline enforces the same sequence.
+All checks must be green. The CI pipeline enforces the same sequence (consumer smoke runs after build).
 
 ---
 

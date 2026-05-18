@@ -1,9 +1,9 @@
 // vite.config.js
 //
-// TypeScript types are maintained by hand in src/arcade-ui.d.ts and copied to
-// dist/ via the build script. vite-plugin-dts is intentionally NOT used: the
-// library source is plain JavaScript, so there are no .ts files for the plugin
-// to derive declarations from. The hand-written .d.ts is the source of truth.
+// TypeScript types are maintained by hand in src/arcade-ui.d.ts (runtime API) and
+// src/arcade-ui-react.d.ts (React JSX DOM augmentation). Both are copied to dist/ via the
+// build script. vite-plugin-dts is intentionally NOT used: the library source is plain
+// JavaScript, so there are no .ts files for the plugin to derive declarations from.
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import { fileURLToPath } from 'url'

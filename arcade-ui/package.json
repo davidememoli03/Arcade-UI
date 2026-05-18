@@ -1,6 +1,6 @@
 {
   "name": "@davide03memoli/arcade-ui",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "UI component library inspired by 80s arcade games. Retro style, neon palette, pixel animations, built-in SFX — zero runtime dependencies.",
   "keywords": [
     "ui",
@@ -39,6 +39,11 @@
       "import": "./dist/arcade-ui.es.js",
       "require": "./dist/arcade-ui.cjs.js"
     },
+    "./react": {
+      "types": "./dist/arcade-ui-react.d.ts",
+      "import": "./dist/arcade-ui-react.js",
+      "require": "./dist/arcade-ui-react.cjs"
+    },
     "./dist/arcade-ui.css": "./dist/arcade-ui.css",
     "./dist/arcade-ui.min.css": "./dist/arcade-ui.min.css",
     "./tokens/colors": "./src/tokens/colors.css",
@@ -69,7 +74,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build:tokens": "style-dictionary build --config style-dictionary.config.js",
-    "build": "npm run build:tokens && vite build && npm run minify:css && mkdir -p dist/themes && cp src/themes/*.css dist/themes/ && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts && cp src/tokens/tokens.flat.json dist/tokens.json",
+    "build": "npm run build:tokens && vite build && npm run minify:css && mkdir -p dist/themes && cp src/themes/*.css dist/themes/ && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts && cp src/arcade-ui-react.d.ts dist/arcade-ui-react.d.ts && cp src/arcade-ui-react-shim.js dist/arcade-ui-react.js && cp src/arcade-ui-react-shim.cjs dist/arcade-ui-react.cjs && cp src/tokens/tokens.flat.json dist/tokens.json",
     "build:watch": "vite build --watch",
     "minify:css": "postcss dist/arcade-ui.css -o dist/arcade-ui.min.css",
     "lint": "npm run lint:js && npm run lint:css",
@@ -79,15 +84,25 @@
     "verify:exports": "node scripts/verify-package-exports.mjs",
     "smoke:dts": "node scripts/smoke-dts-consumer.mjs",
     "verify:dts": "npm run verify:exports && npm run smoke:dts",
-    "prepublishOnly": "npm run lint && npm test && npm run build && npm run verify:dts",
+    "smoke:react-jsx": "node scripts/smoke-react-jsx.mjs",
+    "verify:consumers": "npm run verify:dts && npm run smoke:react-jsx",
+    "prepublishOnly": "npm run lint && npm test && npm run build && npm run verify:consumers",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
-    "howler": "^2.0.0"
+    "@types/react": ">=18.0.0",
+    "howler": "^2.0.0",
+    "react": ">=18.0.0"
   },
   "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
     "howler": {
+      "optional": true
+    },
+    "react": {
       "optional": true
     }
   },
