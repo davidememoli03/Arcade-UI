@@ -1560,6 +1560,7 @@ triggerGlitch(el, 600)          // burst for 600ms
 | ESM | `@davide03memoli/arcade-ui` |
 | CJS | `require('@davide03memoli/arcade-ui')` |
 | React JSX augmentation | `@davide03memoli/arcade-ui/react` (see § TypeScript + React) |
+| Angular adapters | `@davide03memoli/arcade-ui/angular` (see § Angular) |
 | CSS (full) | `@davide03memoli/arcade-ui/dist/arcade-ui.css` |
 | CSS (minified) | `@davide03memoli/arcade-ui/dist/arcade-ui.min.css` |
 | Token: colors | `@davide03memoli/arcade-ui/tokens/colors` |
@@ -1695,6 +1696,90 @@ When you prefer explicit props or shared defaults instead of repeating raw attri
 ### Minimal regression template
 
 [`react-jsx-consumer/src/negative/bad-intensity.tsx`](./react-jsx-consumer/src/negative/bad-intensity.tsx) contains an invalid `data-arc-glitch-intensity`. With the augmentation import present, **`tsc` must fail**; remove that import and TypeScript falls back to permissive strings — the typo slips through. CI exercises both paths via `npm run smoke:react-jsx`.
+
+---
+
+## 🔺 Angular (optional)
+
+**Decision:** ship a **secondary npm entry** `@davide03memoli/arcade-ui/angular` (Ivy partial/FESM2022 in `dist/angular/`) instead of copy-paste-only docs — same tarball / versioning as the vanilla bundle (`npm run build` runs `ng-packagr` after Vite).
+
+Peer deps (optional at install time): `@angular/core`, `@angular/common`, `rxjs` ≥ 7.8; runtime JS still comes from `@davide03memoli/arcade-ui`.
+
+### Styles (`angular.json`)
+
+Add Arcade CSS + fonts once (CLI excerpt):
+
+```json
+{
+  "projects": {
+    "your-app": {
+      "architect": {
+        "build": {
+          "options": {
+            "styles": [
+              "src/styles.css",
+              "node_modules/@davide03memoli/arcade-ui/dist/arcade-ui.css",
+              "node_modules/@davide03memoli/arcade-ui/dist/themes/phosphor-green.css"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Pick other theme CSS paths from the Package formats table; apply the matching `arc-theme-*` class on `<html>` via `[arcadeTheme]` (below).
+
+### Standalone component (`imports` bundle)
+
+```typescript
+import { Component } from '@angular/core'
+
+import {
+  ArcadeAudioService,
+  arcadeUiAngularImports,
+} from '@davide03memoli/arcade-ui/angular'
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [...arcadeUiAngularImports],
+  template: `
+    <main
+      [arcadeTheme]="theme"
+      arcadeThemeTarget="document"
+      arcadeGlitch
+      arcadeGlitchTarget="element"
+    >
+      <button type="button" class="arc-btn arc-btn-primary" (click)="coin()">COIN</button>
+    </main>
+  `,
+})
+export class AppComponent {
+  theme = 'arc-theme-phosphor'
+
+  constructor(private readonly arcadeAudio: ArcadeAudioService) {}
+
+  coin(): void {
+    this.arcadeAudio.play('coin')
+  }
+}
+```
+
+- **`ArcadeThemeDirective`** (`arcadeTheme`, `arcadeThemeTarget`): toggles known `arc-theme-*` classes on `document.documentElement` or the host.
+- **`ArcadeGlitchDirective`** (`arcadeGlitch`, `arcadeGlitchTarget`): calls `initGlitch(document)` or `initGlitch(host)` after view init (idempotent).
+- **`ArcadeAudioService`**: typed façade over `AudioManager` (`play`, `setVolume`, …).
+
+Source of truth for signatures: `angular/src/*.ts` (published output under `dist/angular/*.d.ts`).
+
+### Schematic / `ng generate`
+
+Non incluso in questo repository (manteniamo il footprint npm minimo). Puoi riutilizzare gli snippet sopra in un tuo schematic interno o aprire una issue per un futuro `ng add`.
+
+### CI
+
+`npm run smoke:angular-types` risolve i tipi pubblicati da tarball (come accade su npm). La build completa (`npm run build:angular`) è parte di `npm run build`.
 
 ---
 

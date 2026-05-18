@@ -84,9 +84,11 @@ jobs:
           test -f dist/arcade-ui-react.d.ts || (echo "❌ arcade-ui-react.d.ts mancante" && exit 1)
           test -f dist/arcade-ui-react.js || (echo "❌ arcade-ui-react.js mancante" && exit 1)
           test -f dist/arcade-ui-react.cjs || (echo "❌ arcade-ui-react.cjs mancante" && exit 1)
+          test -f dist/angular/index.d.ts || (echo "❌ dist/angular/index.d.ts mancante" && exit 1)
+          test -f dist/angular/fesm2022/davide03memoli-arcade-ui-angular.mjs || (echo "❌ Angular FESM mancante" && exit 1)
           echo "✅ tutti i file dist/ presenti"
 
-      - name: Verifica exports + smoke consumer (DTS + React JSX)
+      - name: Verifica exports + smoke consumer (DTS + React JSX + Angular types)
         run: npm run verify:consumers
 
       - name: Upload dist artifact
@@ -117,7 +119,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Verifica exports + smoke consumer (DTS + React JSX)
+      - name: Verifica exports + smoke consumer (DTS + React JSX + Angular types)
         run: npm run verify:consumers
 
       - name: Verifica versione non già pubblicata

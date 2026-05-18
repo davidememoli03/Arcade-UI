@@ -1,6 +1,6 @@
 {
   "name": "@davide03memoli/arcade-ui",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "description": "UI component library inspired by 80s arcade games. Retro style, neon palette, pixel animations, built-in SFX — zero runtime dependencies.",
   "keywords": [
     "ui",
@@ -12,6 +12,7 @@
     "pixel",
     "neon",
     "audio",
+    "angular",
     "web-audio",
     "animation"
   ],
@@ -44,6 +45,11 @@
       "import": "./dist/arcade-ui-react.js",
       "require": "./dist/arcade-ui-react.cjs"
     },
+    "./angular": {
+      "types": "./dist/angular/index.d.ts",
+      "import": "./dist/angular/fesm2022/davide03memoli-arcade-ui-angular.mjs",
+      "default": "./dist/angular/fesm2022/davide03memoli-arcade-ui-angular.mjs"
+    },
     "./dist/arcade-ui.css": "./dist/arcade-ui.css",
     "./dist/arcade-ui.min.css": "./dist/arcade-ui.min.css",
     "./tokens/colors": "./src/tokens/colors.css",
@@ -74,7 +80,9 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build:tokens": "style-dictionary build --config style-dictionary.config.js",
-    "build": "npm run build:tokens && vite build && npm run minify:css && mkdir -p dist/themes && cp src/themes/*.css dist/themes/ && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts && cp src/arcade-ui-react.d.ts dist/arcade-ui-react.d.ts && cp src/arcade-ui-react-shim.js dist/arcade-ui-react.js && cp src/arcade-ui-react-shim.cjs dist/arcade-ui-react.cjs && cp src/tokens/tokens.flat.json dist/tokens.json",
+    "build:vanilla": "vite build && npm run minify:css && mkdir -p dist/themes && cp src/themes/*.css dist/themes/ && cp src/arcade-ui.d.ts dist/arcade-ui.d.ts && cp src/arcade-ui-react.d.ts dist/arcade-ui-react.d.ts && cp src/arcade-ui-react-shim.js dist/arcade-ui-react.js && cp src/arcade-ui-react-shim.cjs dist/arcade-ui-react.cjs && cp src/tokens/tokens.flat.json dist/tokens.json",
+    "build:angular": "node scripts/sync-angular-lib-version.mjs && ng-packagr -p angular/ng-package.json && node scripts/strip-angular-amd-module.mjs && node scripts/fix-angular-dts-node16-imports.mjs",
+    "build": "npm run build:tokens && npm run build:vanilla && npm run build:angular",
     "build:watch": "vite build --watch",
     "minify:css": "postcss dist/arcade-ui.css -o dist/arcade-ui.min.css",
     "lint": "npm run lint:js && npm run lint:css",
@@ -85,17 +93,27 @@
     "smoke:dts": "node scripts/smoke-dts-consumer.mjs",
     "verify:dts": "npm run verify:exports && npm run smoke:dts",
     "smoke:react-jsx": "node scripts/smoke-react-jsx.mjs",
-    "verify:consumers": "npm run verify:dts && npm run smoke:react-jsx",
+    "smoke:angular-types": "node scripts/smoke-angular-types.mjs",
+    "verify:consumers": "npm run verify:dts && npm run smoke:react-jsx && npm run smoke:angular-types",
     "prepublishOnly": "npm run lint && npm test && npm run build && npm run verify:consumers",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
+    "@angular/common": ">=17.0.0",
+    "@angular/core": ">=17.0.0",
     "@types/react": ">=18.0.0",
     "howler": "^2.0.0",
-    "react": ">=18.0.0"
+    "react": ">=18.0.0",
+    "rxjs": ">=7.8.0"
   },
   "peerDependenciesMeta": {
+    "@angular/common": {
+      "optional": true
+    },
+    "@angular/core": {
+      "optional": true
+    },
     "@types/react": {
       "optional": true
     },
@@ -104,9 +122,16 @@
     },
     "react": {
       "optional": true
+    },
+    "rxjs": {
+      "optional": true
     }
   },
   "devDependencies": {
+    "@angular/common": "^19.2.22",
+    "@angular/compiler-cli": "^19.2.22",
+    "@angular/core": "^19.2.22",
+    "@davide03memoli/arcade-ui": "file:.",
     "@storybook/html-vite": "^10.3.6",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@vitest/browser": "^4.1.5",
@@ -116,12 +141,15 @@
     "eslint": "^10.3.0",
     "howler": "^2.2.4",
     "jsdom": "^29.1.1",
+    "ng-packagr": "^19.2.2",
     "postcss": "^8.5.14",
     "postcss-cli": "^11.0.1",
+    "rxjs": "^7.8.2",
     "storybook": "^10.3.6",
     "style-dictionary": "^4.3.3",
     "stylelint": "^17.10.0",
     "stylelint-config-standard": "^40.0.0",
+    "typescript": "~5.8.3",
     "vite": "^8.0.10",
     "vitest": "^4.1.5"
   }

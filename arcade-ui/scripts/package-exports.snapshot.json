@@ -1,5 +1,6 @@
 [
   ".",
+  "./angular",
   "./dist/arcade-ui.css",
   "./dist/arcade-ui.min.css",
   "./js",

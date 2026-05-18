@@ -13,7 +13,10 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/en/1.1.0
 - `package.json` `"exports"` entries for `"."` and `"./js"` now expose a `"types"` condition so strict `NodeNext` / bundler resolution finds `dist/arcade-ui.d.ts`.
 - **`@davide03memoli/arcade-ui/react`**: `dist/arcade-ui-react.d.ts` augments `react`’s `HTMLAttributes` with documented Arcade `data-*` hooks (notably narrowed `data-arc-glitch-intensity`), plus empty JS/CJS shims for bundlers.
 - Optional peers `react` and `@types/react` (for JSX augmentation consumers).
+- Optional peers `@angular/core`, `@angular/common`, and `rxjs` (for Angular adapter consumers).
 - `npm run smoke:react-jsx` + `react-jsx-consumer/` exercise `jsx: react-jsx`, thin wrappers, bootstrap/CSS/`initGlitch`/`AudioManager` patterns, and a negative fixture for `data-arc-glitch-intensity`; **React 18 and React 19** are both typechecked against the tarball.
+- **`@davide03memoli/arcade-ui/angular`**: Angular 17+ **standalone directives** (`ArcadeThemeDirective`, `ArcadeGlitchDirective`) + **`ArcadeAudioService`**, compiled with ng-packagr into `dist/angular/` (same npm package / versioning as vanilla).
+- `npm run smoke:angular-types` verifies tarball resolution for the Angular secondary entry types.
 
 ### Changed
 
