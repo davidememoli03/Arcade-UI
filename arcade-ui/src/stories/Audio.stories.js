@@ -4,6 +4,14 @@ import { AudioManager } from '../audio/AudioManager.js'
 /** @type { import('@storybook/html').Meta } */
 export default {
   title: 'Audio/AudioManager',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Web Audio synth integrato; `AudioManager.getInstance()` per SFX. Tipizzazione Angular: `ArcadeAudioService` o token su README / [`docs/angular-consumer.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/angular-consumer.md).',
+      },
+    },
+  },
 }
 
 // ─── Helpers UI ──────────────────────────────────────────────────────────────

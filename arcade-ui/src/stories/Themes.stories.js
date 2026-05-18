@@ -55,7 +55,8 @@ export default {
       description: {
         component:
           'Temi colore alternativi che sovrascrivono le variabili di `tokens/colors`. ' +
-          'Importa un file da `themes/*` e applica la classe `.arc-theme-*` su `<html>`, `<body>` o un wrapper.',
+          'Importa un file da `themes/*` e applica la classe `.arc-theme-*` su `<html>`, `<body>` o un wrapper. ' +
+          'Per progetti Angular (import CSS globale, `document.documentElement`, glitch/audio tipizzati) copia gli snippet da README oppure da [`docs/angular-consumer.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/angular-consumer.md).',
       },
     },
   },

@@ -1701,13 +1701,36 @@ When you prefer explicit props or shared defaults instead of repeating raw attri
 
 ## 🔺 Angular (optional)
 
-**Decision:** ship a **secondary npm entry** `@davide03memoli/arcade-ui/angular` (Ivy partial/FESM2022 in `dist/angular/`) instead of copy-paste-only docs — same tarball / versioning as the vanilla bundle (`npm run build` runs `ng-packagr` after Vite).
+**Goal:** Consume Arcade UI from Angular with an unambiguous graph — **global CSS** once, **JS API** from the main entry, optional **standalone directives + service** from `@davide03memoli/arcade-ui/angular`.
 
-Peer deps (optional at install time): `@angular/core`, `@angular/common`, `rxjs` ≥ 7.8; runtime JS still comes from `@davide03memoli/arcade-ui`.
+**Decision:** ship a **secondary npm entry** `@davide03memoli/arcade-ui/angular` (Ivy partial / FESM2022 in `dist/angular/`), same tarball/version as vanilla (`npm run build` runs `ng-packagr` after Vite).
 
-### Styles (`angular.json`)
+**Markup reference:** class names and composition mirror [**Storybook**](https://davidememoli03.github.io/Arcade-UI/).
 
-Add Arcade CSS + fonts once (CLI excerpt):
+**Extended copy-paste guide:** [`docs/angular-consumer.md`](./docs/angular-consumer.md) (included in the npm package).
+
+Peer deps when using the Angular entry: `@angular/core`, `@angular/common` ≥ 17, `rxjs` ≥ 7.8. Runtime symbols (`initGlitch`, `AudioManager`, …) come from `@davide03memoli/arcade-ui`.
+
+### `package.json` exports (Angular-related)
+
+| Import | Resolved artifact |
+|--------|-------------------|
+| `@davide03memoli/arcade-ui` | ESM + `dist/arcade-ui.d.ts` |
+| `@davide03memoli/arcade-ui/angular` | FESM + `dist/angular/index.d.ts` |
+| `@davide03memoli/arcade-ui/dist/arcade-ui.css` | Full stylesheet |
+| `@davide03memoli/arcade-ui/themes/*` | Theme overlays — see [§ Package Formats](#-package-formats) |
+
+Use these **documented subpaths** so IDEs, `tsc`, and Node agree (`exports` map).
+
+### TypeScript strict mode
+
+- Prefer **`"strict": true`** for your application code.
+- **`skipLibCheck`** only skips type-checking of **declaration files** from dependencies. Use it if a transitive `.d.ts` clashes with your TS version; it does **not** disable checking of your own components.
+- This repo verifies published Angular typings via **`npm pack`** + `tsc` with `strict` + `moduleResolution: NodeNext` (`npm run smoke:angular-types`).
+
+### Global CSS (`angular.json`)
+
+**Option A — `styles` array (recommended):** explicit order, no Sass required.
 
 ```json
 {
@@ -1729,9 +1752,40 @@ Add Arcade CSS + fonts once (CLI excerpt):
 }
 ```
 
-Pick other theme CSS paths from the Package formats table; apply the matching `arc-theme-*` class on `<html>` via `[arcadeTheme]` (below).
+Use other theme files from `dist/themes/` or the `@davide03memoli/arcade-ui/themes/*` exports (`amber-crt`, `magenta-wave`, `ice-blue`).
 
-### Standalone component (`imports` bundle)
+**Option B — global `styles.scss`:** one entry in `angular.json`, Sass imports inside:
+
+```scss
+@import '@davide03memoli/arcade-ui/dist/arcade-ui.css';
+@import '@davide03memoli/arcade-ui/themes/phosphor-green';
+```
+
+**Option C — `stylePreprocessorOptions`:** add `"stylePreprocessorOptions": { "includePaths": ["src/styles"] }` for **your** partials. Keep Arcade imports fully qualified as above (`node_modules` resolution handles the package).
+
+Fonts: load pixel/stack fonts via `index.html` or assets (see § Quick Start — CDN / Full Example).
+
+### Theme on `document.documentElement`
+
+Themes need **theme CSS** plus an **`arc-theme-*`** class on **`<html>`**.
+
+**Declarative:** `[arcadeTheme]="'arc-theme-phosphor'"` with `arcadeThemeTarget="document"` (from `@davide03memoli/arcade-ui/angular`) clears other packaged themes and applies the selected class on `<html>`.
+
+**Imperative:**
+
+```typescript
+document.documentElement.classList.add('arc-theme-phosphor')
+```
+
+In production code prefer `DOCUMENT` + `Renderer2` or `APP_INITIALIZER` instead of touching DOM globals directly from constructors.
+
+### Tree-shaking & bundles
+
+- **`sideEffects`:** this package lists `*.css` — bundlers **will not drop** stylesheet imports (by design).
+- **JS:** use **named imports** from `@davide03memoli/arcade-ui` so unused helpers can be tree-shaken by the Angular CLI (esbuild).
+- **`ArcadeAudioService`** is `providedIn: 'root'` — included only when something injects it.
+
+### Standalone example — directives + `ArcadeAudioService`
 
 ```typescript
 import { Component } from '@angular/core'
@@ -1767,19 +1821,75 @@ export class AppComponent {
 }
 ```
 
-- **`ArcadeThemeDirective`** (`arcadeTheme`, `arcadeThemeTarget`): toggles known `arc-theme-*` classes on `document.documentElement` or the host.
-- **`ArcadeGlitchDirective`** (`arcadeGlitch`, `arcadeGlitchTarget`): calls `initGlitch(document)` or `initGlitch(host)` after view init (idempotent).
-- **`ArcadeAudioService`**: typed façade over `AudioManager` (`play`, `setVolume`, …).
+- **`ArcadeThemeDirective`** (`arcadeTheme`, `arcadeThemeTarget`): toggles known `arc-theme-*` on `<html>` or host.
+- **`ArcadeGlitchDirective`** (`arcadeGlitch`, `arcadeGlitchTarget`): runs `initGlitch` on `document` or host **after** view init (safe/idempotent).
+- **`ArcadeAudioService`**: typed façade over `AudioManager`.
 
-Source of truth for signatures: `angular/src/*.ts` (published output under `dist/angular/*.d.ts`).
+### Minimal standalone — `AfterViewInit` + typed `AudioManager`
+
+Explicit lifecycle + vanilla API (no glitch directive):
+
+```typescript
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  inject,
+} from '@angular/core'
+import { AudioManager, initGlitch } from '@davide03memoli/arcade-ui'
+
+@Component({
+  selector: 'app-glitch-demo',
+  standalone: true,
+  template: `
+    <section class="arc-panel arc-panel-cyan">
+      <span class="arc-glitch" data-text="PLAYER 1">PLAYER 1</span>
+      <button type="button" class="arc-btn arc-btn-primary" (click)="coin()">COIN</button>
+    </section>
+  `,
+})
+export class GlitchDemoComponent implements AfterViewInit {
+  private readonly host = inject(ElementRef<HTMLElement>)
+  private readonly audio: AudioManager = AudioManager.getInstance()
+
+  ngAfterViewInit(): void {
+    initGlitch(this.host.nativeElement)
+  }
+
+  coin(): void {
+    this.audio.play('coin')
+  }
+}
+```
+
+Scope: **`initGlitch(host)`** per view vs **`initGlitch(document)`** once at bootstrap — avoid double global init unless intentional.
+
+### Optional DI — `InjectionToken` for `AudioManager`
+
+`ArcadeAudioService` already wraps the singleton with **`providedIn: 'root'`**. For tests or explicit tokens:
+
+```typescript
+import { InjectionToken } from '@angular/core'
+import { AudioManager } from '@davide03memoli/arcade-ui'
+
+export const ARCADE_AUDIO_MANAGER = new InjectionToken<AudioManager>(
+  'ARCADE_AUDIO_MANAGER',
+  {
+    providedIn: 'root',
+    factory: () => AudioManager.getInstance(),
+  },
+)
+```
+
+Source of truth for signatures: `angular/src/*.ts` → `dist/angular/*.d.ts`.
 
 ### Schematic / `ng generate`
 
-Non incluso in questo repository (manteniamo il footprint npm minimo). Puoi riutilizzare gli snippet sopra in un tuo schematic interno o aprire una issue per un futuro `ng add`.
+Not shipped in this repo (minimal npm footprint). Reuse the snippets above in your own schematic or open an issue for a future `ng add`.
 
 ### CI
 
-`npm run smoke:angular-types` risolve i tipi pubblicati da tarball (come accade su npm). La build completa (`npm run build:angular`) è parte di `npm run build`.
+`npm run smoke:angular-types` resolves typings from a packed tarball (same layout as npm). Full build includes `npm run build:angular`.
 
 ---
 

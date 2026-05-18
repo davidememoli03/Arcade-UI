@@ -4,6 +4,14 @@ import { initGlitch, triggerGlitch } from '../effects/glitch.js'
 /** @type { import('@storybook/html').Meta } */
 export default {
   title: 'Effects/Glitch',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Effetto glitch su testo; `initGlitch` prepara `data-text`. In Angular chiama `initGlitch` dopo `AfterViewInit` o usa la direttiva opzionale da `@davide03memoli/arcade-ui/angular` — vedi [`docs/angular-consumer.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/angular-consumer.md).',
+      },
+    },
+  },
 }
 
 /* ── Sempre attivo ─────────────────────────────────────────────────────── */
