@@ -3,9 +3,9 @@
 Mapping **1:1** tra markup HTML, template Angular e JSX React per gli hook dichiarativi Arcade UI.  
 Vanilla resta la fonte di verità; Angular espone **directive/input**, React **augmentation JSX** (+ wrapper opzionali in `react-jsx-consumer/`).
 
-Vedi anche: [README § Audio](../README.md#declarative-sfx-data-arc-sound), [angular-consumer.md](./angular-consumer.md), [DX-ROADMAP](./DX-ROADMAP.md).
+Vedi anche: [README § Audio](../arcade-ui/README.md#declarative-sfx-data-arc-sound), [angular-consumer.md](./angular-consumer.md), [DX-ROADMAP](../arcade-ui/docs/DX-ROADMAP.md).
 
-> Copia repo root: [`docs/FRAMEWORK-PARITY.md`](../../docs/FRAMEWORK-PARITY.md).
+> Stessa guida nel pacchetto npm: [`arcade-ui/docs/FRAMEWORK-PARITY.md`](../arcade-ui/docs/FRAMEWORK-PARITY.md).
 
 ---
 
@@ -63,7 +63,7 @@ import '@davide03memoli/arcade-ui/react'
 </button>
 ```
 
-Wrapper opzionale (`react-jsx-consumer/src/wrappers.tsx`):
+Wrapper opzionale (`arcade-ui/react-jsx-consumer/src/wrappers.tsx`):
 
 ```tsx
 <ArcButton variant="primary" arcSoundClick="win" arcSoundHover="blip">
@@ -106,7 +106,7 @@ Wrapper opzionale (`react-jsx-consumer/src/wrappers.tsx`):
 | `data-arc-display` | attributo | `data-arc-display` |
 | `data-tooltip` | attributo | `data-tooltip` |
 
-Lista completa augmentation: `src/arcade-ui-react.d.ts`.
+Lista completa augmentation: [`arcade-ui/src/arcade-ui-react.d.ts`](../arcade-ui/src/arcade-ui-react.d.ts).
 
 ---
 
@@ -121,6 +121,8 @@ Lista completa augmentation: `src/arcade-ui-react.d.ts`.
 ---
 
 ## Smoke CI
+
+Esegui da `arcade-ui/`:
 
 | Script | Cosa verifica |
 |--------|----------------|

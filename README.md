@@ -46,12 +46,21 @@ import '@davide03memoli/arcade-ui/dist/arcade-ui.css'
 
 > For full component docs, design tokens, JS API, audio, and browser support see **[arcade-ui/README.md](./arcade-ui/README.md)** or the **[live Storybook](https://davidememoli03.github.io/Arcade-UI/)**.
 
+### Guides (Angular & framework parity)
+
+| Guide | Description |
+|-------|-------------|
+| [**Framework parity**](docs/FRAMEWORK-PARITY.md) | Mapping 1:1 markup ↔ Angular template ↔ React props |
+| [**Angular consumer**](docs/angular-consumer.md) | CSS, theme, directive, audio tipizzato |
+| [All docs](docs/README.md) | Indice guide + link ad accessibilità e DX roadmap |
+
 ---
 
 ## Repository Structure
 
 ```
 Arcade-UI/
+├── docs/                   # Repo-level guides (parity, Angular) — also under arcade-ui/docs/ in npm
 ├── arcade-ui/              # npm package — source, build, tests, Storybook
 │   ├── src/
 │   │   ├── tokens/         # CSS custom properties (colors, typography, spacing, animation)

@@ -2,7 +2,7 @@
 
 Copy-paste reference for apps using **`@davide03memoli/arcade-ui`** with TypeScript. Live markup and variants: [Storybook](https://davidememoli03.github.io/Arcade-UI/).
 
-> Copia repo root: [`docs/angular-consumer.md`](../../docs/angular-consumer.md).
+> Stessa guida nel pacchetto npm: [`arcade-ui/docs/angular-consumer.md`](../arcade-ui/docs/angular-consumer.md).
 
 ## Imports & typings
 
@@ -11,13 +11,13 @@ Copy-paste reference for apps using **`@davide03memoli/arcade-ui`** with TypeScr
 | `@davide03memoli/arcade-ui` | `AudioManager`, `bindGlitch`, `initGlitch`, tokens, JS helpers (`dist/arcade-ui.d.ts`) |
 | `@davide03memoli/arcade-ui/angular` | Standalone directives + `ArcadeAudioService` (`dist/angular/index.d.ts`) |
 
-Paths must match the package **`exports`** field (see root `package.json`). Prefer these specifiers over deep paths into `dist/` unless documented.
+Paths must match the package **`exports`** field (see [`arcade-ui/package.json`](../arcade-ui/package.json)). Prefer these specifiers over deep paths into `dist/` unless documented.
 
 ## TypeScript strict
 
 - Enable **`"strict": true`** for your application sources.
 - **`skipLibCheck`** only relaxes checking of declaration files (`.d.ts`). Use it temporarily if a transitive typings conflict appears; it does not disable type-checking of your `.ts` templates/components.
-- This library’s published Angular types are verified from an **`npm pack`** tarball with `strict` + `moduleResolution: NodeNext` (`npm run smoke:angular-types` in this repo).
+- This library’s published Angular types are verified from an **`npm pack`** tarball with `strict` + `moduleResolution: NodeNext` (`npm run smoke:angular-types` in `arcade-ui/`).
 
 ## Global CSS
 
@@ -48,7 +48,7 @@ Point `angular.json` `styles` at `src/styles.scss` only.
 
 Use **`includePaths`** for your own Sass partials (e.g. `"src/styles"`). Arcade UI styles should keep **fully qualified** package imports as above — no need to add `node_modules` unless your toolchain requires it.
 
-Load arcade fonts via `index.html` or your asset pipeline (see main README).
+Load arcade fonts via `index.html` or your asset pipeline (see [package README](../arcade-ui/README.md)).
 
 ## Theme on `document.documentElement`
 
