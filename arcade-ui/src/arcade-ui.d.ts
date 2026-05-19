@@ -49,6 +49,9 @@ export declare const ARCADE_SOUND_ATTRS: readonly {
  */
 export declare function dispatchArcadeSound(el: Element, type: 'success' | 'error'): void
 
+/** `true` se `root` contiene `data-arc-sound-*` o `.arc-btn` (utile prima di `bindArcadeSounds`). */
+export declare function hasArcadeSoundTargets(root?: Document | Element): boolean
+
 // ─── AudioManager ─────────────────────────────────────────────────────────────
 
 /**
@@ -76,9 +79,17 @@ export declare class AudioManager {
 
   /**
    * Riproduce un suono built-in per ID o un suono custom registrato.
-   * Se l'utente non ha ancora interagito, il suono viene accodato.
+   * Prima del primo gesto utente le chiamate sono **accodate** (non perse) e riprodotte dopo `activate()`.
    */
   play(idOrSrc: string): this
+
+  /**
+   * Sblocca Web Audio dopo policy del browser (tap / tastiera). Chiamabile anche manualmente.
+   */
+  activate(): this
+
+  /** `true` dopo il primo gesto utente o `activate()`. */
+  isActivated(): boolean
 
   /**
    * Imposta il volume (0–1) e lo persiste in sessionStorage.

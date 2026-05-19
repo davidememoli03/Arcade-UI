@@ -4,11 +4,13 @@ import { AudioManager } from '../audio/AudioManager.js'
 
 export {
   ARCADE_BUILTIN_SFX,
+  ARCADE_BTN_SELECTOR,
   ARCADE_SOUND_ATTRS,
   ARCADE_SOUND_EVENT_ERROR,
   ARCADE_SOUND_EVENT_SUCCESS,
   ARCADE_SOUND_SELECTOR,
   dispatchArcadeSound,
+  hasArcadeSoundTargets,
 } from '../audio/sound-bindings.js'
 
 /**

@@ -26,7 +26,7 @@ audio.play('win')
 audio.play('gameover')
 ```
 
-`bindArcadeSounds()` runs at `DOMContentLoaded` (via `AudioManager`): declarative
+Before the first user gesture, `play()` is **queued** (not lost); see README § *Browser gesture policy*. `bindArcadeSounds()` runs lazily at `DOMContentLoaded` when hooks exist (via `AudioManager`): declarative
 `data-arc-sound-*` on any element, plus `.arc-btn` defaults (hover → `blip`,
 primary click → `select`). See README for the full attribute table.
 

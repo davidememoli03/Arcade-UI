@@ -19,7 +19,7 @@ Issue meta su GitHub: [#115](https://github.com/davidememoli03/Arcade-UI/issues/
 | Voce | Stato | Issue / note |
 |------|-------|----------------|
 | SFX dichiarativi `data-arc-sound-*` + `bindArcadeSounds` | ✅ | [#114](https://github.com/davidememoli03/Arcade-UI/issues/114) — README § Audio, Storybook *Dichiarativo* |
-| Policy gesture / lazy Web Audio | 🚧 | [#116](https://github.com/davidememoli03/Arcade-UI/issues/116) |
+| Policy gesture / lazy Web Audio | ✅ | [#116](https://github.com/davidememoli03/Arcade-UI/issues/116) — README § gesture, `activate()` / `isActivated()`, lazy bind + `MutationObserver` |
 | SFX su toast show/dismiss senza `play()` manuale | 📋 | Collegare `arcToast` → `dispatchArcadeSound` o attributi su container |
 
 **Contratto attuale (estratto):** `data-arc-sound-click`, `-hover`, `-pointerdown`, `-focus`, `-success`, `-error` — vedi [README § Audio](../README.md#-audio--audiomanager).

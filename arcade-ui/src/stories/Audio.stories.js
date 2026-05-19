@@ -233,6 +233,48 @@ export const Overview = {
   },
 }
 
+// ─── Story: gesture policy ────────────────────────────────────────────────────
+
+/** @type { import('@storybook/html').StoryObj } */
+export const GesturePolicy = {
+  name: 'Gesture policy — primo play',
+  render: () => {
+    const wrap = document.createElement('div')
+    wrap.style.cssText = css.wrap
+    wrap.innerHTML = `
+      <h2 style="${css.heading}">USER GESTURE</h2>
+      <p style="${css.note}">
+        Prima di un click/touch sulla pagina, <code>play()</code> accoda i suoni (non li perde).
+        Dopo il gesto, <code>isActivated()</code> è <code>true</code> e la coda viene svuotata.
+        Con <code>prefers-reduced-motion: reduce</code> l'hover <code>blip</code> è disattivato.
+      </p>
+      <p id="arc-audio-status" style="${css.value}">activated: …</p>
+      <div style="${css.row}">
+        <button type="button" class="arc-btn arc-btn-primary" id="arc-audio-play">PLAY COIN</button>
+        <button type="button" class="arc-btn arc-btn-ghost" id="arc-audio-enable">ACTIVATE()</button>
+      </div>
+    `
+
+    const audio = AudioManager.getInstance()
+    const status = wrap.querySelector('#arc-audio-status')
+    const refresh = () => {
+      status.textContent = `activated: ${audio.isActivated()}`
+    }
+    refresh()
+
+    wrap.querySelector('#arc-audio-play').addEventListener('click', () => {
+      audio.play('coin')
+      refresh()
+    })
+    wrap.querySelector('#arc-audio-enable').addEventListener('click', () => {
+      audio.activate()
+      refresh()
+    })
+
+    return wrap
+  },
+}
+
 // ─── Story: Auto-binding ──────────────────────────────────────────────────────
 
 /** @type { import('@storybook/html').StoryObj } */
@@ -246,9 +288,9 @@ export const AutoBinding = {
     wrap.innerHTML = `
       <h2 style="${css.heading}">AUTO-BINDING</h2>
       <p style="${css.note}">
-        AudioManager collega automaticamente i suoni a tutti i
-        <code style="color:var(--arc-color-cyan)">.arc-btn</code> al DOMContentLoaded.
-        Usa <code>bindArcadeSounds(root)</code> per elementi aggiunti dinamicamente.
+        Lazy bind: se esistono <code>.arc-btn</code> o <code>data-arc-sound-*</code>, i listener
+        si collegano a <code>DOMContentLoaded</code> (e ai nodi aggiunti in SPA via <code>MutationObserver</code>).
+        Vedi anche la story <b>Gesture policy</b>.
       </p>
 
       <div style="display:flex;flex-direction:column;gap:1.5rem;">

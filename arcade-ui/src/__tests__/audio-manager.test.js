@@ -415,3 +415,157 @@ describe('AudioManager — register (Howler custom)', () => {
     expect(audio.register('test', '/test.mp3')).toBe(audio)
   })
 })
+
+describe('AudioManager — gesture policy', () => {
+  beforeEach(() => {
+    AudioManager._resetForTest()
+    sessionStorage.clear()
+    mockOscStart.mockClear()
+    document.body.innerHTML = ''
+    Object.defineProperty(globalThis, 'AudioContext', {
+      value:        vi.fn(createMockCtx),
+      configurable: true,
+      writable:     true,
+    })
+  })
+
+  it('play() prima del gesto accoda e isActivated() è false', async () => {
+    const audio = AudioManager.getInstance()
+    await flushPromises()
+
+    audio.play('coin')
+    expect(audio.isActivated()).toBe(false)
+    expect(mockOscStart).not.toHaveBeenCalled()
+  })
+
+  it('dopo simulateUserClick() la coda viene riprodotta', async () => {
+    const audio = AudioManager.getInstance()
+    await flushPromises()
+
+    audio.play('coin')
+    simulateUserClick()
+
+    expect(audio.isActivated()).toBe(true)
+    expect(mockOscStart).toHaveBeenCalled()
+  })
+
+  it('activate() sblocca manualmente e riproduce la coda', async () => {
+    const audio = AudioManager.getInstance()
+    await flushPromises()
+
+    audio.play('blip')
+    audio.activate()
+
+    expect(audio.isActivated()).toBe(true)
+    expect(mockOscStart).toHaveBeenCalled()
+  })
+})
+
+describe('AudioManager — lazy auto-bind', () => {
+  beforeEach(() => {
+    AudioManager._resetForTest()
+    sessionStorage.clear()
+    mockOscStart.mockClear()
+    document.body.innerHTML = ''
+    Object.defineProperty(globalThis, 'AudioContext', {
+      value:        vi.fn(createMockCtx),
+      configurable: true,
+      writable:     true,
+    })
+  })
+
+  it('non collega listener se il DOM non ha hook audio', async () => {
+    document.body.innerHTML = '<p>No buttons</p>'
+    const audio = AudioManager.getInstance()
+    await flushPromises()
+
+    document.querySelector('p').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    simulateUserClick()
+    expect(mockOscStart).not.toHaveBeenCalled()
+  })
+
+  it('registra MutationObserver per subtree dinamici', async () => {
+    const observe = vi.fn()
+    const disconnect = vi.fn()
+    const Original = globalThis.MutationObserver
+
+    globalThis.MutationObserver = class {
+      constructor() {
+        /** noop */
+      }
+      observe(...args) {
+        observe(...args)
+      }
+      disconnect() {
+        disconnect()
+      }
+    }
+
+    try {
+      document.body.innerHTML = ''
+      AudioManager.getInstance()
+      await flushPromises()
+
+      expect(observe).toHaveBeenCalledWith(
+        document.documentElement,
+        expect.objectContaining({ childList: true, subtree: true }),
+      )
+    } finally {
+      globalThis.MutationObserver = Original
+    }
+  })
+
+  it('bindArcadeSounds su subtree aggiunto in SPA', async () => {
+    document.body.innerHTML = ''
+    const audio = AudioManager.getInstance()
+    await flushPromises()
+
+    const section = document.createElement('div')
+    section.innerHTML = '<button class="arc-btn arc-btn-primary">Late</button>'
+    document.body.appendChild(section)
+
+    audio.bindArcadeSounds(section)
+    simulateUserClick()
+    section.querySelector('button').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    expect(mockOscStart).toHaveBeenCalled()
+  })
+})
+
+describe('AudioManager — prefers-reduced-motion', () => {
+  beforeEach(() => {
+    AudioManager._resetForTest()
+    sessionStorage.clear()
+    mockOscStart.mockClear()
+    document.body.innerHTML = ''
+    Object.defineProperty(globalThis, 'AudioContext', {
+      value:        vi.fn(createMockCtx),
+      configurable: true,
+      writable:     true,
+    })
+    Object.defineProperty(globalThis, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: vi.fn((query) => ({
+        matches: query.includes('prefers-reduced-motion'),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    })
+  })
+
+  it('sopprime blip (hover) con prefers-reduced-motion: reduce', async () => {
+    const audio = AudioManager.getInstance()
+    await flushPromises()
+    audio.activate()
+    audio.play('blip')
+    expect(mockOscStart).not.toHaveBeenCalled()
+  })
+
+  it('non sopprime select (click) con prefers-reduced-motion: reduce', async () => {
+    const audio = AudioManager.getInstance()
+    await flushPromises()
+    audio.activate()
+    audio.play('select')
+    expect(mockOscStart).toHaveBeenCalled()
+  })
+})

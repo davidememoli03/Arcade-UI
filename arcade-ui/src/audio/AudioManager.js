@@ -5,7 +5,10 @@
 const STORAGE_VOLUME = 'arc-audio-volume'
 const STORAGE_MUTED  = 'arc-audio-muted'
 
-import { bindArcadeSoundsInRoot } from './sound-bindings.js'
+import {
+  bindArcadeSoundsInRoot,
+  hasArcadeSoundTargets,
+} from './sound-bindings.js'
 
 // ─── Web Audio synth ──────────────────────────────────────────────────────────
 
@@ -131,12 +134,16 @@ class AudioManager {
   #destroyed = false
   /** @type {WeakSet<Element>} elementi già collegati — evita doppio binding */
   #boundElements = new WeakSet()
+  /** @type {MutationObserver|null} osserva nodi con hook audio (lazy bind SPA) */
+  #bindObserver = null
+  /** @type {boolean} */
+  #lazyBindStarted = false
 
   constructor() {
     this.#readStorage()
     this.#initHowler()
     this.#setupActivationGate()
-    this.#scheduleAutoBinding()
+    this.#scheduleLazyAutoBinding()
   }
 
   /**
@@ -203,27 +210,68 @@ class AudioManager {
   #setupActivationGate() {
     if (typeof document === 'undefined') return
 
-    const activate = () => {
-      if (this.#destroyed || this.#activated) return
-      this.#activated = true
-      const queue = this.#pendingPlay.splice(0)
-      queue.forEach(id => this.play(id))
-    }
+    const activate = () => this.activate()
 
     ;['click', 'keydown', 'touchstart'].forEach(type => {
       document.addEventListener(type, activate, { once: true, capture: true })
     })
   }
 
-  // ─── Auto-binding su .arc-btn ────────────────────────────────────────────────
+  // ─── Lazy auto-binding (solo subtree con hook / .arc-btn) ───────────────────
 
-  #scheduleAutoBinding() {
+  /**
+   * Collega listener solo se `root` contiene hook audio o `.arc-btn` (nessuna scansione globale inutile).
+   * @param {Document|Element} root
+   */
+  #scanAndBindIfNeeded(root = document) {
+    if (this.#destroyed || !hasArcadeSoundTargets(root)) return
+    this.#bindSounds(root)
+  }
+
+  #scheduleLazyAutoBinding() {
     if (typeof document === 'undefined') return
-    const bind = () => this.bindArcadeSounds(document)
+
+    const start = () => {
+      if (this.#lazyBindStarted) return
+      this.#lazyBindStarted = true
+      this.#scanAndBindIfNeeded(document)
+
+      if (typeof MutationObserver === 'undefined') return
+
+      this.#bindObserver = new MutationObserver((records) => {
+        for (const record of records) {
+          for (const node of record.addedNodes) {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              this.#scanAndBindIfNeeded(/** @type {Element} */ (node))
+            }
+          }
+        }
+      })
+
+      this.#bindObserver.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+      })
+    }
+
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', bind, { once: true })
+      document.addEventListener('DOMContentLoaded', start, { once: true })
     } else {
-      bind()
+      start()
+    }
+  }
+
+  /**
+   * `@media (prefers-reduced-motion: reduce)` — sopprime solo feedback leggeri (hover `blip`).
+   * Usa `mute()` per silenziare tutto; non legge il mute di sistema (non esposto dal browser).
+   */
+  #shouldSuppressReducedMotionFeedback(idOrSrc) {
+    if (idOrSrc !== 'blip') return false
+    if (typeof matchMedia === 'undefined') return false
+    try {
+      return matchMedia('(prefers-reduced-motion: reduce)').matches
+    } catch {
+      return false
     }
   }
 
@@ -249,6 +297,30 @@ class AudioManager {
    * @param {string} idOrSrc
    * @returns {this}
    */
+  /**
+   * Sblocca l'audio dopo un gesto utente (o chiamata esplicita). Ripete la coda `play()` pendente.
+   * @returns {this}
+   */
+  activate() {
+    if (this.#destroyed || this.#activated) return this
+    this.#activated = true
+    const ctx = this.#getCtx()
+    if (ctx?.state === 'suspended') {
+      ctx.resume().catch(() => {})
+    }
+    const queue = this.#pendingPlay.splice(0)
+    queue.forEach((id) => this.play(id))
+    return this
+  }
+
+  /**
+   * `true` dopo il primo gesto utente (click / keydown / touchstart) o `activate()`.
+   * @returns {boolean}
+   */
+  isActivated() {
+    return this.#activated
+  }
+
   play(idOrSrc) {
     if (this.#destroyed) return this
     if (!this.#activated) {
@@ -256,6 +328,7 @@ class AudioManager {
       return this
     }
     if (this.#muted) return this
+    if (this.#shouldSuppressReducedMotionFeedback(idOrSrc)) return this
 
     if (SYNTH_SFX[idOrSrc]) {
       const ctx = this.#getCtx()
@@ -376,6 +449,7 @@ class AudioManager {
    */
   static _resetForTest() {
     if (AudioManager.#instance) {
+      AudioManager.#instance.#bindObserver?.disconnect()
       AudioManager.#instance.#destroyed = true
     }
     AudioManager.#instance = null

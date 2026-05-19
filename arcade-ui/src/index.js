@@ -11,6 +11,7 @@ export {
   ARCADE_SOUND_EVENT_ERROR,
   ARCADE_SOUND_EVENT_SUCCESS,
   dispatchArcadeSound,
+  hasArcadeSoundTargets,
 } from './components/sounds.js'
 export { arcModal } from './components/modal.js'
 export { arcTabs, bindTabs } from './components/tabs.js'

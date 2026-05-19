@@ -45,8 +45,29 @@ export const ARCADE_SOUND_ATTRS = Object.freeze([
 /** Selettore unione per query nel subtree. */
 export const ARCADE_SOUND_SELECTOR = ARCADE_SOUND_ATTRS.map((a) => `[${a.attr}]`).join(',')
 
-const BTN_SELECTOR = '.arc-btn'
+export const ARCADE_BTN_SELECTOR = '.arc-btn'
+
+const BTN_SELECTOR = ARCADE_BTN_SELECTOR
 const BTN_PRIMARY_SELECTOR = '.arc-btn-primary'
+
+/**
+ * True se `root` (o un discendente) espone hook audio dichiarativi o `.arc-btn`.
+ *
+ * @param {Document | Element} root
+ * @returns {boolean}
+ */
+export function hasArcadeSoundTargets(root = document) {
+  if (typeof document === 'undefined' || !root) return false
+  const scope = root instanceof Document ? root.documentElement : root
+  if (!(scope instanceof Element)) return false
+
+  for (const { attr } of ARCADE_SOUND_ATTRS) {
+    const sel = `[${attr}]`
+    if (scope.matches(sel) || scope.querySelector(sel)) return true
+  }
+
+  return scope.matches(BTN_SELECTOR) || !!scope.querySelector(BTN_SELECTOR)
+}
 
 /**
  * @param {Element} el

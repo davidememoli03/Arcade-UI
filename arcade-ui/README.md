@@ -1498,9 +1498,34 @@ audio.mute()
 audio.unmute()
 ```
 
+### Browser gesture policy (first play)
+
+Most browsers block **Web Audio** until the user interacts with the page (click, key press, or touch). Until then:
+
+- `play()` **does not throw** — the id is **queued** and plays after the first gesture.
+- `audio.isActivated()` is `false`; after unlock it becomes `true`.
+- The library listens once on `document` (capture) for `click`, `keydown`, and `touchstart`, then calls `activate()` automatically.
+
+```js
+const audio = AudioManager.getInstance()
+
+audio.play('coin') // queued if no gesture yet — not lost
+
+// Optional: explicit unlock (splash “tap to enable sound”)
+document.querySelector('#enable-audio')?.addEventListener('click', () => {
+  audio.activate()
+})
+
+if (!audio.isActivated()) {
+  console.info('SFX will start after the next user gesture')
+}
+```
+
+The **first** `play()` after unlock also resumes a suspended `AudioContext`. Hover on `.arc-btn` before any gesture is silent by design (queue applies to programmatic `play()`; hover handlers still call `play('blip')` which queues until activation).
+
 ### Declarative SFX (`data-arc-sound-*`)
 
-At `DOMContentLoaded`, `AudioManager` calls `bindArcadeSounds()` on `document`: it wires **any element** with sound attributes and applies **defaults on `.arc-btn`** (hover → `blip`, primary click → `select`). For SPA/dynamic markup:
+**Lazy auto-bind:** at `DOMContentLoaded` the manager scans for `data-arc-sound-*` or `.arc-btn` only when present; a `MutationObserver` binds **new subtrees** in SPAs without scanning unrelated DOM. Manual bind remains available for full control:
 
 ```js
 import { bindArcadeSounds } from '@davide03memoli/arcade-ui'
@@ -1537,6 +1562,8 @@ import { dispatchArcadeSound } from '@davide03memoli/arcade-ui'
 // After validation — plays data-arc-sound-success on ancestor
 dispatchArcadeSound(formEl, 'success')
 ```
+
+**Accessibility:** with `prefers-reduced-motion: reduce`, hover feedback (`blip` / default `.arc-btn` hover) is suppressed; use `audio.mute()` for full silence. System volume/mute is not readable from the browser.
 
 Custom sounds via [Howler.js](https://howlerjs.com/) (optional peer dep):
 

@@ -47,6 +47,15 @@ export class ArcadeAudioService {
     return this.backend.isMuted()
   }
 
+  isActivated(): boolean {
+    return this.backend.isActivated()
+  }
+
+  activate(): this {
+    this.backend.activate()
+    return this
+  }
+
   register(id: string, src: string): this {
     this.backend.register(id, src)
     return this

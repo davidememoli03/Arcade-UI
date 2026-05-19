@@ -3,6 +3,7 @@ import {
   bindArcadeSoundsInRoot,
   dispatchArcadeSound,
   ARCADE_SOUND_EVENT_SUCCESS,
+  hasArcadeSoundTargets,
 } from '../audio/sound-bindings.js'
 
 describe('bindArcadeSoundsInRoot', () => {
@@ -63,6 +64,27 @@ describe('bindArcadeSoundsInRoot', () => {
     bindArcadeSoundsInRoot(play, document.body, bound)
     document.querySelector('button').dispatchEvent(new MouseEvent('click'))
     expect(play).not.toHaveBeenCalled()
+  })
+})
+
+describe('hasArcadeSoundTargets', () => {
+  beforeEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  it('false senza hook né .arc-btn', () => {
+    document.body.innerHTML = '<p>plain</p>'
+    expect(hasArcadeSoundTargets(document.body)).toBe(false)
+  })
+
+  it('true con .arc-btn', () => {
+    document.body.innerHTML = '<button class="arc-btn">x</button>'
+    expect(hasArcadeSoundTargets(document)).toBe(true)
+  })
+
+  it('true con data-arc-sound-click', () => {
+    document.body.innerHTML = '<span data-arc-sound-click="coin">x</span>'
+    expect(hasArcadeSoundTargets(document)).toBe(true)
   })
 })
 
