@@ -1978,6 +1978,10 @@ Requires: CSS Custom Properties · CSS Grid · Web Audio API
 
 Miglioramenti incrementali (audio dichiarativo, glitch, ARIA, parity Angular/React) sono tracciati in [`docs/DX-ROADMAP.md`](./docs/DX-ROADMAP.md) e nella [issue meta #115](https://github.com/davidememoli03/Arcade-UI/issues/115).
 
+### Accessibility (ARIA & keyboard)
+
+Guida trasversale per integratori: ruoli, `aria-*`, stati selected/disabled e tastiera per **button, modal, tabs, dropdown, card, toggle** — [`docs/ACCESSIBILITY.md`](./docs/ACCESSIBILITY.md).
+
 ---
 
 ## 🤝 Contributing

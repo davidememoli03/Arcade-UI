@@ -9,7 +9,9 @@ export default {
       description: {
         component:
           'Dialog modale arcade con backdrop scanlines, bordo neon doppio e focus trap. ' +
-          'Usare `arcModal.open(id)` / `arcModal.close(id)` per controllare programmaticamente.',
+          'Markup: `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, close con `aria-label`. ' +
+          'Tastiera: Tab trap, Esc, restore focus (`arcModal`). ' +
+          'Vedi [`docs/ACCESSIBILITY.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/ACCESSIBILITY.md#modal-arc-modal).',
       },
     },
   },

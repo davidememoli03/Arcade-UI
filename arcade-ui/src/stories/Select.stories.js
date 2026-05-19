@@ -15,14 +15,18 @@ function wireDropdowns(container) {
     })
   })
 
-  container.querySelectorAll('.arc-dropdown-option:not(.arc-dropdown-option--disabled)').forEach(opt => {
+  container.querySelectorAll('.arc-dropdown-option:not(.arc-dropdown-option-disabled)').forEach(opt => {
     opt.addEventListener('click', () => {
       const dropdown = opt.closest('.arc-dropdown')
       const trigger  = dropdown.querySelector('.arc-dropdown-trigger')
       const value    = dropdown.querySelector('.arc-dropdown-value')
       if (value) value.textContent = opt.textContent.replace(' ◀', '').trim()
-      dropdown.querySelectorAll('.arc-dropdown-option').forEach(o => o.classList.remove('arc-dropdown-option--selected'))
-      opt.classList.add('arc-dropdown-option--selected')
+      dropdown.querySelectorAll('.arc-dropdown-option').forEach(o => {
+        o.classList.remove('arc-dropdown-option-selected')
+        o.removeAttribute('aria-selected')
+      })
+      opt.classList.add('arc-dropdown-option-selected')
+      opt.setAttribute('aria-selected', 'true')
       trigger.setAttribute('aria-expanded', 'false')
     })
   })
@@ -38,16 +42,21 @@ function wireDropdowns(container) {
 }
 
 function dropdown({ variant = 'arc-dropdown-cyan', value = 'SELECT OPTION', options = [], disabled = false } = {}) {
+  const listId = `list-${Math.random().toString(36).slice(2, 8)}`
   return `
     <div class="arc-dropdown ${variant}${disabled ? ' arc-dropdown-disabled' : ''}">
-      <button class="arc-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false"${disabled ? ' disabled' : ''}>
+      <button type="button" class="arc-dropdown-trigger"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-controls="${listId}"${disabled ? ' disabled' : ''}>
         <span class="arc-dropdown-value">${value}</span>
         <span class="arc-dropdown-chevron" aria-hidden="true"></span>
       </button>
-      <ul class="arc-dropdown-menu" role="listbox">
+      <ul id="${listId}" class="arc-dropdown-menu" role="listbox">
         ${options.map(({ label, selected, disabled: dOpt }) => `
           <li class="arc-dropdown-option${selected ? ' arc-dropdown-option-selected' : ''}${dOpt ? ' arc-dropdown-option-disabled' : ''}"
               role="option"
+              ${selected ? 'aria-selected="true"' : ''}
               ${dOpt ? 'aria-disabled="true"' : ''}>
             ${label}
           </li>`).join('')}
@@ -72,6 +81,16 @@ const WEAPON_OPTIONS = [
 /** @type { import('@storybook/html').Meta } */
 export default {
   title: 'Components/Dropdown',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Listbox custom: `aria-haspopup`, `aria-expanded` sul trigger, `role="listbox"` / `role="option"`. ' +
+          'Navigazione da tastiera va implementata in app (vedi guida). ' +
+          '[`docs/ACCESSIBILITY.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/ACCESSIBILITY.md#dropdown-arc-dropdown).',
+      },
+    },
+  },
   decorators: [
     story => {
       const wrapper = document.createElement('div')

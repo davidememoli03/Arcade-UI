@@ -4,6 +4,8 @@ Tracciamento incrementale per **meno JS obbligatorio**, comportamenti **dichiara
 
 Issue meta su GitHub: [#115](https://github.com/davidememoli03/Arcade-UI/issues/115) — usare i commenti lì per proporre nuove voci; aprire issue figlie per singole feature.
 
+**Guida ARIA / tastiera (integratori):** [`docs/ACCESSIBILITY.md`](./ACCESSIBILITY.md) — button, modal, tabs, dropdown, card, toggle ([#119](https://github.com/davidememoli03/Arcade-UI/issues/119)).
+
 ## Legenda
 
 | Stato | Significato |
@@ -46,9 +48,9 @@ Issue meta su GitHub: [#115](https://github.com/davidememoli03/Arcade-UI/issues/
 | Voce | Stato | Issue / note |
 |------|-------|----------------|
 | Classi stato (es. `arc-card-selected`, `arc-toggle` disabled) | ✅ | CSS + README per componente |
-| Tabella ARIA per componente (role, `aria-*`, keyboard) | 📋 | [#119](https://github.com/davidememoli03/Arcade-UI/issues/119) |
-| Pattern `aria-selected` / `aria-disabled` coerenti tra card, tab, dropdown | 📋 | [#119](https://github.com/davidememoli03/Arcade-UI/issues/119) |
-| Storybook “accessibility” cross-component | 📋 | [#119](https://github.com/davidememoli03/Arcade-UI/issues/119) |
+| Tabella ARIA per componente (role, `aria-*`, keyboard) | ✅ | [#119](https://github.com/davidememoli03/Arcade-UI/issues/119) — [`docs/ACCESSIBILITY.md`](./ACCESSIBILITY.md) |
+| Pattern `aria-selected` / `aria-disabled` documentati (card, tab, dropdown) | ✅ | [#119](https://github.com/davidememoli03/Arcade-UI/issues/119) |
+| Storybook: note ARIA su modal, tabs, dropdown | ✅ | [#119](https://github.com/davidememoli03/Arcade-UI/issues/119) |
 
 ---
 

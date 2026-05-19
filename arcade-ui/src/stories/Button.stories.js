@@ -3,6 +3,15 @@
 /** @type { import('@storybook/html').Meta } */
 export default {
   title: 'Components/Button',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          '`<button type="button">` nativo — Tab, Enter/Space; `disabled` per stato non attivo. ' +
+          '[`docs/ACCESSIBILITY.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/ACCESSIBILITY.md#button-arc-btn).',
+      },
+    },
+  },
   argTypes: {
     label:    { control: 'text' },
     variant:  { control: { type: 'select' }, options: ['primary', 'ghost', 'danger'] },
@@ -21,7 +30,7 @@ function renderBtn({ label, variant, size, disabled }) {
   const variantClass = `arc-btn-${variant}`
   const sizeClass    = size !== 'default' ? `arc-btn-${size}` : ''
   const disabledAttr = disabled ? 'disabled' : ''
-  return `<button class="arc-btn ${variantClass} ${sizeClass}" ${disabledAttr}>${label}</button>`
+  return `<button type="button" class="arc-btn ${variantClass} ${sizeClass}" ${disabledAttr}>${label}</button>`
 }
 
 /** @type { import('@storybook/html').StoryObj } */

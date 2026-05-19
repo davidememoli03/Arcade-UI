@@ -3,6 +3,16 @@
 /** @type { import('@storybook/html').Meta } */
 export default {
   title: 'Components/Tabs',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Tab bar CSS-only (radio) o JS-driven (`data-arc-tabs` + `bindTabs`). ' +
+          'Pattern ARIA: `tablist` / `tab` / `tabpanel`, `aria-selected`, frecce con `arcTabs`. ' +
+          'Vedi [`docs/ACCESSIBILITY.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/ACCESSIBILITY.md#tabs-arc-tabs).',
+      },
+    },
+  },
   decorators: [
     story => `<div style="padding:2rem;max-width:720px;">${story()}</div>`,
   ],
