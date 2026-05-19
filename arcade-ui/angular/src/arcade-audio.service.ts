@@ -56,4 +56,9 @@ export class ArcadeAudioService {
     this.backend.bindButtons(root)
     return this
   }
+
+  bindArcadeSounds(root?: Document | Element): this {
+    this.backend.bindArcadeSounds(root)
+    return this
+  }
 }

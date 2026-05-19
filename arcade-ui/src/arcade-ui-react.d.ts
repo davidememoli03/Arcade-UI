@@ -25,11 +25,23 @@ declare module 'react' {
 
     // ─── Arcade buttons → AudioManager (optional overrides on `.arc-btn`) ─────
 
-    /** Built-in SFX id for hover (`mouseenter`). Empty string = silent hover. */
+    /** Built-in / registered SFX id on `mouseenter`. Empty string = silent. */
     'data-arc-sound-hover'?: string | undefined
 
-    /** Built-in or registered SFX id for primary `.arc-btn` click behaviour. */
+    /** SFX on `click` (keyboard + pointer). Overrides `.arc-btn-primary` default. */
     'data-arc-sound-click'?: string | undefined
+
+    /** SFX on `pointerdown` (touch-friendly, prima del click). */
+    'data-arc-sound-pointerdown'?: string | undefined
+
+    /** SFX on `focus`. */
+    'data-arc-sound-focus'?: string | undefined
+
+    /** SFX on bubbling custom event `arc:success` (`dispatchArcadeSound`). */
+    'data-arc-sound-success'?: string | undefined
+
+    /** SFX on bubbling custom event `arc:error`. */
+    'data-arc-sound-error'?: string | undefined
 
     // ─── Tabs (JS-driven `.arc-tabs`) ────────────────────────────────────────────
 

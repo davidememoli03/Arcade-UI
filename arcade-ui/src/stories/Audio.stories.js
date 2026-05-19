@@ -1,14 +1,22 @@
 // src/stories/Audio.stories.js
 import { AudioManager } from '../audio/AudioManager.js'
 
+/** Collega `data-arc-sound-*` nel canvas Storybook (equivalente a DOM dinamico post-mount). */
+function bindStorySounds(canvasElement) {
+  AudioManager.getInstance().bindArcadeSounds(canvasElement)
+}
+
 /** @type { import('@storybook/html').Meta } */
 export default {
   title: 'Audio/AudioManager',
+  play: async ({ canvasElement }) => {
+    bindStorySounds(canvasElement)
+  },
   parameters: {
     docs: {
       description: {
         component:
-          'Web Audio synth integrato; `AudioManager.getInstance()` per SFX. Tipizzazione Angular: `ArcadeAudioService` o token su README / [`docs/angular-consumer.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/angular-consumer.md).',
+          'Web Audio synth integrato; SFX dichiarativi via `data-arc-sound-*` (`bindArcadeSounds`). Tipizzazione Angular: `ArcadeAudioService` — [`docs/angular-consumer.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/angular-consumer.md).',
       },
     },
   },
@@ -240,7 +248,7 @@ export const AutoBinding = {
       <p style="${css.note}">
         AudioManager collega automaticamente i suoni a tutti i
         <code style="color:var(--arc-color-cyan)">.arc-btn</code> al DOMContentLoaded.
-        Usa <code>audio.bindButtons(root)</code> per elementi aggiunti dinamicamente.
+        Usa <code>bindArcadeSounds(root)</code> per elementi aggiunti dinamicamente.
       </p>
 
       <div style="display:flex;flex-direction:column;gap:1.5rem;">
@@ -304,9 +312,37 @@ export const AutoBinding = {
       </div>
     `
 
-    audio.bindButtons(wrap)
     return wrap
   },
+}
+
+// ─── Story: markup dichiarativo (tabs, modal, card) ───────────────────────────
+
+/** @type { import('@storybook/html').StoryObj } */
+export const DeclarativeMarkup = {
+  name: 'Dichiarativo — markup senza script audio',
+  render: () => `
+    <div style="padding:2rem;max-width:560px;display:flex;flex-direction:column;gap:1.25rem;">
+      <h2 style="font-family:var(--arc-font-pixel);font-size:1rem;margin:0;">DATA-ARC-SOUND-*</h2>
+      <p style="font-family:var(--arc-font-mono);font-size:.72rem;color:var(--arc-color-text-muted);margin:0;line-height:1.6;">
+        Solo attributi HTML — nessun <code>audio.play()</code> nella story. Il binding avviene via hook Storybook <code>play</code> → <code>bindArcadeSounds</code>.
+      </p>
+      <div class="arc-tabs arc-tabs-cyan" data-arc-tabs>
+        <div class="arc-tab-list" role="tablist">
+          <button type="button" class="arc-tab" role="tab" data-arc-sound-click="select">STAGE 1</button>
+          <button type="button" class="arc-tab" role="tab" data-arc-sound-click="blip">STAGE 2</button>
+        </div>
+        <div class="arc-tab-panel" role="tabpanel">Panel 1</div>
+        <div class="arc-tab-panel" role="tabpanel">Panel 2</div>
+      </div>
+      <button type="button" class="arc-btn arc-btn-ghost" data-arc-sound-click="coin">
+        OPEN MODAL (coin)
+      </button>
+      <article class="arc-card arc-card-cyan" data-arc-sound-hover="blip" data-arc-sound-click="win" style="cursor:pointer;padding:1rem;">
+        <span class="arc-text-h4" style="margin:0;">HOVER + CLICK CARD</span>
+      </article>
+    </div>
+  `,
 }
 
 // ─── Story: SFX Showcase ──────────────────────────────────────────────────────
@@ -452,7 +488,6 @@ export const Playground = {
       </p>
     `
 
-    audio.bindButtons(wrap)
     return wrap
   },
 }

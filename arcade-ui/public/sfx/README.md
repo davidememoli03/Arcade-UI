@@ -26,10 +26,12 @@ audio.play('win')
 audio.play('gameover')
 ```
 
-Buttons auto-bind at `DOMContentLoaded`: hover triggers `blip`, primary-button
-clicks trigger `select`. Override per element with `data-arc-sound-*` attributes:
+`bindArcadeSounds()` runs at `DOMContentLoaded` (via `AudioManager`): declarative
+`data-arc-sound-*` on any element, plus `.arc-btn` defaults (hover → `blip`,
+primary click → `select`). See README for the full attribute table.
 
 ```html
+<button class="arc-tab" data-arc-sound-click="select">STAGE 2</button>
 <button class="arc-btn arc-btn-primary" data-arc-sound-click="win">YOU WIN</button>
 <button class="arc-btn" data-arc-sound-hover="">SILENT HOVER</button>
 ```

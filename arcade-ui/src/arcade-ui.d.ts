@@ -23,6 +23,32 @@ export declare const glitch: {
   triggerGlitch: typeof triggerGlitch
 }
 
+// ─── Audio — dichiarativo (data-arc-sound-*) ─────────────────────────────────
+
+/** ID SFX built-in sintetizzati via Web Audio API. */
+export type ArcBuiltInSfxId = 'coin' | 'select' | 'blip' | 'error' | 'win' | 'gameover'
+
+/** Valore ammesso su attributi `data-arc-sound-*` (built-in, id registrato, URL, `""` = disabilita). */
+export type ArcadeSoundAttrValue = ArcBuiltInSfxId | (string & {})
+
+/** Eventi custom per `data-arc-sound-success` / `data-arc-sound-error`. */
+export declare const ARCADE_SOUND_EVENT_SUCCESS: 'arc:success'
+export declare const ARCADE_SOUND_EVENT_ERROR: 'arc:error'
+
+export declare const ARCADE_BUILTIN_SFX: readonly ArcBuiltInSfxId[]
+
+export declare const ARCADE_SOUND_ATTRS: readonly {
+  readonly datasetKey: string
+  readonly attr: string
+  readonly event: string
+  readonly custom?: boolean
+}[]
+
+/**
+ * Emette `arc:success` o `arc:error` su `el` (bubble) per attivare binding dichiarativi sul subtree.
+ */
+export declare function dispatchArcadeSound(el: Element, type: 'success' | 'error'): void
+
 // ─── AudioManager ─────────────────────────────────────────────────────────────
 
 /**
@@ -78,8 +104,11 @@ export declare class AudioManager {
   register(id: string, src: string): this
 
   /**
-   * Applica il binding audio su elementi .arc-btn aggiunti dinamicamente.
+   * Collega `data-arc-sound-*` e default `.arc-btn` nel subtree (anche contenuto SPA dinamico).
    */
+  bindArcadeSounds(root?: Document | Element): this
+
+  /** Alias di {@link bindArcadeSounds}. */
   bindButtons(root?: Document | Element): this
 }
 
@@ -368,8 +397,10 @@ export declare const arcSprite: {
 // ─── Button sounds ────────────────────────────────────────────────────────────
 
 /**
- * Collega i suoni built-in agli elementi con data-arc-sound-hover /
- * data-arc-sound-click trovati in `root`.
+ * Collega attributi `data-arc-sound-*` e default `.arc-btn` in `root`.
  * Chiamato automaticamente da AudioManager al DOMContentLoaded.
  */
+export declare function bindArcadeSounds(root?: Document | Element): void
+
+/** Alias di {@link bindArcadeSounds}. */
 export declare function bindButtonSounds(root?: Document | Element): void

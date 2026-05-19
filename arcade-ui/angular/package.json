@@ -1,6 +1,6 @@
 {
   "name": "@davide03memoli/arcade-ui-angular",
-  "version": "4.5.0",
+  "version": "5.0.0",
   "private": true,
   "peerDependencies": {
     "@angular/common": ">=17.0.0",

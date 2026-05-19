@@ -4,11 +4,12 @@
 import { AudioManager } from '../audio/AudioManager.js'
 
 /**
- * Collega i suoni built-in agli elementi con data-arc-sound-hover / data-arc-sound-click
- * trovati in `root`. Chiamato automaticamente da AudioManager al DOMContentLoaded.
+ * Alias di {@link bindArcadeSounds} — mantiene compatibilità con API esistente.
  *
  * @param {Document|Element} root
  */
 export function bindButtonSounds(root = document) {
   AudioManager.getInstance().bindButtons(root)
 }
+
+export { bindArcadeSounds } from './sounds.js'

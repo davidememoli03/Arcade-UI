@@ -349,6 +349,19 @@ describe('AudioManager — binding bottoni DOM', () => {
     expect(mockOscStart.mock.calls.length).toBeGreaterThanOrEqual(1)
   })
 
+  it('bindArcadeSounds() collega data-arc-sound-click su non .arc-btn', async () => {
+    document.body.innerHTML =
+      '<div class="arc-card" data-arc-sound-click="coin">Pick</div>'
+    const audio = AudioManager.getInstance()
+    await flushPromises()
+
+    audio.bindArcadeSounds(document.body)
+    simulateUserClick()
+
+    document.querySelector('.arc-card').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    expect(mockOscStart).toHaveBeenCalled()
+  })
+
   it('click su .arc-btn non-primary non produce suoni di default', async () => {
     document.body.innerHTML = '<button class="arc-btn arc-btn-ghost">Ghost</button>'
     const audio = AudioManager.getInstance()

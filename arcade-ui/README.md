@@ -1498,25 +1498,44 @@ audio.mute()
 audio.unmute()
 ```
 
-Auto-binding — add to any `.arc-btn` at DOM-ready:
+### Declarative SFX (`data-arc-sound-*`)
+
+At `DOMContentLoaded`, `AudioManager` calls `bindArcadeSounds()` on `document`: it wires **any element** with sound attributes and applies **defaults on `.arc-btn`** (hover → `blip`, primary click → `select`). For SPA/dynamic markup:
 
 ```js
-// Fires automatically at DOMContentLoaded.
-// Call manually for dynamically added elements:
-audio.bindButtons(myNewSection)
+import { bindArcadeSounds } from '@davide03memoli/arcade-ui'
+
+bindArcadeSounds(myNewSection) // or audio.bindButtons(myNewSection) — same API
 ```
 
-Override sounds per-element:
+| Attribute | When it plays | Value |
+|-----------|---------------|--------|
+| `data-arc-sound-click` | `click` (keyboard + mouse) | Built-in id (`coin`, `select`, …), `register()` id, or audio URL |
+| `data-arc-sound-pointerdown` | `pointerdown` | Same — useful on touch before `click` |
+| `data-arc-sound-hover` | `mouseenter` | Same; `""` disables hover sound |
+| `data-arc-sound-focus` | `focus` | Same |
+| `data-arc-sound-success` | bubbling event `arc:success` | Same — use `dispatchArcadeSound(el, 'success')` |
+| `data-arc-sound-error` | bubbling event `arc:error` | Same — use `dispatchArcadeSound(el, 'error')` |
+
+Built-in ids: `coin`, `select`, `blip`, `error`, `win`, `gameover`.
+
+**`.arc-btn` defaults** (only if the attribute is omitted): hover → `blip`; `.arc-btn-primary` click → `select`. Overrides replace defaults; empty `data-arc-sound-hover=""` silences hover.
 
 ```html
-<!-- custom sound on click -->
+<!-- Tab / card / modal trigger — no custom JS -->
+<button type="button" class="arc-tab" data-arc-sound-click="select">STAGE 2</button>
+<button type="button" class="arc-btn" data-arc-modal-open="pause" data-arc-sound-click="coin">PAUSE</button>
+
 <button class="arc-btn arc-btn-primary" data-arc-sound-click="win">YOU WIN</button>
-
-<!-- custom sound on hover -->
 <button class="arc-btn" data-arc-sound-hover="error">DANGER ZONE</button>
+<button class="arc-btn" data-arc-sound-hover="">SILENT HOVER</button>
+```
 
-<!-- silence hover -->
-<button class="arc-btn" data-arc-sound-hover="">SILENT</button>
+```js
+import { dispatchArcadeSound } from '@davide03memoli/arcade-ui'
+
+// After validation — plays data-arc-sound-success on ancestor
+dispatchArcadeSound(formEl, 'success')
 ```
 
 Custom sounds via [Howler.js](https://howlerjs.com/) (optional peer dep):
@@ -1540,7 +1559,9 @@ audio.play('powerup')
 | `initGlitch(root?)` | Populate `data-text` on all `.arc-glitch` elements |
 | `triggerGlitch(el, duration?)` | Trigger glitch burst on an element |
 | `glitch` | `{ initGlitch, triggerGlitch }` namespace |
-| `bindButtonSounds(root?)` | Manually bind sounds to `.arc-btn` elements |
+| `bindArcadeSounds(root?)` | Bind `data-arc-sound-*` + `.arc-btn` defaults in subtree |
+| `bindButtonSounds(root?)` | Alias of `bindArcadeSounds` |
+| `dispatchArcadeSound(el, 'success' \| 'error')` | Fire custom events for declarative success/error hooks |
 | `arcToast` | Show/dismiss arcade-style toast notifications |
 | `version` | Package version string |
 

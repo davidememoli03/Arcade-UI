@@ -5,8 +5,7 @@
 const STORAGE_VOLUME = 'arc-audio-volume'
 const STORAGE_MUTED  = 'arc-audio-muted'
 
-const BTN_SELECTOR         = '.arc-btn'
-const BTN_PRIMARY_SELECTOR = '.arc-btn-primary'
+import { bindArcadeSoundsInRoot } from './sound-bindings.js'
 
 // ─── Web Audio synth ──────────────────────────────────────────────────────────
 
@@ -220,7 +219,7 @@ class AudioManager {
 
   #scheduleAutoBinding() {
     if (typeof document === 'undefined') return
-    const bind = () => this.#bindArcButtons()
+    const bind = () => this.bindArcadeSounds(document)
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', bind, { once: true })
     } else {
@@ -229,37 +228,14 @@ class AudioManager {
   }
 
   /**
-   * Applica listener audio sugli elementi .arc-btn trovati in `root`.
-   * - mouseenter → 'blip'   (override con data-arc-sound-hover, "" = disabilita)
-   * - click      → 'select' solo su .arc-btn-primary (override con data-arc-sound-click)
-   *
    * @param {Document|Element} root
    */
-  #bindArcButtons(root = document) {
-    root.querySelectorAll(BTN_SELECTOR).forEach(el => {
-      if (this.#boundElements.has(el)) return
-      this.#boundElements.add(el)
-
-      const hasHoverAttr = 'arcSoundHover' in el.dataset
-      const hasClickAttr = 'arcSoundClick' in el.dataset
-
-      const hoverId  = hasHoverAttr ? el.dataset.arcSoundHover  : 'blip'
-      const clickId  = hasClickAttr
-        ? el.dataset.arcSoundClick
-        : el.matches(BTN_PRIMARY_SELECTOR) ? 'select' : null
-
-      if (hoverId) {
-        el.addEventListener('mouseenter', () => {
-          if (!el.disabled) this.play(hoverId)
-        })
-      }
-
-      if (clickId) {
-        el.addEventListener('click', () => {
-          if (!el.disabled) this.play(clickId)
-        })
-      }
-    })
+  #bindSounds(root = document) {
+    bindArcadeSoundsInRoot(
+      (id) => this.play(id),
+      root,
+      this.#boundElements,
+    )
   }
 
   // ─── API pubblica ────────────────────────────────────────────────────────────
@@ -370,13 +346,24 @@ class AudioManager {
   }
 
   /**
-   * Applica il binding audio su nuovi elementi .arc-btn aggiunti dinamicamente.
+   * Collega attributi `data-arc-sound-*` e default `.arc-btn` nel subtree.
+   * Chiamato automaticamente a `DOMContentLoaded`; richiamare su contenuto SPA dinamico.
+   *
+   * @param {Document|Element} root
+   * @returns {this}
+   */
+  bindArcadeSounds(root = document) {
+    this.#bindSounds(root)
+    return this
+  }
+
+  /**
+   * Alias di {@link bindArcadeSounds} — mantiene compatibilità con API esistente.
    * @param {Document|Element} root
    * @returns {this}
    */
   bindButtons(root = document) {
-    this.#bindArcButtons(root)
-    return this
+    return this.bindArcadeSounds(root)
   }
 
   /** Lista degli ID SFX built-in. */

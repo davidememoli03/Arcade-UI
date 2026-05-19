@@ -12,7 +12,9 @@ import {
   arcTabs,
   arcToast,
   bindArcDisplays,
+  bindArcadeSounds,
   bindButtonSounds,
+  dispatchArcadeSound,
   bindSliders,
   bindTabs,
   glitch,
@@ -51,7 +53,9 @@ function exerciseDomApis(doc: Document): void {
   void AudioManager.SFX
   audio.register('custom', '/beep.mp3').bindButtons(doc.body)
 
+  bindArcadeSounds(doc)
   bindButtonSounds(doc)
+  dispatchArcadeSound(doc.body, 'success')
 
   arcModal.open('backdrop-id')
   arcModal.close('backdrop-id')
