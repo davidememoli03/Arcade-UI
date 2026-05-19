@@ -6,6 +6,8 @@ Issue meta su GitHub: [#115](https://github.com/davidememoli03/Arcade-UI/issues/
 
 **Guida ARIA / tastiera (integratori):** [`docs/ACCESSIBILITY.md`](./ACCESSIBILITY.md) — button, modal, tabs, dropdown, card, toggle ([#119](https://github.com/davidememoli03/Arcade-UI/issues/119)).
 
+**Parity framework (markup ↔ Angular ↔ React):** [`docs/FRAMEWORK-PARITY.md`](./FRAMEWORK-PARITY.md) ([#120](https://github.com/davidememoli03/Arcade-UI/issues/120)).
+
 ## Legenda
 
 | Stato | Significato |
@@ -63,8 +65,9 @@ Issue meta su GitHub: [#115](https://github.com/davidememoli03/Arcade-UI/issues/
 | Entry `@davide03memoli/arcade-ui/angular` (directive + service) | ✅ | [#107](https://github.com/davidememoli03/Arcade-UI/issues/107) |
 | Docs Angular (`docs/angular-consumer.md`) | ✅ | [#108](https://github.com/davidememoli03/Arcade-UI/issues/108) |
 | Parity attributi audio in augmentation React | ✅ | `data-arc-sound-*` in `arcade-ui-react.d.ts` |
-| Input Angular per `data-arc-sound-*` (wrapper template) | 📋 | [#120](https://github.com/davidememoli03/Arcade-UI/issues/120) |
-| Smoke / esempio Angular per suoni dichiarativi | 📋 | [#120](https://github.com/davidememoli03/Arcade-UI/issues/120) |
+| Mapping 1:1 markup ↔ Angular ↔ React | ✅ | [#120](https://github.com/davidememoli03/Arcade-UI/issues/120) — [`docs/FRAMEWORK-PARITY.md`](./FRAMEWORK-PARITY.md) |
+| `ArcadeSoundDirective` (`arcadeSoundClick`, …) | ✅ | [#120](https://github.com/davidememoli03/Arcade-UI/issues/120) — `angular/src/arcade-sound.directive.ts` |
+| Smoke Angular template suoni + React `data-arc-sound-*` | ✅ | `smoke:angular-sound`, `smoke:react-jsx` |
 
 ---
 

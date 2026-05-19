@@ -6,10 +6,12 @@
  * see stable module shape — ng-packagr used to emit import-after-export blocks that confused `tsc`.
  */
 import { ArcadeGlitchDirective } from './arcade-glitch.directive'
+import { ArcadeSoundDirective } from './arcade-sound.directive'
 import { ArcadeThemeDirective } from './arcade-theme.directive'
 
 export { ArcadeAudioService } from './arcade-audio.service'
 export { ArcadeGlitchDirective } from './arcade-glitch.directive'
+export { ArcadeSoundDirective } from './arcade-sound.directive'
 export {
   ARCADE_THEME_CLASSES,
   ArcadeThemeDirective,
@@ -19,4 +21,5 @@ export {
 export const arcadeUiAngularImports = [
   ArcadeThemeDirective,
   ArcadeGlitchDirective,
+  ArcadeSoundDirective,
 ] as const

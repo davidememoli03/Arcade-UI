@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "target": "ES2022",
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "noEmit": false,
+    "outDir": "./out"
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "strictInjectionParameters": true
+  },
+  "files": ["smoke-sound.component.ts"]
+}

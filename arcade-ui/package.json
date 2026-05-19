@@ -1,6 +1,6 @@
 {
   "name": "@davide03memoli/arcade-ui",
-  "version": "5.5.0",
+  "version": "5.6.0",
   "description": "UI component library inspired by 80s arcade games. Retro style, neon palette, pixel animations, built-in SFX — zero runtime dependencies.",
   "keywords": [
     "ui",
@@ -68,6 +68,7 @@
     "public/fonts",
     "docs/animations/previews",
     "docs/angular-consumer.md",
+    "docs/FRAMEWORK-PARITY.md",
     "docs/DX-ROADMAP.md",
     "docs/ACCESSIBILITY.md",
     "LICENSE"
@@ -97,7 +98,8 @@
     "verify:dts": "npm run verify:exports && npm run smoke:dts",
     "smoke:react-jsx": "node scripts/smoke-react-jsx.mjs",
     "smoke:angular-types": "node scripts/smoke-angular-types.mjs",
-    "verify:consumers": "npm run verify:dts && npm run smoke:react-jsx && npm run smoke:angular-types",
+    "smoke:angular-sound": "node scripts/smoke-angular-sound.mjs",
+    "verify:consumers": "npm run verify:dts && npm run smoke:react-jsx && npm run smoke:angular-types && npm run smoke:angular-sound",
     "prepublishOnly": "npm run lint && npm test && npm run build && npm run verify:consumers",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"

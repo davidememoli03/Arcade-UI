@@ -1751,9 +1751,46 @@ useEffect(() => {
 
 Working sources that compile under **`jsx: react-jsx`**, strict TS, and **`moduleResolution: NodeNext`** with **React 18 and React 19** live in [`react-jsx-consumer/`](./react-jsx-consumer/) (`npm run smoke:react-jsx`).
 
+### Framework parity (markup ↔ React)
+
+Tabella completa (audio, glitch, theme, modal, tabs): [`docs/FRAMEWORK-PARITY.md`](./docs/FRAMEWORK-PARITY.md). Estratto audio:
+
+| `data-*` HTML | React JSX (`import '@davide03memoli/arcade-ui/react'`) |
+|---------------|--------------------------------------------------------|
+| `data-arc-sound-click` | `data-arc-sound-click="win"` |
+| `data-arc-sound-hover` | `data-arc-sound-hover="blip"` o `data-arc-sound-hover=""` |
+| `data-arc-sound-pointerdown` | `data-arc-sound-pointerdown` |
+| `data-arc-sound-focus` | `data-arc-sound-focus` |
+| `data-arc-sound-success` / `-error` | stessi nomi — usa `dispatchArcadeSound(el, 'success')` |
+
+```tsx
+import '@davide03memoli/arcade-ui/react'
+
+export function SfxButtons() {
+  return (
+    <>
+      <button type="button" className="arc-btn arc-btn-primary" data-arc-sound-click="win">
+        YOU WIN
+      </button>
+      <button type="button" className="arc-btn" data-arc-sound-hover="">
+        SILENT HOVER
+      </button>
+    </>
+  )
+}
+```
+
+`bindArcadeSounds()` parte in automatico a `DOMContentLoaded` se ci sono `.arc-btn` o `data-arc-sound-*`; in SPA montate a runtime, chiama `AudioManager.getInstance().bindArcadeSounds(ref.current)` dopo il mount.
+
 ### Thin wrappers (alternative)
 
 When you prefer explicit props or shared defaults instead of repeating raw attributes, define small components that render `arc-btn`, modal triggers, etc. Reference implementations live in-repo under [`react-jsx-consumer/src/wrappers.tsx`](./react-jsx-consumer/src/wrappers.tsx).
+
+| Wrapper prop | `data-*` emesso |
+|--------------|-----------------|
+| `arcSoundClick` | `data-arc-sound-click` |
+| `arcSoundHover` | `data-arc-sound-hover` |
+| `modalId` | `data-arc-modal-open` |
 
 | Approach | Prefer when |
 |----------|-------------|
@@ -1775,6 +1812,8 @@ When you prefer explicit props or shared defaults instead of repeating raw attri
 **Markup reference:** class names and composition mirror [**Storybook**](https://davidememoli03.github.io/Arcade-UI/).
 
 **Extended copy-paste guide:** [`docs/angular-consumer.md`](./docs/angular-consumer.md) (included in the npm package).
+
+**Framework parity (vanilla ↔ Angular ↔ React):** [`docs/FRAMEWORK-PARITY.md`](./docs/FRAMEWORK-PARITY.md).
 
 Peer deps when using the Angular entry: `@angular/core`, `@angular/common` ≥ 17, `rxjs` ≥ 7.8. Runtime symbols (`initGlitch`, `AudioManager`, …) come from `@davide03memoli/arcade-ui`.
 
@@ -1873,7 +1912,9 @@ import {
       arcadeGlitch
       arcadeGlitchTarget="element"
     >
-      <button type="button" class="arc-btn arc-btn-primary" (click)="coin()">COIN</button>
+      <button type="button" class="arc-btn arc-btn-primary" arcadeSoundClick="coin" (click)="coin()">
+        COIN
+      </button>
     </main>
   `,
 })
@@ -1889,7 +1930,8 @@ export class AppComponent {
 ```
 
 - **`ArcadeThemeDirective`** (`arcadeTheme`, `arcadeThemeTarget`): toggles known `arc-theme-*` on `<html>` or host.
-- **`ArcadeGlitchDirective`** (`arcadeGlitch`, `arcadeGlitchTarget`): runs `initGlitch` on `document` or host **after** view init (safe/idempotent).
+- **`ArcadeGlitchDirective`** (`arcadeGlitch`, `arcadeGlitchTarget`): runs `bindGlitch` on `document` or host **after** view init (safe/idempotent).
+- **`ArcadeSoundDirective`** (`arcadeSoundClick`, `arcadeSoundHover`, …): sets `data-arc-sound-*` on the host and runs `bindArcadeSounds` — parity con markup vanilla ([#120](https://github.com/davidememoli03/Arcade-UI/issues/120)).
 - **`ArcadeAudioService`**: typed façade over `AudioManager`.
 
 ### Minimal standalone — `AfterViewInit` + typed `AudioManager`

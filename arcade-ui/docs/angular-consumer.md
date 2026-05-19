@@ -124,7 +124,9 @@ import {
       arcadeGlitch
       arcadeGlitchTarget="element"
     >
-      <button type="button" class="arc-btn arc-btn-primary" (click)="coin()">COIN</button>
+      <button type="button" class="arc-btn arc-btn-primary" arcadeSoundClick="coin" (click)="coin()">
+        COIN
+      </button>
     </main>
   `,
 })
@@ -157,3 +159,64 @@ export const ARCADE_AUDIO_MANAGER = new InjectionToken<AudioManager>(
 ```
 
 API reference in published typings: `angular/src/*.ts` → `dist/angular/*.d.ts`.
+
+---
+
+## Framework parity (markup ↔ Angular)
+
+Tabella completa vanilla / React: [`FRAMEWORK-PARITY.md`](./FRAMEWORK-PARITY.md).
+
+### Audio dichiarativo — mapping
+
+| `data-*` HTML | Angular `@Input` (`ArcadeSoundDirective`) |
+|---------------|-------------------------------------------|
+| `data-arc-sound-click` | `arcadeSoundClick` |
+| `data-arc-sound-pointerdown` | `arcadeSoundPointerdown` |
+| `data-arc-sound-hover` | `arcadeSoundHover` |
+| `data-arc-sound-focus` | `arcadeSoundFocus` |
+| `data-arc-sound-success` | `arcadeSoundSuccess` |
+| `data-arc-sound-error` | `arcadeSoundError` |
+
+La directive scrive gli stessi attributi sul host e invoca `bindArcadeSounds(host)` dopo il mount. Valore `""` disabilita un hook (es. hover silenzioso).
+
+```typescript
+import { Component } from '@angular/core'
+import { arcadeUiAngularImports } from '@davide03memoli/arcade-ui/angular'
+
+@Component({
+  selector: 'app-sfx',
+  standalone: true,
+  imports: [...arcadeUiAngularImports],
+  template: `
+    <button type="button" class="arc-btn arc-btn-primary" arcadeSoundClick="win">
+      YOU WIN
+    </button>
+    <button type="button" class="arc-tab" arcadeSoundClick="select">STAGE 2</button>
+    <button type="button" class="arc-btn" [arcadeSoundHover]="''">SILENT HOVER</button>
+  `,
+})
+export class SfxComponent {}
+```
+
+Markup equivalente senza directive (utile se preferisci solo attributi):
+
+```html
+<button type="button" class="arc-btn arc-btn-primary" data-arc-sound-click="win">YOU WIN</button>
+```
+
+Dopo contenuto dinamico (router, `*ngIf`), richiama `this.arcadeAudio.bindArcadeSounds(container)` in `ngAfterViewInit`.
+
+### Glitch & theme — mapping rapido
+
+| Vanilla | Angular |
+|---------|---------|
+| `bindGlitch(root)` | `[arcadeGlitch]` + `arcadeGlitchTarget="element"` |
+| classe `arc-theme-phosphor` su `<html>` | `[arcadeTheme]="'arc-theme-phosphor'"` + `arcadeThemeTarget="document"` |
+
+### Imperativo vs dichiarativo
+
+| Caso | Preferisci |
+|------|------------|
+| SFX su click/hover di controlli markup | `arcadeSoundClick` / `data-arc-sound-*` |
+| SFX da logica TypeScript | `ArcadeAudioService.play()` |
+| Subtree SPA appena montato | `bindArcadeSounds(nativeElement)` |

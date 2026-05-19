@@ -36,6 +36,12 @@ export function ArcadeJsxSmokeApp() {
         <ArcButton variant="primary" arcSoundClick="win">
           WIN (wrapper)
         </ArcButton>
+        <button type="button" className="arc-btn arc-btn-ghost" data-arc-sound-click="coin">
+          COIN (data-arc-sound-click)
+        </button>
+        <button type="button" className="arc-btn" data-arc-sound-hover="">
+          SILENT HOVER
+        </button>
         <span className="arc-glitch" data-text="OK" data-arc-glitch-intensity="medium">
           OK
         </span>
