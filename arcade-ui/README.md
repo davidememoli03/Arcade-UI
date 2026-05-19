@@ -1583,9 +1583,11 @@ audio.play('powerup')
 | Export | Description |
 |--------|-------------|
 | `AudioManager` | Singleton for SFX playback |
-| `initGlitch(root?)` | Populate `data-text` on all `.arc-glitch` elements |
-| `triggerGlitch(el, duration?)` | Trigger glitch burst on an element |
-| `glitch` | `{ initGlitch, triggerGlitch }` namespace |
+| `initGlitch(root?)` | Populate `data-text` on glitch elements (idempotent) |
+| `bindGlitch(root?)` | `initGlitch` + declarative burst (`data-arc-glitch-duration`); auto at `DOMContentLoaded` |
+| `hasGlitchTargets(root?)` | Whether subtree needs glitch binding |
+| `triggerGlitch(el, duration?)` | Imperative glitch burst on an element |
+| `glitch` | `{ initGlitch, triggerGlitch, bindGlitch }` namespace |
 | `bindArcadeSounds(root?)` | Bind `data-arc-sound-*` + `.arc-btn` defaults in subtree |
 | `bindButtonSounds(root?)` | Alias of `bindArcadeSounds` |
 | `dispatchArcadeSound(el, 'success' \| 'error')` | Fire custom events for declarative success/error hooks |
@@ -1593,11 +1595,28 @@ audio.play('powerup')
 | `version` | Package version string |
 
 ```js
-import { initGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
+import { bindGlitch, initGlitch, triggerGlitch } from '@davide03memoli/arcade-ui'
 
-initGlitch()                    // auto-init all .arc-glitch
-triggerGlitch(el, 600)          // burst for 600ms
+bindGlitch()                    // auto at DOMContentLoaded when importing the package
+bindGlitch(dynamicSection)      // SPA / lazy islands
+initGlitch(host)                // data-text only (subset of bindGlitch)
+triggerGlitch(el, 600)          // imperative burst
 ```
+
+**Declarative burst** (no manual `triggerGlitch`):
+
+```html
+<span class="arc-glitch" data-arc-glitch-duration="800">CLICK ME</span>
+<button class="arc-btn arc-glitch" data-arc-glitch-duration="400" data-arc-glitch-burst="click">
+  BURST
+</button>
+```
+
+| Attribute | Role |
+|-----------|------|
+| `data-arc-glitch-intensity` | CSS-only cadence (`low` / `medium` / `high`) |
+| `data-arc-glitch-duration` | ms for `triggerGlitch` on click (or hover via `data-arc-glitch-burst`) |
+| `data-arc-glitch-burst` | `click` (default) or `hover` |
 
 ---
 
@@ -1654,7 +1673,7 @@ import '@davide03memoli/arcade-ui/themes/phosphor-green' // or amber-crt / magen
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
-import { initGlitch } from '@davide03memoli/arcade-ui'
+import { bindGlitch } from '@davide03memoli/arcade-ui'
 import { App } from './App'
 
 document.documentElement.classList.add('arc-theme-phosphor')
@@ -1684,12 +1703,12 @@ declare module '@davide03memoli/arcade-ui/themes/ice-blue'
 
 Theme class ↔ CSS file mapping is documented in `arcade-ui.d.ts` header comments.
 
-### `initGlitch` inside a component (`useEffect`)
+### `bindGlitch` inside a component (`useEffect`)
 
-When initialization must follow a **mounted DOM subtree** (portal boundaries, lazy islands), scope `initGlitch` to a **container ref**:
+When initialization must follow a **mounted DOM subtree** (portal boundaries, lazy islands), scope `bindGlitch` to a **container ref**:
 
 ```tsx
-import { initGlitch } from '@davide03memoli/arcade-ui'
+import { bindGlitch } from '@davide03memoli/arcade-ui'
 import { useEffect, useRef, type ReactNode } from 'react'
 
 export function GlitchSurface({ children }: { children: ReactNode }) {
@@ -1698,14 +1717,14 @@ export function GlitchSurface({ children }: { children: ReactNode }) {
   useEffect(() => {
     const root = rootRef.current
     if (!root) return
-    initGlitch(root)
+    bindGlitch(root)
   }, [])
 
   return <div ref={rootRef}>{children}</div>
 }
 ```
 
-`initGlitch` only fills missing `data-text` attributes (`src/effects/glitch.js`), so **re-running it on the same nodes is a no-op**. React **Strict Mode** double-mounts in development and runs effects twice; duplicate calls remain safe. Prefer **`initGlitch(document)` once in `main.tsx`** (outside `useEffect`) when you want global setup without reasoning about effect scheduling.
+`bindGlitch` / `initGlitch` only fill missing `data-text` attributes (`src/effects/glitch.js`), so **re-running on the same nodes is a no-op**. React **Strict Mode** double-mounts in development; duplicate calls remain safe. Prefer **`bindGlitch(document)` once in `main.tsx`** (outside `useEffect`) for global setup.
 
 ### Typed hook for `AudioManager`
 

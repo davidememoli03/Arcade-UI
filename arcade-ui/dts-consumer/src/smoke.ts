@@ -18,7 +18,9 @@ import {
   bindSliders,
   bindTabs,
   glitch,
+  bindGlitch,
   initGlitch,
+  hasGlitchTargets,
   setArcDisplayValue,
   triggerGlitch,
   updateSlider,
@@ -39,10 +41,13 @@ import '@davide03memoli/arcade-ui/tokens/spacing'
 import '@davide03memoli/arcade-ui/tokens/typography'
 
 function exerciseDomApis(doc: Document): void {
+  bindGlitch(doc)
+  hasGlitchTargets(doc)
   initGlitch(doc)
   initGlitch(doc.documentElement)
   triggerGlitch(doc.body)
 
+  glitch.bindGlitch()
   glitch.initGlitch()
   glitch.triggerGlitch(doc.body)
 

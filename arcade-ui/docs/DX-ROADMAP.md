@@ -31,13 +31,13 @@ Issue meta su GitHub: [#115](https://github.com/davidememoli03/Arcade-UI/issues/
 | Voce | Stato | Issue / note |
 |------|-------|----------------|
 | `data-arc-glitch-intensity` (CSS burst) | ✅ | CSS + tipi React `low \| medium \| high` |
-| `initGlitch` popola `data-text` | ✅ | Manuale o `ArcadeGlitchDirective` (Angular) |
-| Auto-init `initGlitch` a `DOMContentLoaded` | 📋 | [#118](https://github.com/davidememoli03/Arcade-UI/issues/118) — allineare ad audio/tabs/modal |
-| `bindGlitch(root)` per markup SPA dinamico | 📋 | [#118](https://github.com/davidememoli03/Arcade-UI/issues/118) |
-| `data-arc-glitch-duration` per burst `triggerGlitch` | 📋 | [#118](https://github.com/davidememoli03/Arcade-UI/issues/118) |
-| Storybook glitch senza `initGlitch()` nella story | 📋 | Dipende da auto-init / decorator Storybook |
+| `initGlitch` popola `data-text` | ✅ | Idempotente; parte di `bindGlitch` |
+| Auto-init `bindGlitch` a `DOMContentLoaded` | ✅ | [#118](https://github.com/davidememoli03/Arcade-UI/issues/118) — `scheduleGlitchAutoBinding` da `index.js` |
+| `bindGlitch(root)` per markup SPA dinamico | ✅ | [#118](https://github.com/davidememoli03/Arcade-UI/issues/118) + `MutationObserver` |
+| `data-arc-glitch-duration` per burst `triggerGlitch` | ✅ | [#118](https://github.com/davidememoli03/Arcade-UI/issues/118) — `data-arc-glitch-burst` click/hover |
+| Storybook glitch senza `initGlitch()` nel render | ✅ | Hook `play` → `bindGlitch`; story *Declarative burst* |
 
-Oggi: intensità è **solo CSS**; `triggerGlitch(el, ms)` resta **imperativo** per burst on-demand.
+`triggerGlitch(el, ms)` resta disponibile per burst imperativi custom.
 
 ---
 
@@ -77,7 +77,7 @@ Già presenti a `DOMContentLoaded` (vanilla):
 | Tabs | `bindTabs` |
 | Slider | `bindSliders` |
 | Display 7-seg | `bindArcDisplays` |
-| Glitch | *solo manuale* → vedi [#118](https://github.com/davidememoli03/Arcade-UI/issues/118) |
+| Glitch | `bindGlitch` (lazy + observer) |
 
 ---
 

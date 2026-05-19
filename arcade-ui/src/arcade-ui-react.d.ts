@@ -86,9 +86,15 @@ declare module 'react' {
      */
     'data-arc-glitch-intensity'?: 'low' | 'medium' | 'high' | undefined
 
+    /** Burst ms — `bindGlitch` calls `triggerGlitch` on click (default) or hover. */
+    'data-arc-glitch-duration'?: number | string | undefined
+
+    /** `click` (default) or `hover` with `data-arc-glitch-duration`. */
+    'data-arc-glitch-burst'?: 'click' | 'hover' | undefined
+
     /**
      * Label echoed via CSS `attr(data-text)` for chromatic / glitch layers.
-     * `initGlitch` may populate from textContent when omitted.
+     * `bindGlitch` / `initGlitch` may populate from textContent when omitted.
      */
     'data-text'?: string | undefined
   }

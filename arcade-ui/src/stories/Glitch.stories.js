@@ -1,14 +1,22 @@
 // src/stories/Glitch.stories.js
-import { initGlitch, triggerGlitch } from '../effects/glitch.js'
+import { bindGlitch, triggerGlitch } from '../effects/glitch.js'
+
+/** @param {HTMLElement} canvasElement */
+function bindStoryGlitch(canvasElement) {
+  bindGlitch(canvasElement)
+}
 
 /** @type { import('@storybook/html').Meta } */
 export default {
   title: 'Effects/Glitch',
+  play: async ({ canvasElement }) => {
+    bindStoryGlitch(canvasElement)
+  },
   parameters: {
     docs: {
       description: {
         component:
-          'Effetto glitch su testo; `initGlitch` prepara `data-text`. In Angular chiama `initGlitch` dopo `AfterViewInit` o usa la direttiva opzionale da `@davide03memoli/arcade-ui/angular` — vedi [`docs/angular-consumer.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/angular-consumer.md).',
+          'Effetto glitch: `bindGlitch` (auto a DOMContentLoaded) popola `data-text` e collega `data-arc-glitch-duration`. Angular: `ArcadeGlitchDirective` — [`docs/angular-consumer.md`](https://github.com/davidememoli03/Arcade-UI/blob/main/arcade-ui/docs/angular-consumer.md).',
       },
     },
   },
@@ -181,14 +189,39 @@ export const ImageElement = {
         <span class="arc-glow-cyan" style="font-family:var(--arc-font-pixel);font-size:1.2rem;">BG GLITCH</span>
       </div>
       <p style="font-family:var(--arc-font-mono);font-size:.75rem;color:var(--arc-color-text-muted);max-width:340px;">
-        Il layer ::before clona <code>background: inherit</code>, spostando
-        lo sfondo durante il burst. Chiama <code>initGlitch()</code> per
-        popolare automaticamente <code>data-text</code>.
+        Il layer ::before clona <code>background: inherit</code>. Senza <code>data-text</code>
+        esplicito, <code>bindGlitch</code> (hook Storybook) lo popola automaticamente.
       </p>
     `
-    initGlitch(wrapper)
     return wrapper
   },
+}
+
+/* ── Burst dichiarativo ─────────────────────────────────────────────────── */
+
+export const DeclarativeBurst = {
+  name: 'data-arc-glitch-duration (senza initGlitch nel render)',
+  render: () => `
+    <div style="padding:2rem;display:flex;flex-direction:column;gap:1.5rem;align-items:flex-start;">
+      <p style="font-family:var(--arc-font-mono);font-size:.75rem;color:var(--arc-color-text-muted);margin:0;">
+        Click sul testo → burst <code>triggerGlitch</code> (800ms). Solo markup + hook <code>play</code> → <code>bindGlitch</code>.
+      </p>
+      <span
+        class="arc-glitch arc-glow-cyan"
+        data-text="CLICK ME"
+        data-arc-glitch-duration="800"
+        style="font-family:var(--arc-font-pixel);font-size:2rem;cursor:pointer;">
+        CLICK ME
+      </span>
+      <button
+        type="button"
+        class="arc-btn arc-btn-primary arc-glitch"
+        data-text="BUTTON BURST"
+        data-arc-glitch-duration="400">
+        BUTTON BURST
+      </button>
+    </div>
+  `,
 }
 
 /* ── Showcase completo ─────────────────────────────────────────────────── */

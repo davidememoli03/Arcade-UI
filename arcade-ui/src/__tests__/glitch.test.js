@@ -1,6 +1,13 @@
 // src/__tests__/glitch.test.js
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { initGlitch, triggerGlitch, glitch } from '../effects/glitch.js'
+import {
+  initGlitch,
+  triggerGlitch,
+  glitch,
+  bindGlitch,
+  hasGlitchTargets,
+  _resetGlitchAutoBindingForTest,
+} from '../effects/glitch.js'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -156,6 +163,78 @@ describe('triggerGlitch — class manipulation', () => {
 
 // ─── glitch namespace ─────────────────────────────────────────────────────────
 
+describe('bindGlitch — burst dichiarativo', () => {
+  beforeEach(() => {
+    document.body.innerHTML = ''
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('data-arc-glitch-duration attiva triggerGlitch al click', () => {
+    const el = makeEl('span', 'arc-glitch', 'BURST')
+    el.dataset.arcGlitchDuration = '400'
+    bindGlitch(document.body)
+
+    el.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    expect(el.classList.contains('arc-glitch-active')).toBe(true)
+
+    vi.advanceTimersByTime(400)
+    expect(el.classList.contains('arc-glitch-active')).toBe(false)
+  })
+
+  it('data-arc-glitch-burst="hover" attiva su mouseenter', () => {
+    const el = makeEl('span', 'arc-glitch', 'HOVER')
+    el.dataset.arcGlitchDuration = '200'
+    el.dataset.arcGlitchBurst = 'hover'
+    bindGlitch(document.body)
+
+    el.dispatchEvent(new MouseEvent('mouseenter'))
+    expect(el.classList.contains('arc-glitch-active')).toBe(true)
+  })
+})
+
+describe('hasGlitchTargets', () => {
+  beforeEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  it('false senza elementi glitch', () => {
+    document.body.innerHTML = '<p>plain</p>'
+    expect(hasGlitchTargets(document.body)).toBe(false)
+  })
+
+  it('true con .arc-glitch', () => {
+    document.body.innerHTML = '<span class="arc-glitch">x</span>'
+    expect(hasGlitchTargets(document)).toBe(true)
+  })
+
+  it('true con data-arc-glitch-duration', () => {
+    document.body.innerHTML = '<span data-arc-glitch-duration="500">x</span>'
+    expect(hasGlitchTargets(document)).toBe(true)
+  })
+})
+
+describe('scheduleGlitchAutoBinding', () => {
+  beforeEach(() => {
+    _resetGlitchAutoBindingForTest()
+    document.body.innerHTML = ''
+  })
+
+  afterEach(() => {
+    _resetGlitchAutoBindingForTest()
+  })
+
+  it('non lancia senza target glitch', async () => {
+    document.body.innerHTML = '<p>empty</p>'
+    const { scheduleGlitchAutoBinding } = await import('../effects/glitch.js')
+    scheduleGlitchAutoBinding()
+    await new Promise((r) => setTimeout(r, 0))
+    expect(document.querySelector('.arc-glitch')?.dataset.text).toBeUndefined()
+  })
+})
+
 describe('glitch namespace', () => {
   it('esporta initGlitch', () => {
     expect(typeof glitch.initGlitch).toBe('function')
@@ -165,11 +244,19 @@ describe('glitch namespace', () => {
     expect(typeof glitch.triggerGlitch).toBe('function')
   })
 
+  it('esporta bindGlitch', () => {
+    expect(typeof glitch.bindGlitch).toBe('function')
+  })
+
   it('glitch.initGlitch è la stessa funzione di initGlitch', () => {
     expect(glitch.initGlitch).toBe(initGlitch)
   })
 
   it('glitch.triggerGlitch è la stessa funzione di triggerGlitch', () => {
     expect(glitch.triggerGlitch).toBe(triggerGlitch)
+  })
+
+  it('glitch.bindGlitch è la stessa funzione di bindGlitch', () => {
+    expect(glitch.bindGlitch).toBe(bindGlitch)
   })
 })

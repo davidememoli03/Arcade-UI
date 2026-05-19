@@ -2,7 +2,18 @@
 import './styles/arcade-ui.css'
 import pkg from '../package.json'
 
-export { initGlitch, triggerGlitch, glitch } from './effects/glitch.js'
+import { scheduleGlitchAutoBinding } from './effects/glitch.js'
+
+export {
+  initGlitch,
+  triggerGlitch,
+  glitch,
+  bindGlitch,
+  hasGlitchTargets,
+  scheduleGlitchAutoBinding,
+} from './effects/glitch.js'
+
+scheduleGlitchAutoBinding()
 export { AudioManager } from './audio/AudioManager.js'
 export { bindButtonSounds, bindArcadeSounds } from './components/button.js'
 export {

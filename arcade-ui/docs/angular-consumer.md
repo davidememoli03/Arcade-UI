@@ -6,7 +6,7 @@ Copy-paste reference for apps using **`@davide03memoli/arcade-ui`** with TypeScr
 
 | Import | Use |
 |--------|-----|
-| `@davide03memoli/arcade-ui` | `AudioManager`, `initGlitch`, tokens, JS helpers (`dist/arcade-ui.d.ts`) |
+| `@davide03memoli/arcade-ui` | `AudioManager`, `bindGlitch`, `initGlitch`, tokens, JS helpers (`dist/arcade-ui.d.ts`) |
 | `@davide03memoli/arcade-ui/angular` | Standalone directives + `ArcadeAudioService` (`dist/angular/index.d.ts`) |
 
 Paths must match the package **`exports`** field (see root `package.json`). Prefer these specifiers over deep paths into `dist/` unless documented.
@@ -78,7 +78,7 @@ import {
   ElementRef,
   inject,
 } from '@angular/core'
-import { AudioManager, initGlitch } from '@davide03memoli/arcade-ui'
+import { AudioManager, bindGlitch } from '@davide03memoli/arcade-ui'
 
 @Component({
   selector: 'app-glitch-demo',
@@ -95,7 +95,7 @@ export class GlitchDemoComponent implements AfterViewInit {
   private readonly audio: AudioManager = AudioManager.getInstance()
 
   ngAfterViewInit(): void {
-    initGlitch(this.host.nativeElement)
+    bindGlitch(this.host.nativeElement)
   }
 
   coin(): void {

@@ -16,11 +16,26 @@ export declare const version: string
 
 // ─── Glitch ──────────────────────────────────────────────────────────────────
 
+/** Selettore CSS per elementi glitch (`.arc-glitch`, `.arc-glitch-hover`, `[data-arc-glitch]`). */
+export declare const GLITCH_SELECTOR: string
+
 export declare function initGlitch(root?: Document | Element): void
+
 export declare function triggerGlitch(el: Element, duration?: number): void
+
+/**
+ * `initGlitch` + burst dichiarativi (`data-arc-glitch-duration`). Idempotente.
+ * Chiamato automaticamente a `DOMContentLoaded` quando si importa il pacchetto principale.
+ */
+export declare function bindGlitch(root?: Document | Element): void
+
+/** `true` se `root` contiene target glitch o `data-arc-glitch-duration`. */
+export declare function hasGlitchTargets(root?: Document | Element): boolean
+
 export declare const glitch: {
   initGlitch: typeof initGlitch
   triggerGlitch: typeof triggerGlitch
+  bindGlitch: typeof bindGlitch
 }
 
 // ─── Audio — dichiarativo (data-arc-sound-*) ─────────────────────────────────

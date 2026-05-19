@@ -7,12 +7,12 @@ import {
   inject,
 } from '@angular/core'
 
-import { initGlitch } from '@davide03memoli/arcade-ui'
+import { bindGlitch } from '@davide03memoli/arcade-ui'
 
 /**
- * Runs `initGlitch` after the view initializes — either on the host subtree or on the whole `document`.
+ * Runs `bindGlitch` after the view initializes — either on the host subtree or on the whole `document`.
  *
- * Safe under React-style double-invoke patterns: `initGlitch` only fills missing `data-text` attributes.
+ * Safe under React-style double-invoke patterns: `initGlitch` inside `bindGlitch` only fills missing `data-text`.
  *
  * @example
  * ```html
@@ -33,6 +33,6 @@ export class ArcadeGlitchDirective implements AfterViewInit {
   ngAfterViewInit(): void {
     const root =
       this.arcadeGlitchTarget === 'document' ? this.doc : this.host.nativeElement
-    initGlitch(root)
+    bindGlitch(root)
   }
 }
