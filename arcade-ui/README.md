@@ -1928,6 +1928,12 @@ Requires: CSS Custom Properties · CSS Grid · Web Audio API
 
 ---
 
+## 🗺️ DX roadmap
+
+Miglioramenti incrementali (audio dichiarativo, glitch, ARIA, parity Angular/React) sono tracciati in [`docs/DX-ROADMAP.md`](./docs/DX-ROADMAP.md) e nella [issue meta #115](https://github.com/davidememoli03/Arcade-UI/issues/115).
+
+---
+
 ## 🤝 Contributing
 
 1. Fork the repository
